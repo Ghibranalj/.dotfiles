@@ -1,0 +1,14 @@
+keycode 108 = Caps_Lock Caps_Lock Caps_Lock Caps_Lock Caps_Lock Caps_Lock
+keycode  66 = Mode_switch Mode_switch Mode_switch Mode_switch Mode_switch Mode_switch
+
+
+keycode  31 = i I Up NoSymbol NoSymbol NoSymbol NoSymbol NoSymbol
+keycode  44 = j J Left NoSymbol NoSymbol NoSymbol NoSymbol NoSymbol
+keycode  45 = k K Down NoSymbol NoSymbol NoSymbol NoSymbol NoSymbol
+keycode  46 = l L Right NoSymbol NoSymbol NoSymbol NoSymbol NoSymbol
+
+keycode 38 = a A adiaeresis Adiaeresis
+keycode 30 = u U udiaeresis Udiaeresis
+keycode 32 = o O odiaeresis Odiaeresis
+keycode 39 = s S ssharp
+
