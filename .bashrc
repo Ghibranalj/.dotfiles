@@ -122,3 +122,13 @@ function ind(){
 
     $1 &>>~/.app.log &disown
 }
+
+function rename-homework(){
+	declare -i i=1
+    echo outside $i
+	for f in $(ls . | grep .$2); do
+        echo $i
+		 mv -- "$f" "vclj2729_B$1_A$i.$2" 
+		i=$((i+1))
+	done
+} 
