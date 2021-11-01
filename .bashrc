@@ -132,3 +132,8 @@ function rename-homework(){
 		i=$((i+1))
 	done
 } 
+
+function fix-keybind(){
+    xkbcomp /home/gibi/.xkbmap :1 &> /home/gibi/.keybind.log
+    gsettings set org.gnome.settings-daemon.plugins.keyboard active false
+}

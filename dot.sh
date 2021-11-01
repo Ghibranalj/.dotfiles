@@ -19,4 +19,4 @@ chmod +x keybind.sh
 ./keybind.sh
 
 chmod +x gnome-keybindings.pl
-./gnome-keybindings.pl -i /data/keys.csv
+./gnome-keybindings.pl -i ./data/keys.csv

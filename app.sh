@@ -11,7 +11,7 @@ apt full-upgrade
 
 snap install code --classic
 snap install discord spotify
-apt install gnone-tweaks curl
+apt install gnone-tweaks curl blueman 
 
 ## installing chrome
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
