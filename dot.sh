@@ -10,6 +10,7 @@ chsh -s /bin/bash
 rm ~/.bashrc
 toHome .bashrc
 toHome .gitconfig
+tohome .xbindkeysrc
 
 toHome .onStartup.sh
 chmod +x ~/.onStartup.sh

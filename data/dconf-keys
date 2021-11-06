@@ -1,0 +1,4 @@
+[/]
+stop=['<Primary><Alt>BackSpace']
+volume-down=['<Primary><Alt>minus']
+volume-up=['<Primary><Alt>equal']
