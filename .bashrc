@@ -116,6 +116,8 @@ if ! shopt -oq posix; then
   fi
 fi
 
+source /usr/share/git/completion/git-prompt.sh
+
 export PS1="\[\033[38;5;6m\]\u\[\033[38;5;8m\]@\[\033[38;5;10m\]\h\[\033[38;5;8m\]-\[\033[38;5;6m\][\[\033[38;5;9m\]\W\[\033[38;5;7m\]\$(__git_ps1 ' (%s) ')\[\033[38;5;6m\]]\[\033[38;5;8m\]\\$ \[\$(tput sgr0)\]"
 
 function ind(){
