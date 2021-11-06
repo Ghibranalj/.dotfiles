@@ -139,3 +139,11 @@ function fix-keybind(){
     xkbcomp /home/gibi/.xkbmap :1 &> /home/gibi/.keybind.log
     # gsettings set org.gnome.settings-daemon.plugins.keyboard active false
 }
+
+
+if command -v go &> /dev/null
+then
+    export GOPATH=$(go env GOPATH)
+    export PATH=$PATH:$(go env GOPATH)/bin
+    exit
+fi

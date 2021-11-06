@@ -2,6 +2,7 @@
 
 discord &disown
 spotify &disown
+whatsapp &disown
 
 xbindkeys
 sleep 20
