@@ -9,4 +9,4 @@ rm $HOME/.xkbmap
 xkbcomp $DISPLAY $HOME/.xkbmap
 
 
-dconf load /org/gnome/shell/keybindings/ < data/dconf-keys
+dconf load / < data/dconf-keys
