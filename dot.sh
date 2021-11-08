@@ -15,6 +15,8 @@ tohome .xbindkeysrc
 toHome .onStartup.sh
 chmod +x ~/.onStartup.sh
 
+toHome .xbindkeysrc
+
 chmod +x keybind.sh
 ./keybind.sh
 

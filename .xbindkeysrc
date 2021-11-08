@@ -38,7 +38,8 @@ keystate_capslock = enable
 #keystate_scrolllock= enable
 
 # Examples of commands:
-
 "gnome-terminal"
-    m:0x1c + c:28
-    # Control+Alt+Mod2 + t
+    m:0xc + c:28
+    #Control+Alt + t
+
+

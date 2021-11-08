@@ -145,5 +145,4 @@ if command -v go &> /dev/null
 then
     export GOPATH=$(go env GOPATH)
     export PATH=$PATH:$(go env GOPATH)/bin
-    exit
 fi
