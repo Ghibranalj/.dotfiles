@@ -9,7 +9,7 @@ then
 	cd ../..
 fi
 
-yay -S google-chrome spotify discord whatsapp-for-linux visual-studio-code-bin neovim
+yay -S google-chrome spotify discord whatsapp-for-linux visual-studio-code-bin neovim inputplug
 
 function link (){
 	sudo ln $(which $1) $(dirname $(which $1))/$2

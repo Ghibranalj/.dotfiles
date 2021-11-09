@@ -25,6 +25,8 @@ ln custom-startup.desktop ~/.config/autostart/custom-startup.desktop
 # chmod +x gnome-keybindings.pl
 # ./gnome-keybindings.pl -i ./data/keys.csv
 
+toHome .on-new-kbd.sh
+# inputplug -d -c ~/.on-new-kbd.sh
 
 echo '--------------------------------'
 echo '====== Installing Themes ======='
