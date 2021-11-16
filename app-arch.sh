@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# bluetooth
+
+sudo pacman -S --needed bluez bluez-utils pulseaudio-bluetooth
+sudo systemctl enable --now bluetooth
+
+
 if ! command -v yay &> /dev/null
 then
 	sudo pacman -S --needed base-devel

@@ -2,6 +2,7 @@
 
 echo "installing dotfiles"
 
+dconf load / < data/dconf-configs
 
 function toHome() {
     ln $1 ~/$1
