@@ -15,8 +15,10 @@ then
 	cd ../..
 fi
 
-yay -S google-chrome spotify discord whatsapp-for-linux visual-studio-code-bin neovim inputplug
+yay -S google-chrome spotify discord whatsapp-for-linux visual-studio-code-bin neovim inputplug albert
 
+
+albert &> /dev/null
 function link (){
 	sudo ln $(which $1) $(dirname $(which $1))/$2
 }

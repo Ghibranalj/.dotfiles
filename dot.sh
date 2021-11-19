@@ -2,6 +2,7 @@
 
 echo "installing dotfiles"
 
+gsettings set org.gnome.settings-daemon.plugins.media-keys volume-step 2
 dconf load / < data/dconf-configs
 
 function toHome() {
@@ -39,4 +40,5 @@ chmod +x vendor/Orchis/install.sh
 
 echo 'select your theme'
 gnome-tweaks &> /dev/null
+
 
