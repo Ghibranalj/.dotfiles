@@ -120,6 +120,16 @@ source /usr/share/git/completion/git-prompt.sh
 
 export PS1="\[\033[38;5;6m\]\u\[\033[38;5;8m\]@\[\033[38;5;10m\]\h\[\033[38;5;8m\]-\[\033[38;5;6m\][\[\033[38;5;9m\]\W\[\033[38;5;7m\]\$(__git_ps1 ' (%s) ')\[\033[38;5;6m\]]\[\033[38;5;8m\]\\$ \[\$(tput sgr0)\]"
 
+alias c=clear
+function make-homework(){
+	if [ $# -eq 0 ]
+  	then
+    		echo "err: No arguments"
+		return -1
+	fi
+	touch vclj2729_B$1_A{1..4}.tex
+}
+
 function ind(){
 
     $1 &>>~/.app.log &disown
