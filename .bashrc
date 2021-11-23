@@ -90,7 +90,7 @@ fi
 # some more ls aliases
 alias ll='ls -alhF'
 alias la='ls -Ah'
-alias l='ls -CFh'
+alias l='ls -Fh'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -120,6 +120,7 @@ source /usr/share/git/completion/git-prompt.sh
 
 export PS1="\[\033[38;5;6m\]\u\[\033[38;5;8m\]@\[\033[38;5;10m\]\h\[\033[38;5;8m\]-\[\033[38;5;6m\][\[\033[38;5;9m\]\W\[\033[38;5;7m\]\$(__git_ps1 ' (%s) ')\[\033[38;5;6m\]]\[\033[38;5;8m\]\\$ \[\$(tput sgr0)\]"
 
+alias ls=exa
 alias c=clear
 function make-homework(){
 	if [ $# -eq 0 ]

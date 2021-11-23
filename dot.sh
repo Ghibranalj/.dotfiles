@@ -19,8 +19,11 @@ chmod +x ~/.onStartup.sh
 
 toHome .xbindkeysrc
 
+ln -s ${PWD}/nvim ~/.config/
+
 chmod +x keybind.sh
 ./keybind.sh
+
 
 ln custom-startup.desktop ~/.config/autostart/custom-startup.desktop
 
