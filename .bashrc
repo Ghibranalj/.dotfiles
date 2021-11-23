@@ -150,6 +150,16 @@ function fix-keybind(){
     # gsettings set org.gnome.settings-daemon.plugins.keyboard active false
 }
 
+if command -v cpg &> /dev/null
+then
+	alias cp='cpg -g'
+fi
+
+if command -v mvg &> /dev/null
+then
+	alias mv='mvg -g'
+fi
+
 
 if command -v go &> /dev/null
 then
