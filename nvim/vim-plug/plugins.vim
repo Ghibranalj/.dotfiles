@@ -7,7 +7,8 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/autoload/plugged')
-
+    " Material Theme
+    Plug 'kaicataldo/material.vim', { 'branch': 'main' }
     " Better Syntax Support
     Plug 'sheerun/vim-polyglot'
     " File Explorer
