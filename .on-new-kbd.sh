@@ -7,5 +7,5 @@ event=$1 id=$2 type=$3
 
 case "$event $type" in
 'XIDeviceEnabled XISlaveKeyboard')
-        xkbcomp /home/gibi/.xkbmap :1 &> /home/gibi/.keybind.log
+        xkbcomp /home/gibi/.xkbmap $DISPLAY &> /home/gibi/.keybind.log
 esac
