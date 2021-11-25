@@ -51,9 +51,22 @@ function fix-keybind(){
     # gsettings set org.gnome.settings-daemon.plugins.keyboard active false
 }
 
+function generate-ssh-github(){
+
+  if ! test -f "${HOME}/.ssh/id_ed25519.pub"
+  then
+  ssh-keygen -t ed25519 -C "24712554+Ghibranalj@users.noreply.github.com"
+  ssh-add ~/.ssh/id_ed25519
+  fi
+  echo ================ Copy this to github ==============================
+  cat ~/.ssh/id_ed25519.pub
+}
+
 if command -v exa &> /dev/null
 then 
     alias ls='exa -g'
+else
+    alias ls='ls --color=auto'
 fi
 alias ll='ls -alhF'
 alias la='ls -Ah'

@@ -5,3 +5,11 @@ previous=['<Primary><Alt>bracketleft']
 volume-down=['<Primary><Alt>minus']
 volume-mute=['<Primary><Alt>0']
 volume-up=['<Primary><Alt>equal']
+
+[org/cinnamon/desktop/keybindings/media-keys]
+next=['<Primary><Alt>bracketright']
+pause=['<Primary><Alt>BackSpace']
+previous=['<Primary><Alt>bracketleft']
+volume-down=['<Primary><Alt>minus']
+volume-up=['<Primary><Alt>equal']
+
