@@ -41,7 +41,23 @@ git clone https://github.com/vinceliuice/Orchis-theme.git vendor/Orchis
 chmod +x vendor/Orchis/install.sh
 ./vendor/Orchis/install.sh -t orange
 
-echo 'select your theme'
-gnome-tweaks &> /dev/null
+if command -v gnome-tweaks &> /dev/null
+then
+    echo 'Select your theme'
+    gnome-tweaks &> /dev/null
+fi
 
+if command -v cinnamon-settings &> /dev/null
+then
+    echo 'Select your theme'
+    cinnamon-settings &> /dev/null
+fi
 
+read -p "Configure bluetooth to turn on on start? [Y/n]" -n 1 -r
+if [[ $REPLY =~ ^[Nn]$ ]]
+then
+ # do nothing 
+else
+    sudo rm /etc/bluetooth/main.conf
+    sudo cp configs/bluetooth/main.conf /etc/bluetooth/main.conf
+fi
