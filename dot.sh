@@ -20,6 +20,9 @@ chmod +x ~/.onStartup.sh
 toHome .xbindkeysrc
 
 ln -s ${PWD}/nvim ~/.config/
+curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
 
 chmod +x keybind.sh
 ./keybind.sh
@@ -39,7 +42,7 @@ echo '--------------------------------'
 
 git clone https://github.com/vinceliuice/Orchis-theme.git vendor/Orchis
 chmod +x vendor/Orchis/install.sh
-./vendor/Orchis/install.sh -t orange
+./vendor/Orchis/install.sh -t orange 
 
 if command -v gnome-tweaks &> /dev/null
 then

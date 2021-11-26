@@ -1,3 +1,5 @@
 vendor/
 
-nvim/autoload/plug/**
+nvim/autoload/*
+nvim/autoload/plugged/**
+

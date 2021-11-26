@@ -15,7 +15,7 @@ then
 	cd ../..
 fi
 
-yay -Syu google-chrome spotify discord whatsapp-for-linux visual-studio-code-bin neovim inputplug albert advcp exa xclip xbindkeys
+yay -Syu google-chrome spotify discord whatsapp-for-linux visual-studio-code-bin neovim inputplug albert advcp exa xclip xbindkeys blueman
 
 albert &> /dev/null
 function link (){
