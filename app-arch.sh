@@ -15,9 +15,11 @@ then
 	cd ../..
 fi
 
-yay -Syu google-chrome spotify discord whatsapp-for-linux visual-studio-code-bin neovim inputplug albert advcp exa xclip xbindkeys blueman
+yay -Syu google-chrome spotify discord whatsapp-for-linux visual-studio-code-bin neovim inputplug albert advcp exa xclip xbindkeys blueman bluetooth-autoconnect
 
 albert &> /dev/null
+sudo systemctl enable bluetooth-autoconnect
+systemctl --user enable pulseaudio-bluetooth-autoconnect
 function link (){
 	sudo ln $(which $1) $(dirname $(which $1))/$2
 }

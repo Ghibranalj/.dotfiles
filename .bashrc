@@ -23,6 +23,8 @@ export EDITOR=nvim
 alias grep='grep --color=auto'
 
 alias c=clear
+
+alias headphone-fix='pulseaudio -k'
 function make-homework(){
 	if [ $# -eq 0 ]
   	then

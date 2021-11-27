@@ -40,9 +40,11 @@ keystate_capslock = enable
 # Examples of commands:
 "gnome-terminal"
     m:0xc + c:28
-    #Control+Alt + t
-"blueman-manager"
+    # Control+Alt + t
+"pulseaudio -k ; blueman-manager"
     m:0x1c + c:56
-    #Control+Alt+Mod2 + b
-
+    # Control+Alt+Mod2 + b
+"chrome"
+    m:0x1c + c:54
+    # Control+Alt+Mod2 + c
 

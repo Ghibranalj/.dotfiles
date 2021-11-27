@@ -7,6 +7,8 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/autoload/plugged')
+    " language Server
+    Plug 'neovim/nvim-lspconfig'
     " Material Theme
     Plug 'kaicataldo/material.vim', { 'branch': 'main' }
     " Better Syntax Support
