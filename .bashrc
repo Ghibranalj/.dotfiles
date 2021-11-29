@@ -24,7 +24,7 @@ alias grep='grep --color=auto'
 
 alias c=clear
 
-alias headphone-fix='pulseaudio -k'
+alias headphone-fix='pulseaudio -k; pulseaudio --start'
 function make-homework(){
 	if [ $# -eq 0 ]
   	then
@@ -104,4 +104,13 @@ if command -v go &> /dev/null
 then
     export GOPATH=$(go env GOPATH)
     export PATH=$PATH:$(go env GOPATH)/bin
+fi
+
+if command -v todo-cli &> /dev/null
+then
+  todo-cli check 2> /dev/null
+  if [ $? -eq 0 ] && [ "$PWD" == "$HOME" ]
+  then
+	    todo-cli print
+  fi
 fi

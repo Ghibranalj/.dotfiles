@@ -1,7 +1,8 @@
 source $HOME/.config/nvim/vim-plug/plugins.vim
 
 let g:material_theme_style = 'default'
-nmap <C-F> :NERDTreeToggle<CR>
+nnoremap <M-w> :NERDTreeToggle<CR>
+
 let NERDTreeShowHidden=1
 colorscheme material
 

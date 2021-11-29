@@ -17,5 +17,6 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'https://github.com/preservim/nerdtree'
     " Auto pairs for '(' '[' '{'
     Plug 'jiangmiao/auto-pairs'
-
-call plug#end()
+    " fixkey
+    Plug 'https://github.com/drmikehenry/vim-fixkey'
+    call plug#end()
