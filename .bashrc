@@ -17,12 +17,26 @@ source /usr/share/git/completion/git-prompt.sh
 
 export PS1="\[\033[38;5;6m\]\u\[\033[38;5;8m\]@\[\033[38;5;10m\]\h\[\033[38;5;8m\]-\[\033[38;5;6m\][\[\033[38;5;9m\]\W\[\033[38;5;7m\]\$(__git_ps1 ' (%s) ')\[\033[38;5;6m\]]\[\033[38;5;8m\]\\$ \[\$(tput sgr0)\]"
 
+#coloured manpages
+export LESS_TERMCAP_mb=$'\e[1;32m'
+export LESS_TERMCAP_md=$'\e[1;32m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;33m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[1;4;31m'
+export PAGER="most"
+
+alias less=most
+
 export VISUAL=nvim
 export EDITOR=nvim
 
 alias grep='grep --color=auto'
 
 alias c=clear
+
+alias pick-color="colorpicker --short --one-shot 2> /dev/null | tee | xclip -sel c "
 
 alias headphone-fix='pulseaudio -k; pulseaudio --start'
 function make-homework(){

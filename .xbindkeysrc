@@ -41,10 +41,13 @@ keystate_capslock = enable
 "gnome-terminal"
     m:0xc + c:28
     # Control+Alt + t
-"pulseaudio -k ; blueman-manager"
+"blueman-manager"
     m:0x1c + c:56
     # Control+Alt+Mod2 + b
 "chrome"
     m:0x1c + c:54
     # Control+Alt+Mod2 + c
+"pulseaudio-k; pulseaudio --start"
+    m:0x1c + c:27
+    #Control+Alt+Mod2 + r
 
