@@ -2,7 +2,7 @@
 
 # bluetooth
 
-sudo pacman -S --needed bluez bluez-utils pulseaudio-bluetooth
+sudo pacman -S --needed bluez bluez-utils
 sudo systemctl enable --now bluetooth
 
 
@@ -16,7 +16,7 @@ then
 fi
 
 # needed by dotfiles
-yay -Sy neovim inputplug advcp exa xclip xbindkeys blueman blutooth-autoconnect most
+yay -Sy neovim inputplug advcp exa xclip xbindkeys blueman bluetooth-autoconnect most
 
 # other apps
 yay -Sy google-chrome spotify discord whatsapp-for-linux visual-studio-code-bin albert
