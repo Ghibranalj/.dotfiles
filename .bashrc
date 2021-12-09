@@ -123,8 +123,9 @@ fi
 if command -v todo-cli &> /dev/null
 then
   todo-cli check 2> /dev/null
-  if [ $? -eq 0 ] && [ "$PWD" == "$HOME" ]
+  if [ $? -eq 0 ] && [ -z ${TODO+x} ]
   then
-	    todo-cli print
+	todo-cli print
+	export TODO="shown"
   fi
 fi
