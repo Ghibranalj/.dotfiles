@@ -37,10 +37,9 @@
 keystate_capslock = enable
 #keystate_scrolllock= enable
 
-# Examples of commands:
-"gnome-terminal"
-    m:0xc + c:28
-    # Control+Alt + t
+#"echo `whoami` > ~/test"
+#    m:0xc + c:28
+#    # Control+Alt + t
 "blueman-manager"
     m:0x1c + c:56
     # Control+Alt+Mod2 + b
