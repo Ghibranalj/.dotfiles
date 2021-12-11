@@ -15,3 +15,5 @@ keycode 39 = s S ssharp
 keycode  48 = apostrophe quotedbl grave asciitilde
 keycode  22 = BackSpace BackSpace Delete Delete
 
+keycode  56 = b B BackSpace B
+

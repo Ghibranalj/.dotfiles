@@ -5,7 +5,6 @@
 
 xmodmap ./data/defaultKeymapping
 xmodmap Xmodmap
-rm $HOME/.xkbmap
 xkbcomp $DISPLAY $HOME/.xkbmap
 
 
