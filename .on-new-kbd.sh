@@ -3,10 +3,7 @@
 
 
 #echo >&2 "$@"
-event=$1 id=$2 type=$3
-
-
-#echo $4 > ~/inputplug.log
+event=$1 id=$2 type=$3:
 
 if [[ "$4" == *"Basilisk X HyperSpeed"* ]]
 then
