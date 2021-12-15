@@ -129,26 +129,3 @@ then
 	export TODO="shown"
   fi
 fi
-
-# link mounted usb
-function link-usb() {
-	if [[ `ls /run/media/$USER/` == "" ]]
-	then
-		rm -r $HOME/USB
-		return
-	fi
-	if [[ ! -d $HOME/USB ]]
-	then
-		mkdir $HOME/USB
-	fi
-	if [[ ! `ls $HOME/USB` == "" ]]
-	then
-		unlink $HOME/USB/*
-	fi
-
-	for d in /run/media/$USER/* 
-	do 
-		ln -s  $d $HOME/USB/
-	done	
-}
-link-usb
