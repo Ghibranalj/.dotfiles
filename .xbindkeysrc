@@ -46,7 +46,6 @@ keystate_capslock = enable
 "chrome"
     m:0x1c + c:54
     # Control+Alt+Mod2 + c
-"pulseaudio-k; pulseaudio --start"
-    m:0x1c + c:27
-    #Control+Alt+Mod2 + r
-
+"pavucontrol"
+    m:0xc + c:55
+    Control+Alt + v
