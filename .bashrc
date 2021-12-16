@@ -116,7 +116,7 @@ fi
 
 if command -v go &> /dev/null
 then
-    export GOPATH=$(go env GOPATH)
+    export GOPATH="$HOME/.go"
     export PATH=$PATH:$(go env GOPATH)/bin
 fi
 

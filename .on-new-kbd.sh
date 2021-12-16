@@ -3,14 +3,13 @@
 
 
 #echo >&2 "$@"
-event=$1 id=$2 type=$3:
+event=$1 id=$2 type=$3
 
 if [[ "$4" == *"Basilisk X HyperSpeed"* ]]
 then
 #	echo "its caught" >> ~/inputplug.log
 	exit
 fi
-
 
 case "$event $type" in
 'XIDeviceEnabled XISlaveKeyboard')
