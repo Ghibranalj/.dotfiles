@@ -38,7 +38,29 @@ alias c=clear
 
 alias pick-color="colorpicker --short --one-shot 2> /dev/null | tee | xclip -sel c "
 
-alias headphone-fix='pulseaudio -k; pulseaudio --start'
+function nav(){
+	dir='.'
+	while [[ ! $dir == "" ]]; do
+		cd $dir
+		list="$(/bin/ls $@)"
+    for l in $list
+    do
+      [[ -d $l ]] && dirlist="$dirlist $l" || flist="$l $flist"
+    done
+		[[ $dirlist == *'..'* ]] || dirlist=".. . $dirlist"
+    header="$(dirs)
+${flist:+Files: }
+$flist"
+	  dir="$(echo  $dirlist | tr ' ' '\n' | fzf --no-sort --header="$header" --prompt='Search: ' --no-info)"
+    unset dirlist list header flist
+	done
+}
+
+function delete(){
+	files="$( /bin/ls -a | fzf -m | tr '\n' ' ' )"
+	[[ $files == "" ]] && return
+	rm $@ $files
+}
 function make-homework(){
 	if [ $# -eq 0 ]
   	then
@@ -54,7 +76,6 @@ function ind(){
 
 function rename-homework(){
 	declare -i i=1
-    echo outside $i
 	for f in $(ls . | grep .$2); do
         echo $i
 		 mv -- "$f" "vclj2729_B$1_A$i.$2" 
@@ -68,7 +89,7 @@ function fix-keybind(){
 }
 
 function clip (){
-  xclip -sel c < $1
+   xclip -sel c <$1
 }
 
 function generate-ssh-github(){
@@ -94,6 +115,8 @@ fi
 alias ll='ls -alhF'
 alias la='ls -Ah'
 alias l='ls -Fh'
+
+alias lso='/bin/ls'
 
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
