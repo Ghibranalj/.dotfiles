@@ -21,6 +21,9 @@ yay -Sy neovim inputplug advcp exa xclip xbindkeys blueman bluetooth-autoconnect
 # other apps
 yay -Sy google-chrome spotify discord whatsapp-for-linux visual-studio-code-bin albert
 
+# fonts
+yay -S nerd-fonts-complete
+
 albert &> /dev/null
 sudo systemctl enable bluetooth-autoconnect
 systemctl --user enable pulseaudio-bluetooth-autoconnect
