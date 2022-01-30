@@ -28,7 +28,7 @@ chmod +x keybind.sh
 ./keybind.sh
 
 
-ln custom-startup.desktop ~/.config/autostart/custom-startup.desktop
+ln *.desktop ~/.config/autostart/custom-startup.desktop
 
 # chmod +x gnome-keybindings.pl
 # ./gnome-keybindings.pl -i ./data/keys.csv
