@@ -6,9 +6,8 @@ exec:
 	./exec/conf.sh
 	./exec/keybind.sh
 conf:
-	stow --dir=./home --target=~
-	mkdir -p ~/.config/nvim
-	stow --dir=./nvim --target=~/.config/nvim
+	stow home
+	stow nvim
 	curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 	
@@ -18,3 +17,5 @@ conf:
 
 optimus: 
 	./exec/gpu-nightmare.sh
+udev :
+	sudo cp udev/*	/etc/udev/rules.d/
