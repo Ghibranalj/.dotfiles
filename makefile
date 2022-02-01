@@ -6,8 +6,8 @@ exec:
 	./exec/conf.sh
 	./exec/keybind.sh
 conf:
-	stow home
-	stow nvim
+	stow --adopt home
+	stow --adopt nvim
 	curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 	
