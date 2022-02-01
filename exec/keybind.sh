@@ -9,14 +9,14 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     sleep 1
-    xmodmap ../data/defaultKeymapping
+    xmodmap data/defaultKeymapping
     echo "resetting done"
     sleep 5
 fi
 
-xmodmap Xmodmap
+xmodmap ./exec/Xmodmap
 xkbcomp $DISPLAY $PWD/my_layout.xkbd
-./toLayout.py > us.tmp
+./exec/toLayout.py > us.tmp
 sudo cp us.tmp /usr/share/X11/xkb/symbols/us
 
 dconf load / < data/dconf-keys
