@@ -9,7 +9,7 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     sleep 1
-    xmodmap ./data/defaultKeymapping
+    xmodmap ../data/defaultKeymapping
     echo "resetting done"
     sleep 5
 fi
