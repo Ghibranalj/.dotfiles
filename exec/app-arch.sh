@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# bluetooth
+#GNU stow
+sudo pacman -S stow
 
+# bluetooth
 sudo pacman -S --needed bluez bluez-utils
 sudo systemctl enable --now bluetooth
 
@@ -24,7 +26,7 @@ yay -Sy google-chrome spotify discord whatsapp-for-linux visual-studio-code-bin 
 # fonts
 yay -S nerd-fonts-complete
 
-albert &> /dev/null
+albert &> /dev/null &
 sudo systemctl enable bluetooth-autoconnect
 systemctl --user enable pulseaudio-bluetooth-autoconnect
 
