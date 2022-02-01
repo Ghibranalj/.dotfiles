@@ -4,3 +4,4 @@ nvim/autoload/*
 nvim/autoload/plugged/**
 my_layout.xkbd
 us.tmp
+nvim
