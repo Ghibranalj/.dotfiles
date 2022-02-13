@@ -19,3 +19,6 @@ optimus:
 	./exec/gpu-nightmare.sh
 udev :
 	sudo cp udev/*	/etc/udev/rules.d/
+
+keybind:
+	./exec/keybind.sh
