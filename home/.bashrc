@@ -131,8 +131,7 @@ function generate-ssh-github(){
 }
 
 function mkcdir (){
-    mkdir -p $1
-    cd $1
+    mkdir -p $1 && cd $1
 }
 
 if command -v exa &> /dev/null

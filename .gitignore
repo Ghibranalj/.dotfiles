@@ -5,3 +5,5 @@ nvim/autoload/plugged/**
 my_layout.xkbd
 us.tmp
 nvim
+my_layout.xkm
+creepr
