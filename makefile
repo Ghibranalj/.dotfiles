@@ -22,3 +22,8 @@ udev :
 
 keybind:
 	./exec/keybind.sh
+
+gesture:
+	./gesture/exec.sh
+
+
