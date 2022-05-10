@@ -196,3 +196,7 @@ function dd-iso(){
     sudo dd bs=4M if=$1 of=$2 conv=fsync oflag=direct status=progress
 }
 
+
+function gitp(){
+    git push origin $(git branch --show-current)
+}
