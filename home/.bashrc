@@ -182,3 +182,17 @@ then
     fi
 fi
 function calc() { python -c "print($@)"; }
+
+function mkcpair(){
+    touch $1.{c,h}
+}
+
+function check-network (){
+    echo -n Data Used: 
+    netz-checker ghibranresearch@gmail.com X1KVF3CL
+}
+
+function dd-iso(){
+    sudo dd bs=4M if=$1 of=$2 conv=fsync oflag=direct status=progress
+}
+
