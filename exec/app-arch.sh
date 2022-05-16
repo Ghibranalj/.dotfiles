@@ -18,7 +18,7 @@ then
 fi
 
 # needed by dotfiles
-yay -Sy neovim advcp exa xclip xbindkeys blueman bluetooth-autoconnect most
+yay -Sy neovim advcp exa xclip xbindkeys blueman bluetooth-autoconnect most noisetorch
 
 # other apps
 yay -Sy google-chrome spotify discord whatsapp-for-linux visual-studio-code-bin albert

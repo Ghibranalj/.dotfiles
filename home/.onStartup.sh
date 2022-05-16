@@ -1,11 +1,15 @@
 #!/bin/bash
 
+function start(){
+	$1 &disown
+}
 
-discord &disown
-spotify &disown
-whatsapp &disown
-albert	&disown
-plank &disown
+start albert
+start discord
+start spotify
+start noisetorch
+# start whatsapp
+
 function link-usb() {
 	if [[ `ls /run/media/$USER/` == "" ]]
 	then
@@ -27,5 +31,3 @@ while true; do
     link-usb
     sleep 2
 done &
-
-xbindkeys
