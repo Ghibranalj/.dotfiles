@@ -200,3 +200,14 @@ function dd-iso(){
 function gitp(){
     git push origin $(git branch --show-current)
 }
+
+function code(){
+    emacsclient -a 'emacs' -c $@ &disown
+}
+alias emacs='code'
+
+alias vcode='/usr/bin/code'
+alias emacs-server='/usr/bin/emacs'
+alias restart-emacs='killall emacs ; emacs-server --daemon'
+
+source /opt/asdf-vm/asdf.sh
