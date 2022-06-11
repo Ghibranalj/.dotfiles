@@ -55,4 +55,7 @@ keystate_capslock = enable
 "gnome-screenshot --interactive"
     m:0x1c + c:39
     #Control+Alt+Mod2 + s
+"pop-shell-shortcut"
+    m:0xc + c:43
+    Control+Alt + h
 

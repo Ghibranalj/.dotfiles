@@ -1,5 +1,5 @@
 
-TARGET: exec conf
+TARGET: exec conf emacs
 
 exec:
 	./exec/app-arch.sh
@@ -8,7 +8,6 @@ exec:
 conf:
 	stow --adopt home
 	stow --adopt nvim
-	stow --adopt doom
 	curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 	
@@ -23,6 +22,9 @@ udev :
 
 keybind:
 	./exec/keybind.sh
+
+emacs:
+	./exec/emacs.sh
 
 gesture:
 	./gesture/exec.sh
