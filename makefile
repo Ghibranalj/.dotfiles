@@ -1,5 +1,7 @@
 
-TARGET: exec conf emacs
+.PHONY: all exec conf optimus udev keybind emacs gesture
+
+all: exec conf emacs
 
 exec:
 	./exec/app-arch.sh
