@@ -204,10 +204,10 @@ function gitp(){
 function code(){
     emacsclient -a 'emacs' -n -c $@
 }
-alias emacs='code'
 
+alias emacs='code'
 alias vcode='/usr/bin/code'
 alias emacs-server='/usr/bin/emacs'
 alias restart-emacs='killall emacs ; emacs-server --daemon'
 
-source /opt/asdf-vm/asdf.sh
+[ -f /opt/asdf-vm/asdf.sh  ] && source /opt/asdf-vm/asdf.sh

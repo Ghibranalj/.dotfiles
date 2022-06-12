@@ -95,13 +95,10 @@
            :files ("*.el")))
 
 
-
-
 (package! highlight-indent-guides
         :recipe (
                  :host github
                  :repo "DarthFennec/highlight-indent-guides"
                  :files ("*.el")))
-
 
 ;;end of file

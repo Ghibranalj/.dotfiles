@@ -76,36 +76,46 @@
 
 (setq doom-theme 'doom-material-dark)
 (setq doom-font (font-spec
-            :family "Source Code Pro"
-            :size 14
-            ))
+                 :family "Source Code Pro"
+                 :size 15
+                 ))
 (setq doom-variable-pitch-font (font-spec
-            :family "Source Code Pro"
-            :size 14
-            ))
+                                :family "Source Code Pro"
+                                :size 14
+                                ))
 (setq doom-big-font (font-spec
-                :family "Source Code Pro"
-                :size 24
-                ))
+                     :family "Source Code Pro"
+                     :size 24
+                     ))
 
 (setq auto-save-default t
       make-backup-files t)
 
 
 (defun on-new-frame ()
-"This is executed when a new frame is created."
+  "This is executed when a new frame is created."
   (+treemacs/toggle)
   ;; (tabify)
   ;;TODO add more
-)
+  )
 
 ;; packages config
 (setq super-save-auto-save-when-idle t)
 (global-yascroll-bar-mode 1)
 
-(setq centaur-tabs-set-bar 'under)
+(setq centaur-tabs-set-bar 'under
+      centaur-tabs-set-close-button nil
+      centaur-tabs-height 42
+      )
 
+(custom-set-faces!
+        '(treemacs-root-face :foreground "#F78C6C" )
+        '(doom-themes-treemacs-root-face :foreground "#F78C6C" )
+  )
 
+; (custom-set-faces!
+  ;'(centaur-tabs-active-bar-face ((t ( :background "#F78C6C" )))
+   ;                              ))
 
 (setq highlight-indent-guides-method 'character)
 
@@ -130,7 +140,7 @@
   (setq +lsp-company-backends '(company-tabnine :separate company-capf company-yasnippet))
   (setq company-show-quick-access t)
   (setq company-idle-delay 0)
-)
+  )
 
 (after! magit
   (setq magit-diff-refine-hunk 'all)
@@ -138,22 +148,22 @@
 
 (map!
  :leader
-   (:prefix ("t" . "toggle")
-     :desc "Toggle minimap" "m" #'minimap-mode))
+ (:prefix ("t" . "toggle")
+  :desc "Toggle minimap" "m" #'minimap-mode))
 
 (setq
  ;; Configure minimap position
  minimap-window-location 'right ; Minimap on the right side
  minimap-width-fraction 0.0 ; slightly smaller minimap
  minimap-minimum-width 12 ; also slightly smaller minimap
- ; seems to work better
+                                        ; seems to work better
  minimap-enlarge-certain-faces nil ; enlarge breaks BlockFont
  )
 
 (map!
  :leader
-   (:prefix ("b" . "buffer")
-     :desc "Format buffer" "f" #'format-all-buffer))
+ (:prefix ("b" . "buffer")
+  :desc "Format buffer" "f" #'format-all-buffer))
 
 (use-package! company-box
   :hook (company-mode . company-box-mode))
@@ -163,7 +173,7 @@
 (if (daemonp)
     (add-hook 'after-make-frame-functions (lambda (frame)
                                             (with-selected-frame frame
-                                                    (on-new-frame))))
+                                              (on-new-frame))))
   (on-new-frame))
 
 (add-hook! 'prog-mode-hook #'format-all-mode)
@@ -173,4 +183,4 @@
 (beacon-mode 1)
 ;; (awesome-tab-mode 1)
 
-;end of file
+                                        ;end of file
