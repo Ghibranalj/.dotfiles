@@ -202,7 +202,7 @@ function gitp(){
 }
 
 function code(){
-    emacsclient -a 'emacs' -c $@ &disown
+    emacsclient -a 'emacs' -n -c $@
 }
 alias emacs='code'
 

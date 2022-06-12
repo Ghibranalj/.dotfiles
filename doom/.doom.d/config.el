@@ -35,7 +35,7 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
+(setq display-line-numbers-type 'relative)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -88,10 +88,29 @@
                 :size 24
                 ))
 
+(setq auto-save-default t
+      make-backup-files t)
+
+
+(defun on-new-frame ()
+"This is executed when a new frame is created."
+  (+treemacs/toggle)
+  ;; (tabify)
+  ;;TODO add more
+)
 
 ;; packages config
+(setq super-save-auto-save-when-idle t)
+(global-yascroll-bar-mode 1)
 
-(defun my-tab ()
+(setq centaur-tabs-set-bar 'under)
+
+
+
+(setq highlight-indent-guides-method 'character)
+
+(defun copilot-tab ()
+  "Tab complete autopilot."
   (interactive)
   (or (copilot-accept-completion)
       (company-indent-or-complete-common nil)))
@@ -101,13 +120,11 @@
   :bind (("C-TAB" . 'copilot-accept-completion-by-word)
          ("C-<tab>" . 'copilot-accept-completion-by-word)
          :map company-active-map
-         ("<tab>" . 'my-tab)
-         ("TAB" . 'my-tab)
+         ("<tab>" . 'copilot-tab)
+         ("TAB" . 'copilot-tab)
          :map company-mode-map
-         ("<tab>" . 'my-tab)
-         ("TAB" . 'my-tab)))
-
-
+         ("<tab>" . 'copilot-tab)
+         ("TAB" . 'copilot-tab)))
 
 (after! company
   (setq +lsp-company-backends '(company-tabnine :separate company-capf company-yasnippet))
@@ -115,9 +132,45 @@
   (setq company-idle-delay 0)
 )
 
-(use-package! treemacs
-  :hook (emacs-startup-hook . treemacs))
-
 (after! magit
   (setq magit-diff-refine-hunk 'all)
   )
+
+(map!
+ :leader
+   (:prefix ("t" . "toggle")
+     :desc "Toggle minimap" "m" #'minimap-mode))
+
+(setq
+ ;; Configure minimap position
+ minimap-window-location 'right ; Minimap on the right side
+ minimap-width-fraction 0.0 ; slightly smaller minimap
+ minimap-minimum-width 12 ; also slightly smaller minimap
+ ; seems to work better
+ minimap-enlarge-certain-faces nil ; enlarge breaks BlockFont
+ )
+
+(map!
+ :leader
+   (:prefix ("b" . "buffer")
+     :desc "Format buffer" "f" #'format-all-buffer))
+
+(use-package! company-box
+  :hook (company-mode . company-box-mode))
+
+;; Running on daemon startup
+
+(if (daemonp)
+    (add-hook 'after-make-frame-functions (lambda (frame)
+                                            (with-selected-frame frame
+                                                    (on-new-frame))))
+  (on-new-frame))
+
+(add-hook! 'prog-mode-hook #'format-all-mode)
+(add-hook! 'prog-mode-hook #'highlight-indent-guides-mode)
+(super-save-mode +1)
+(minimap-mode 1)
+(beacon-mode 1)
+;; (awesome-tab-mode 1)
+
+;end of file
