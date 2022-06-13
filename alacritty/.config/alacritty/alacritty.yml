@@ -1,0 +1,60 @@
+# Colors (Material Theme)
+colors:
+  # Default colors
+  primary:
+    background: '0x212121'
+    foreground: '0xc4c7d1'
+
+  # Normal colors
+  normal:
+    black:   '0x666666'
+    red:     '0xf57373'
+    green:   '0xc3e88d'
+    yellow:  '0xf7eb95'
+    blue:    '0x80cbc4'
+    magenta: '0xff2f90'
+    cyan:    '0xaeddff'
+    white:   '0xffffff'
+
+  # Bright colors
+  bright:
+    black:   '0x5a5860'
+    red:     '0xf57373'
+    green:   '0xc3e88d'
+    yellow:  '0xf7eb95'
+    blue:    '0x7dc6bf'
+    magenta: '0x6c71c4'
+    cyan:    '0x35434d'
+    white:   '0xffffff'
+
+window:
+  padding:
+    x: 12
+    y: 12
+  dynamic_padding: false
+  opacity: 1.0
+  title: Alacritty
+  class:
+    instance: Alacritty
+    general: Alacritty
+
+font:
+  normal:
+    family: Source Code Pro
+    style: Regular
+
+  bold:
+    family: Source Code Pro
+    style: Bold
+
+  italic:
+    family: Source Code Pro
+    style: Italic
+
+    style: Bold Italic
+
+  size: 11.0
+
+  offset:
+    x: 0
+    y: 1
