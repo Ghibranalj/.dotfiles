@@ -94,7 +94,6 @@
            :repo "emacsorphanage/yascroll"
            :files ("*.el")))
 
-
 (package! highlight-indent-guides
         :recipe (
                  :host github

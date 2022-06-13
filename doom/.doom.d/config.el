@@ -155,11 +155,15 @@
  ;; Configure minimap position
  minimap-window-location 'right ; Minimap on the right side
  minimap-width-fraction 0.0 ; slightly smaller minimap
- minimap-minimum-width 12 ; also slightly smaller minimap
+ minimap-minimum-width 10 ; also slightly smaller minimap
                                         ; seems to work better
  minimap-enlarge-certain-faces nil ; enlarge breaks BlockFont
  )
+(custom-set-faces!
+  '(minimap-font-face :height 12 :group 'minimap))
 
+(add-hook! window-selection-change-functions
+  'minimap-mode)
 (map!
  :leader
  (:prefix ("b" . "buffer")

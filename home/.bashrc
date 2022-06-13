@@ -50,8 +50,12 @@ export PAGER="most"
 
 alias less=most
 
-export VISUAL=nvim
-export EDITOR=nvim
+export VISUAL='emacsclient -c -a 'nvim' -t'
+export EDITOR='emacsclient -c -a 'nvim' -t'
+
+function use-nvim() {
+    EDITOR='emacsclient -c -t' "$@"
+}
 
 alias grep='grep --color=auto'
 
@@ -202,7 +206,7 @@ function gitp(){
 }
 
 function code(){
-    emacsclient -a 'emacs' -n -c $@
+    emacsclient -a 'emacs-server' -n -c $@
 }
 
 alias emacs='code'
