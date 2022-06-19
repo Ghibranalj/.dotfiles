@@ -7,9 +7,7 @@ sudo pacman -S stow
 sudo pacman -S --needed bluez bluez-utils
 sudo systemctl enable --now bluetooth
 
-
-if ! command -v yay &> /dev/null
-then
+if ! command -v yay &>/dev/null; then
 	sudo pacman -S --needed base-devel
 	git clone https://aur.archlinux.org/yay.git vendor/yay
 	cd vendor/yay
@@ -18,7 +16,7 @@ then
 fi
 
 # needed by dotfiles
-yay -Sy neovim advcp exa xclip xbindkeys blueman bluetooth-autoconnect most noisetorch alacritty
+yay -Sy neovim advcp exa xclip xbindkeys blueman bluetooth-autoconnect most noisetorch alacritty tabbed
 
 # other apps
 yay -Sy google-chrome spotify discord whatsapp-for-linux visual-studio-code-bin albert
@@ -26,11 +24,11 @@ yay -Sy google-chrome spotify discord whatsapp-for-linux visual-studio-code-bin 
 # fonts
 yay -S nerd-fonts-complete
 
-albert &> /dev/null &
+albert &>/dev/null &
 sudo systemctl enable bluetooth-autoconnect
 systemctl --user enable pulseaudio-bluetooth-autoconnect
 
-function link (){
+function link() {
 	sudo ln $(which $1) $(dirname $(which $1))/$2
 }
 

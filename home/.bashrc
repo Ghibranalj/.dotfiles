@@ -1,36 +1,38 @@
-
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
-    *) return;;
+    *) return ;;
 esac
 
 if ! shopt -oq posix; then
     if [ -f /usr/share/bash-completion/bash_completion ]; then
         . /usr/share/bash-completion/bash_completion
-        elif [ -f /etc/bash_completion ]; then
+    elif [ -f /etc/bash_completion ]; then
         . /etc/bash_completion
     fi
 fi
 
-ex () {
-    if [[ ! -f $1 ]] ; then
+ex() {
+    if [[ ! -f $1 ]]; then
         echo "'$1' is not a valid file"
         return 1
     fi
     case $1 in
-        *.tar.bz2)   tar xjf    $1      ;;
-        *.tar.gz)    tar xzf    $1      ;;
-        *.bz2)       bunzip2    $1      ;;
-        *.rar)       unrar ex   $1      ;;
-        *.gz)        gunzip     $1      ;;
-        *.tar)       tar xf     $1      ;;
-        *.tbz2)      tar xjf    $1      ;;
-        *.tgz)       tar xzf    $1      ;;
-        *.zip)       unzip      $1      ;;
-        *.Z)         uncompress $1  	;;
-        *.7z)        7z x 	$1      ;;
-        *)           echo "'$1' cannot be extracted via ex()"; return 1 ;;
+        *.tar.bz2) tar xjf $1 ;;
+        *.tar.gz) tar xzf $1 ;;
+        *.bz2) bunzip2 $1 ;;
+        *.rar) unrar ex $1 ;;
+        *.gz) gunzip $1 ;;
+        *.tar) tar xf $1 ;;
+        *.tbz2) tar xjf $1 ;;
+        *.tgz) tar xzf $1 ;;
+        *.zip) unzip $1 ;;
+        *.Z) uncompress $1 ;;
+        *.7z) 7z x $1 ;;
+        *)
+            echo "'$1' cannot be extracted via ex()"
+            return 1
+            ;;
     esac
 }
 
@@ -65,65 +67,63 @@ alias windows10='vbox-ctl -S Windows10'
 
 alias pickcolor="colorpicker --short --one-shot 2> /dev/null | xclip -sel c "
 
-function nav(){
+function nav() {
     dir='.'
     while [[ $extc -ne 130 ]]; do
         cd $dir
         list="$(/bin/ls $@)"
-        for l in $list
-        do
+        for l in $list; do
             [[ -d $l ]] && dirlist="$dirlist $l" || flist="$l $flist"
         done
         [[ $dirlist == *'..'* ]] || dirlist=".. $dirlist"
         branch=$(__git_ps1)
-        header=$(printf "$(dirs)${branch:+$branch:} \n$flist")   
-        dir="$(echo  $dirlist | tr ' ' '\n' | fzf --no-sort --header="$header" --prompt='Search: ' --no-info)"
+        header=$(printf "$(dirs)${branch:+$branch:} \n$flist")
+        dir="$(echo $dirlist | tr ' ' '\n' | fzf --no-sort --header="$header" --prompt='Search: ' --no-info)"
         extc=$?
         unset dirlist list header flist branch
     done
     unset extc dir
 }
 
-function delete(){
-    files="$( /bin/ls -a | fzf -m | tr '\n' ' ' )"
+function delete() {
+    files="$(/bin/ls -a | fzf -m | tr '\n' ' ')"
     [[ $files == "" ]] && return
     rm $@ $files
 }
-function make-homework(){
-    if [ $# -eq 0 ]
-    then
+function make-homework() {
+    if [ $# -eq 0 ]; then
         echo "err: No arguments"
         return -1
     fi
     touch vclj2729_B$1_A{1..4}.tex
 }
 
-function ind(){
-    $1 &>>~/.app.log &disown
+function ind() {
+    $1 &>>~/.app.log &
+    disown
 }
 
-function rename-homework(){
+function rename-homework() {
     declare -i i=1
     for f in $(ls . | grep .$2); do
         echo $i
         mv -- "$f" "vclj2729_B$1_A$i.$2"
-        i=$((i+1))
+        i=$((i + 1))
     done
 }
 
-function fix-keybind(){
-    xkbcomp /home/gibi/.xkbmap $DISPLAY &> /home/gibi/.keybind.log
+function fix-keybind() {
+    xkbcomp /home/gibi/.xkbmap $DISPLAY &>/home/gibi/.keybind.log
     # gsettings set org.gnome.settings-daemon.plugins.keyboard active false
 }
 
-function clip (){
+function clip() {
     xclip -sel c <$1
 }
 
-function generate-ssh-github(){
-    
-    if ! test -f "${HOME}/.ssh/id_ed25519.pub"
-    then
+function generate-ssh-github() {
+
+    if ! test -f "${HOME}/.ssh/id_ed25519.pub"; then
         ssh-keygen -t ed25519 -C "24712554+Ghibranalj@users.noreply.github.com"
         ssh-add ~/.ssh/id_ed25519
     fi
@@ -131,15 +131,14 @@ function generate-ssh-github(){
     cat ~/.ssh/id_ed25519.pub
     clip ~/.ssh/id_ed25519.pub
     echo == copied to clipboard ==
-    
+
 }
 
-function mkcdir (){
+function mkcdir() {
     mkdir -p $1 && cd $1
 }
 
-if command -v exa &> /dev/null
-then
+if command -v exa &>/dev/null; then
     alias ls='exa -g --icons'
     alias ll='ls -alhF --git'
 else
@@ -155,63 +154,64 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
-if command -v cpg &> /dev/null
-then
+if command -v cpg &>/dev/null; then
     alias cp='cpg -g'
 fi
 
-if command -v mvg &> /dev/null
-then
+if command -v mvg &>/dev/null; then
     alias mv='mvg -g'
 fi
 
-if command -v ranger &> /dev/null
-then
+if command -v ranger &>/dev/null; then
     alias f=ranger
 fi
 
-if command -v go &> /dev/null
-then
+if command -v go &>/dev/null; then
     export GOPATH="$HOME/.go"
     export PATH=$PATH:$(go env GOPATH)/bin
 fi
 
-if command -v todo-cli &> /dev/null
-then
-    todo-cli check 2> /dev/null
-    if [ $? -eq 0 ] && [ -z ${TODO+x} ]
-    then
+if command -v todo-cli &>/dev/null; then
+    todo-cli check 2>/dev/null
+    if [ $? -eq 0 ] && [ -z ${TODO+x} ]; then
         todo-cli print
         export TODO="shown"
     fi
 fi
 function calc() { python -c "print($@)"; }
 
-function mkcpair(){
+function mkcpair() {
     touch $1.{c,h}
 }
 
-function check-network (){
-    echo -n Data Used: 
+function check-network() {
+    echo -n Data Used:
     netz-checker ghibranresearch@gmail.com X1KVF3CL
 }
 
-function dd-iso(){
+function dd-iso() {
     sudo dd bs=4M if=$1 of=$2 conv=fsync oflag=direct status=progress
 }
 
-
-function gitp(){
+function gitp() {
     git push origin $(git branch --show-current)
 }
 
-function code(){
-    emacsclient -a 'emacs-server' -n -c $@
-}
+# open emacs in the terminal
+alias emacst='emacsclient -c -t'
+alias codet=emacst
 
-alias emacs='code'
-alias vcode='/usr/bin/code'
 alias emacs-server='/usr/bin/emacs'
 alias restart-emacs='killall emacs ; emacs-server --daemon'
+function code() {
+    emacsclient -a 'emacs-server' -n -c $@
+}
+alias emacs='code'
+alias vcode='/usr/bin/code'
 
-[ -f /opt/asdf-vm/asdf.sh  ] && source /opt/asdf-vm/asdf.sh
+[ -f /opt/asdf-vm/asdf.sh ] && source /opt/asdf-vm/asdf.sh
+
+alias pas='pacman -Slq | fzf -m --preview ${QPAS} | xargs -ro sudo pacman -S'
+alias yas="yay -Slq | fzf -m --preview 'yay -Si {1}' | xargs -ro  yay -S"
+alias par='pacman -Qqe | fzf -m --preview ${QPAR} | xargs -ro sudo pacman -Rns'
+alias yar='yay -Qqe | fzf -m --preview ${QYAR} | xargs -ro  yay -Rns'

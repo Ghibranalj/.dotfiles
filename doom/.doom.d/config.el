@@ -109,18 +109,14 @@
       )
 
 (custom-set-faces!
-        '(treemacs-root-face :foreground "#F78C6C" )
-        '(doom-themes-treemacs-root-face :foreground "#F78C6C" )
+  '(treemacs-root-face :foreground "#F78C6C" )
+  '(doom-themes-treemacs-root-face :foreground "#F78C6C" )
   )
-
-; (custom-set-faces!
-  ;'(centaur-tabs-active-bar-face ((t ( :background "#F78C6C" )))
-   ;                              ))
 
 (setq highlight-indent-guides-method 'character)
 
-(defun copilot-tab ()
-  "Tab complete autopilot."
+;; accept completion from copilot and fallback to company
+(defun my-tab ()
   (interactive)
   (or (copilot-accept-completion)
       (company-indent-or-complete-common nil)))
@@ -130,11 +126,14 @@
   :bind (("C-TAB" . 'copilot-accept-completion-by-word)
          ("C-<tab>" . 'copilot-accept-completion-by-word)
          :map company-active-map
-         ("<tab>" . 'copilot-tab)
-         ("TAB" . 'copilot-tab)
+         ("<tab>" . 'my-tab)
+         ("TAB" . 'my-tab)
          :map company-mode-map
-         ("<tab>" . 'copilot-tab)
-         ("TAB" . 'copilot-tab)))
+         ("<tab>" . 'my-tab)
+         ("TAB" . 'my-tab)))
+
+(add-hook! prog-mode-hook 'copilot-mode)
+
 
 (after! company
   (setq +lsp-company-backends '(company-tabnine :separate company-capf company-yasnippet))
@@ -163,7 +162,7 @@
   '(minimap-font-face :height 12 :group 'minimap))
 
 (add-hook! window-selection-change-functions
-  'minimap-mode)
+           'minimap-mode)
 (map!
  :leader
  (:prefix ("b" . "buffer")
@@ -180,11 +179,10 @@
                                               (on-new-frame))))
   (on-new-frame))
 
+
 (add-hook! 'prog-mode-hook #'format-all-mode)
 (add-hook! 'prog-mode-hook #'highlight-indent-guides-mode)
 (super-save-mode +1)
-(minimap-mode 1)
+;; (minimap-mode 1)
 (beacon-mode 1)
-;; (awesome-tab-mode 1)
-
-                                        ;end of file
+(lsp-headerline-breadcrumb-mode)

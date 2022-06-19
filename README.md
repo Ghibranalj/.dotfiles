@@ -15,3 +15,9 @@ make optimus
 make udev
 
 ```
+
+## emacs
+
+``` bash
+make emacs
+```
