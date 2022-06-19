@@ -211,7 +211,7 @@ alias vcode='/usr/bin/code'
 
 [ -f /opt/asdf-vm/asdf.sh ] && source /opt/asdf-vm/asdf.sh
 
-alias pas='pacman -Slq | fzf -m --preview ${QPAS} | xargs -ro sudo pacman -S'
 alias yas="yay -Slq | fzf -m --preview 'yay -Si {1}' | xargs -ro  yay -S"
-alias par='pacman -Qqe | fzf -m --preview ${QPAR} | xargs -ro sudo pacman -Rns'
-alias yar='yay -Qqe | fzf -m --preview ${QYAR} | xargs -ro  yay -Rns'
+alias yar="yay -Qqe | fzf -m --preview 'yay -Si {1}' | xargs -ro  yay -Rns"
+
+[ -d $HOME/bin ] && export PATH=$PATH:$HOME/bin

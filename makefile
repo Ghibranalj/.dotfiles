@@ -1,4 +1,3 @@
-
 .PHONY: all exec conf optimus udev keybind emacs gesture stow
 
 all: exec conf emacs
@@ -36,4 +35,5 @@ emacs:
 gesture:
 	./gesture/exec.sh
 
-
+bin:
+	stow --adopt bin
