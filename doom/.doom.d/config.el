@@ -94,7 +94,8 @@
 
 (defun on-new-frame ()
   "This is executed when a new frame is created."
-  (+treemacs/toggle)
+  ;; (+treemacs/toggle)
+  (+neotree/open)
   ;; (tabify)
   ;;TODO add more
   )
@@ -145,11 +146,6 @@
   (setq magit-diff-refine-hunk 'all)
   )
 
-(map!
- :leader
- (:prefix ("t" . "toggle")
-  :desc "Toggle minimap" "m" #'minimap-mode))
-
 (setq
  ;; Configure minimap position
  minimap-window-location 'right ; Minimap on the right side
@@ -163,16 +159,34 @@
 
 (add-hook! window-selection-change-functions
            'minimap-mode)
+
+(defun +my/zen-toggle ()
+  "Toggle zen mode."
+  (interactive)
+  (+zen/toggle)
+  (neotree-toggle)
+  )
 (map!
  :leader
  (:prefix ("b" . "buffer")
-  :desc "Format buffer" "f" #'format-all-buffer))
+  :desc "Format buffer" "f" #'format-all-buffer)
+
+ (:prefix ("c" . "code")
+  :desc "Comment line" "c" #'evilnc-comment-or-uncomment-lines
+  :desc "Compile" "C" #'compile)
+
+ (:prefix ("o" . "open")
+  :desc "Open manpage" "m" #'man)
+
+ (:prefix ("t" . "toggle")
+  :desc "Toggle minimap" "m" #'minimap-mode
+  :desc "Toggle zen-mode" "z" #'+my/zen-toggle)
+ )
 
 (use-package! company-box
   :hook (company-mode . company-box-mode))
 
 ;; Running on daemon startup
-
 (if (daemonp)
     (add-hook 'after-make-frame-functions (lambda (frame)
                                             (with-selected-frame frame
@@ -182,6 +196,7 @@
 
 (add-hook! 'prog-mode-hook #'format-all-mode)
 (add-hook! 'prog-mode-hook #'highlight-indent-guides-mode)
+;; (add-hook 'dired-mode-hook 'treemacs-icons-dired-mode)
 (super-save-mode +1)
 ;; (minimap-mode 1)
 (beacon-mode 1)

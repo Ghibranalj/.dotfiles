@@ -16,13 +16,13 @@ if ! command -v yay &>/dev/null; then
 fi
 
 # needed by dotfiles
-yay -Sy neovim advcp exa xclip xbindkeys blueman bluetooth-autoconnect most noisetorch alacritty tabbed
+yay -Sy neovim advcpmv exa xclip xbindkeys blueman bluetooth-autoconnect most noisetorch alacritty tabbed
 
 # other apps
-yay -Sy google-chrome spotify discord whatsapp-for-linux visual-studio-code-bin albert
+yay -Sy google-chrome spotify discord whatsapp-for-linux albert
 
-# fonts
-yay -S nerd-fonts-complete
+# timehshift
+yay -Sy timehshift
 
 albert &>/dev/null &
 sudo systemctl enable bluetooth-autoconnect
@@ -34,3 +34,6 @@ function link() {
 
 link whatsapp-for-linux whatsapp
 link google-chrome-stable chrome
+
+# fonts
+yay -S nerd-fonts-complete

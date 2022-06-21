@@ -5,6 +5,9 @@ function start() {
 	disown
 }
 
+#important
+start xbindkeys
+
 start albert
 start discord
 start spotify

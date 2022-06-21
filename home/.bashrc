@@ -48,12 +48,11 @@ export LESS_TERMCAP_se=$'\e[0m'
 export LESS_TERMCAP_so=$'\e[01;33m'
 export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;4;31m'
-export PAGER="most"
+export MANPAGER='nvim +Man!'
 
 alias less=most
-
-export VISUAL='emacsclient -c -a 'nvim' -t'
-export EDITOR='emacsclient -c -a 'nvim' -t'
+export VISUAL="emacsclient -c -a 'nvim' -t"
+export EDITOR="emacsclient -c -a 'nvim' -t"
 
 function use-nvim() {
     EDITOR='emacsclient -c -t' "$@"
@@ -77,8 +76,8 @@ function nav() {
         done
         [[ $dirlist == *'..'* ]] || dirlist=".. $dirlist"
         branch=$(__git_ps1)
-        header=$(printf "$(dirs)${branch:+$branch:} \n$flist")
-        dir="$(echo $dirlist | tr ' ' '\n' | fzf --no-sort --header="$header" --prompt='Search: ' --no-info)"
+        # header=$(printf "$(dirs)${branch:+$branch:} \n$flist")
+        dir="$(echo $dirlist | tr ' ' '\n' | fzf --no-sort --preview="exa -g --icons --group-directories-first {}" --prompt='Search: ' --no-info)"
         extc=$?
         unset dirlist list header flist branch
     done
@@ -214,4 +213,5 @@ alias vcode='/usr/bin/code'
 alias yas="yay -Slq | fzf -m --preview 'yay -Si {1}' | xargs -ro  yay -S"
 alias yar="yay -Qqe | fzf -m --preview 'yay -Si {1}' | xargs -ro  yay -Rns"
 
-[ -d $HOME/bin ] && export PATH=$PATH:$HOME/bin
+[ -d $HOME/.bin ] && export PATH=$PATH:$HOME/.bin
+[ -d $HOME/.emacs.d/bin ] && export PATH=$PATH:$HOME/.emacs.d/bin

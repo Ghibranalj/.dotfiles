@@ -1,4 +1,431 @@
+[com/mattjakeman/ExtensionManager]
+last-used-version='0.3.1'
+
+[org/blueman/general]
+window-properties=[628, 517, 2450, 544]
+
+[org/blueman/plugins/powermanager]
+auto-power-on=@mb true
+
+[org/blueman/plugins/recentconns]
+recent-connections=[{'adapter': '8C:88:2B:40:31:68', 'address': 'F4:4E:FD:0B:4B:51', 'alias': 'Mifa_A10', 'icon': 'audio-headset', 'name': 'Audio and input profiles', 'uuid': '00000000-0000-0000-0000-000000000000', 'time': '1651782051.8431413'}, {'adapter': '8C:88:2B:40:31:68', 'address': '38:18:4C:E9:C2:22', 'alias': 'WH-1000XM3', 'icon': 'audio-headset', 'name': 'Audio and input profiles', 'uuid': '00000000-0000-0000-0000-000000000000', 'time': '1652276891.6325207'}]
+
+[org/cinnamon/desktop/keybindings/media-keys]
+next=['<Primary><Alt>bracketright']
+play=['XF86AudioPlay', '<Primary><Alt>BackSpace']
+previous=['<Primary><Alt>bracketleft']
+volume-down=['<Primary><Alt>minus']
+volume-up=['<Primary><Alt>equal']
+
+[org/gnome/Totem]
+active-plugins=['mpris', 'variable-rate', 'apple-trailers', 'recent', 'vimeo', 'save-file', 'autoload-subtitles', 'screenshot', 'movie-properties', 'rotation', 'open-directory', 'screensaver', 'skipto']
+subtitle-encoding='UTF-8'
+
+[org/gnome/baobab/ui]
+is-maximized=false
+window-size=(948, 1032)
+
+[org/gnome/cheese]
+burst-delay=1000
+camera='USB2.0 HD UVC WebCam'
+photo-x-resolution=1280
+photo-y-resolution=720
+video-x-resolution=1280
+video-y-resolution=720
+
+[org/gnome/control-center]
+last-panel='keyboard'
+window-state=(2560, 1080, false)
+
+[org/gnome/desktop/a11y]
+always-show-universal-access-status=false
+
+[org/gnome/desktop/a11y/applications]
+screen-keyboard-enabled=false
+
+[org/gnome/desktop/a11y/interface]
+high-contrast=false
+
+[org/gnome/desktop/app-folders]
+folder-children=['Utilities', 'YaST']
+
+[org/gnome/desktop/background]
+color-shading-type='solid'
+picture-options='zoom'
+picture-uri='file:///usr/share/backgrounds/gnome/blobs-l.svg'
+picture-uri-dark='file:///usr/share/backgrounds/gnome/blobs-d.svg'
+primary-color='#3465a4'
+secondary-color='#000000'
+
+[org/gnome/desktop/calendar]
+show-weekdate=false
+
+[org/gnome/desktop/input-sources]
+sources=[('xkb', 'us')]
+xkb-options=@as []
+
+[org/gnome/desktop/interface]
+clock-show-date=true
+clock-show-seconds=false
+color-scheme='prefer-dark'
+cursor-size=24
+cursor-theme='Adwaita'
+enable-animations=false
+enable-hot-corners=false
+font-antialiasing='grayscale'
+font-hinting='slight'
+gtk-theme='Orchis-orange-dark'
+icon-theme='Adwaita'
+toolkit-accessibility=false
+
+[org/gnome/desktop/media-handling]
+autorun-x-content-ignore=['x-content/unix-software', 'x-content/image-dcf', 'x-content/audio-player', 'x-content/video-dvd', 'x-content/audio-cdda']
+autorun-x-content-open-folder=@as []
+autorun-x-content-start-app=['x-content/ostree-repository']
+
+[org/gnome/desktop/notifications]
+application-children=['gnome-network-panel', 'spotify', 'discord', 'org-gnome-diskutility', 'google-chrome', 'obsidian', 'org-gnome-nautilus', 'steam', 'net-lutris-lutris', 'lsi-steam', 'org-gnome-extensions-desktop', 'org-gnome-terminal', 'gnome-power-panel', 'visual-studio-code', 'ldtk', 'org-gnome-totem', 'org-gnome-shell-extensions', 'org-gnome-screenshot', 'org-gnome-settings', 'com-mattjakeman-extensionmanager', 'org-gnome-baobab', 'org-gnome-eog', 'emacsclient', 'minecraft-launcher']
+show-banners=true
+
+[org/gnome/desktop/notifications/application/com-mattjakeman-extensionmanager]
+application-id='com.mattjakeman.ExtensionManager.desktop'
+
+[org/gnome/desktop/notifications/application/discord]
+application-id='discord.desktop'
+
+[org/gnome/desktop/notifications/application/emacsclient]
+application-id='emacsclient.desktop'
+
+[org/gnome/desktop/notifications/application/gnome-network-panel]
+application-id='gnome-network-panel.desktop'
+
+[org/gnome/desktop/notifications/application/gnome-power-panel]
+application-id='gnome-power-panel.desktop'
+
+[org/gnome/desktop/notifications/application/google-chrome]
+application-id='google-chrome.desktop'
+
+[org/gnome/desktop/notifications/application/ldtk]
+application-id='ldtk.desktop'
+
+[org/gnome/desktop/notifications/application/lsi-steam]
+application-id='lsi-steam.desktop'
+
+[org/gnome/desktop/notifications/application/minecraft-launcher]
+application-id='minecraft-launcher.desktop'
+
+[org/gnome/desktop/notifications/application/net-lutris-lutris]
+application-id='net.lutris.Lutris.desktop'
+
+[org/gnome/desktop/notifications/application/obsidian]
+application-id='obsidian.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-baobab]
+application-id='org.gnome.baobab.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-diskutility]
+application-id='org.gnome.DiskUtility.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-eog]
+application-id='org.gnome.eog.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-extensions-desktop]
+application-id='org.gnome.Extensions.desktop.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-nautilus]
+application-id='org.gnome.Nautilus.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-screenshot]
+application-id='org.gnome.Screenshot.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-settings]
+application-id='org.gnome.Settings.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-shell-extensions]
+application-id='org.gnome.Shell.Extensions.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-terminal]
+application-id='org.gnome.Terminal.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-totem]
+application-id='org.gnome.Totem.desktop'
+
+[org/gnome/desktop/notifications/application/spotify]
+application-id='spotify.desktop'
+
+[org/gnome/desktop/notifications/application/steam]
+application-id='steam.desktop'
+
+[org/gnome/desktop/notifications/application/visual-studio-code]
+application-id='visual-studio-code.desktop'
+
 [org/gnome/desktop/peripherals/mouse]
 accel-profile='flat'
 speed=0.014598540145985384
 
+[org/gnome/desktop/peripherals/touchpad]
+two-finger-scrolling-enabled=true
+
+[org/gnome/desktop/screensaver]
+color-shading-type='solid'
+picture-options='zoom'
+picture-uri='file:///usr/share/backgrounds/gnome/blobs-l.svg'
+primary-color='#3465a4'
+secondary-color='#000000'
+
+[org/gnome/desktop/search-providers]
+sort-order=['org.gnome.Contacts.desktop', 'org.gnome.Documents.desktop', 'org.gnome.Nautilus.desktop']
+
+[org/gnome/desktop/session]
+idle-delay=uint32 600
+
+[org/gnome/desktop/sound]
+allow-volume-above-100-percent=true
+
+[org/gnome/desktop/wm/keybindings]
+activate-window-menu=['<Control>Tab']
+close=['<Super>q', '<Alt>F4']
+maximize=@as []
+minimize=['<Super>comma']
+move-to-monitor-down=@as []
+move-to-monitor-left=@as []
+move-to-monitor-right=@as []
+move-to-monitor-up=@as []
+move-to-workspace-down=@as []
+move-to-workspace-up=@as []
+switch-to-workspace-down=['<Primary><Super>Down', '<Primary><Super>j']
+switch-to-workspace-left=['<Super>Page_Down']
+switch-to-workspace-right=['<Super>Page_Up']
+switch-to-workspace-up=['<Primary><Super>Up', '<Primary><Super>k']
+toggle-maximized=['<Super>m']
+unmaximize=@as []
+
+[org/gnome/desktop/wm/preferences]
+button-layout='appmenu:close'
+num-workspaces=6
+workspace-names=['Main', 'Music']
+
+[org/gnome/eog/view]
+background-color='rgb(0,0,0)'
+use-background-color=true
+
+[org/gnome/evolution-data-server]
+migrated=true
+network-monitor-gio-name=''
+
+[org/gnome/file-roller/dialogs/add]
+current-folder='file:///home/gibi'
+exclude-files=''
+exclude-folders=''
+include-files='*'
+no-symlinks=true
+selected-files=@as []
+update=false
+
+[org/gnome/file-roller/dialogs/extract]
+recreate-folders=true
+skip-newer=false
+
+[org/gnome/file-roller/file-selector]
+show-hidden=false
+sidebar-size=168
+window-size=(840, 787)
+
+[org/gnome/file-roller/listing]
+list-mode='as-folder'
+name-column-width=748
+show-path=false
+sort-method='name'
+sort-type='ascending'
+
+[org/gnome/file-roller/ui]
+sidebar-width=200
+window-height=1016
+window-width=1268
+
+[org/gnome/gnome-screenshot]
+delay=0
+include-pointer=false
+last-save-directory='file:///home/gibi/Pictures'
+
+[org/gnome/mutter]
+dynamic-workspaces=false
+edge-tiling=false
+overlay-key=''
+workspaces-only-on-primary=true
+
+[org/gnome/mutter/keybindings]
+toggle-tiled-left=@as []
+toggle-tiled-right=@as []
+
+[org/gnome/mutter/wayland/keybindings]
+restore-shortcuts=@as []
+
+[org/gnome/nautilus/preferences]
+default-folder-viewer='icon-view'
+search-filter-time-type='last_modified'
+search-view='list-view'
+
+[org/gnome/nautilus/window-state]
+initial-size=(1268, 1064)
+maximized=false
+
+[org/gnome/nm-applet/eap/4c920b31-854b-3fd9-9b8d-8001f2901e02]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/settings-daemon/plugins/color]
+night-light-enabled=false
+
+[org/gnome/settings-daemon/plugins/media-keys]
+custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']
+email=['<Super>e']
+home=['<Super>f']
+next=['<Primary><Alt>bracketright']
+play=['<Primary><Alt>BackSpace']
+previous=['<Primary><Alt>bracketleft']
+rotate-video-lock-static=@as []
+screensaver=['<Super>l']
+terminal=['<Super>t']
+volume-down=['<Primary><Alt>minus']
+volume-mute=['<Primary><Alt>0']
+volume-step=2
+volume-up=['<Primary><Alt>equal']
+www=['<Super>b']
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
+binding='<Control><Alt>t'
+command='/home/gibi/.bin/terminal'
+name='Terminal'
+
+[org/gnome/settings-daemon/plugins/power]
+power-button-action='suspend'
+sleep-inactive-ac-type='nothing'
+sleep-inactive-battery-type='nothing'
+
+[org/gnome/shell]
+disable-extension-version-validation=true
+disable-user-extensions=false
+disabled-extensions=['audio-output-switcher@anduchs', 'tiling-assistant@leleat-on-github', 'window-list@gnome-shell-extensions.gcampax.github.com', 'windowsNavigator@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'fildemGMenu@gonza.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'wsmatrix@martin.zurowietz.de', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'horizontal-workspace-indicator@tty2.io']
+enabled-extensions=['user-theme@gnome-shell-extensions.gcampax.github.com', 'caffeine@patapon.info', 'x11gestures@joseexposito.github.io', 'gsconnect@andyholmes.github.io', 'Hide_Activities@shay.shayel.org', 'sound-output-device-chooser@kgshank.net', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'screenshot-window-sizer@gnome-shell-extensions.gcampax.github.com', 'pop-shell@system76.com', 'blur-my-shell@aunetx', 'RemoveAppMenu@Dragon8oy.com', 'improved-workspace-indicator@michaelaquilina.github.io', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com']
+favorite-apps=@as []
+welcome-dialog-last-shown-version='42.0'
+
+[org/gnome/shell/app-switcher]
+current-workspace-only=true
+
+[org/gnome/shell/extensions/auto-move-windows]
+application-list=['spotify.desktop:2', 'noisetorch.desktop:2']
+
+[org/gnome/shell/extensions/blur-my-shell]
+brightness=0.56000000000000005
+sigma=65
+
+[org/gnome/shell/extensions/caffeine]
+user-enabled=true
+
+[org/gnome/shell/extensions/fildem-global-menu]
+hide-app-menu=true
+show-only-when-hover=true
+
+[org/gnome/shell/extensions/gsconnect]
+devices=@as []
+id='46f91f9f-e797-42c2-8036-8d1c36c389d0'
+name='CreeprTUF'
+
+[org/gnome/shell/extensions/gsconnect/device/ce39afbb0c9329a1]
+incoming-capabilities=['kdeconnect.battery', 'kdeconnect.battery.request', 'kdeconnect.bigscreen.stt', 'kdeconnect.clipboard', 'kdeconnect.clipboard.connect', 'kdeconnect.connectivity_report.request', 'kdeconnect.contacts.request_all_uids_timestamps', 'kdeconnect.contacts.request_vcards_by_uid', 'kdeconnect.findmyphone.request', 'kdeconnect.mousepad.keyboardstate', 'kdeconnect.mousepad.request', 'kdeconnect.mpris', 'kdeconnect.mpris.request', 'kdeconnect.notification', 'kdeconnect.notification.action', 'kdeconnect.notification.reply', 'kdeconnect.notification.request', 'kdeconnect.photo.request', 'kdeconnect.ping', 'kdeconnect.runcommand', 'kdeconnect.sftp.request', 'kdeconnect.share.request', 'kdeconnect.share.request.update', 'kdeconnect.sms.request', 'kdeconnect.sms.request_attachment', 'kdeconnect.sms.request_conversation', 'kdeconnect.sms.request_conversations', 'kdeconnect.systemvolume', 'kdeconnect.telephony.request', 'kdeconnect.telephony.request_mute']
+last-connection='lan://192.168.154.93:1716'
+name='CreeprRedmi'
+outgoing-capabilities=['kdeconnect.battery', 'kdeconnect.battery.request', 'kdeconnect.bigscreen.stt', 'kdeconnect.clipboard', 'kdeconnect.clipboard.connect', 'kdeconnect.connectivity_report', 'kdeconnect.contacts.response_uids_timestamps', 'kdeconnect.contacts.response_vcards', 'kdeconnect.findmyphone.request', 'kdeconnect.mousepad.echo', 'kdeconnect.mousepad.keyboardstate', 'kdeconnect.mousepad.request', 'kdeconnect.mpris', 'kdeconnect.mpris.request', 'kdeconnect.notification', 'kdeconnect.notification.request', 'kdeconnect.photo', 'kdeconnect.ping', 'kdeconnect.presenter', 'kdeconnect.runcommand.request', 'kdeconnect.sftp', 'kdeconnect.share.request', 'kdeconnect.sms.attachment_file', 'kdeconnect.sms.messages', 'kdeconnect.systemvolume.request', 'kdeconnect.telephony']
+supported-plugins=['battery', 'clipboard', 'connectivity_report', 'contacts', 'findmyphone', 'mousepad', 'mpris', 'notification', 'photo', 'ping', 'presenter', 'runcommand', 'sftp', 'share', 'sms', 'systemvolume', 'telephony']
+type='phone'
+
+[org/gnome/shell/extensions/gsconnect/preferences]
+window-maximized=false
+window-size=(640, 440)
+
+[org/gnome/shell/extensions/improved-workspace-indicator]
+change-on-click=true
+panel-position='left'
+skip-taskbar-mode=true
+
+[org/gnome/shell/extensions/pop-shell]
+activate-launcher=['<Super>space']
+active-hint=false
+focus-right=@as []
+gap-inner=uint32 2
+gap-outer=uint32 2
+hint-color-rgba='rgb(133,16,31)'
+mouse-cursor-follows-active-window=false
+show-title=false
+smart-gaps=true
+tile-by-default=true
+
+[org/gnome/shell/extensions/sound-output-device-chooser]
+show-output-devices=true
+
+[org/gnome/shell/extensions/user-theme]
+name=''
+
+[org/gnome/shell/extensions/window-list]
+display-all-workspaces=false
+show-on-all-monitors=false
+
+[org/gnome/shell/extensions/wsmatrix]
+multi-monitor=false
+num-columns=2
+show-overview-grid=false
+
+[org/gnome/shell/keybindings]
+toggle-message-tray=['<Super>v']
+toggle-overview=@as []
+
+[org/gnome/shell/world-clocks]
+locations=@av []
+
+[org/gnome/software]
+check-timestamp=int64 1655724589
+first-run=false
+
+[org/gnome/tweaks]
+show-extensions-notice=false
+
+[org/gtk/gtk4/settings/file-chooser]
+date-format='regular'
+location-mode='path-bar'
+show-hidden=false
+show-size-column=true
+show-type-column=true
+sidebar-width=170
+sort-column='name'
+sort-directories-first=false
+sort-order='ascending'
+type-format='category'
+window-size=(1920, 1048)
+
+[org/gtk/settings/color-chooser]
+custom-colors=[(0.52156862745098043, 0.062745098039215685, 0.1215686274509806, 1.0), (0.98431372549019602, 0.72156862745098038, 0.42352941176470588, 1.0), (1.0, 0.0, 0.0, 1.0)]
+selected-color=(true, 0.52156862745098043, 0.062745098039215685, 0.1215686274509806, 1.0)
+
+[org/gtk/settings/file-chooser]
+date-format='regular'
+location-mode='path-bar'
+show-hidden=true
+show-size-column=true
+show-type-column=true
+sidebar-width=157
+sort-column='name'
+sort-directories-first=false
+sort-order='ascending'
+type-format='category'
+window-position=(358, 81)
+window-size=(1203, 902)
+
+[org/tuf/manager]
+fan-mode=2
+notifications=true
+restore=true
+
+[system/proxy]
+mode='none'

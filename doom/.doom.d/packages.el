@@ -102,4 +102,5 @@
                  :repo "DarthFennec/highlight-indent-guides"
                  :files ("*.el")))
 
+;; (package! all-the-icons-dired )
 ;;end of file
