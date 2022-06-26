@@ -18,6 +18,7 @@ stow:
 	stow --adopt home
 	stow --adopt nvim
 	stow --adopt alacritty
+	stow --adopt rofi
 
 optimus: 
 	./exec/gpu-nightmare.sh

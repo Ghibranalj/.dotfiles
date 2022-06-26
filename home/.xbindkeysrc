@@ -43,7 +43,7 @@ keystate_capslock = enable
 "blueman-manager"
     m:0x1c + c:56
     # Control+Alt+Mod2 + b
-"chrome"
+"$HOME/.bin/calculator.sh"
     m:0x1c + c:54
     # Control+Alt+Mod2 + c
 "pavucontrol -t 3"
@@ -61,3 +61,12 @@ keystate_capslock = enable
 "rofi -show drun"
     m:0xc + c:65
     Control+Alt + space
+"$HOME/.bin/shutdown.sh"
+    m:0xc + c:119
+    Control+Alt + Delete
+"rofi -show emoji -modi emoji"
+    m:0xc + c:26
+    Control+Alt + e
+"rofi -show window"
+    m:0x8 + c:23
+    Alt + Tab

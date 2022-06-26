@@ -1,8 +1,18 @@
+[ca/desrt/dconf-editor]
+saved-pathbar-path='/org/gnome/desktop/wm/keybindings/switch-applications'
+saved-view='/org/gnome/desktop/wm/keybindings/switch-applications'
+window-height=1016
+window-is-maximized=false
+window-width=630
+
 [com/mattjakeman/ExtensionManager]
 last-used-version='0.3.1'
 
+[desktop/ibus/panel/emoji]
+favorites=['R', '≈']
+
 [org/blueman/general]
-window-properties=[628, 517, 2450, 544]
+window-properties=[586, 1032, 1572, 40]
 
 [org/blueman/plugins/powermanager]
 auto-power-on=@mb true
@@ -23,7 +33,19 @@ subtitle-encoding='UTF-8'
 
 [org/gnome/baobab/ui]
 is-maximized=false
-window-size=(948, 1032)
+window-size=(1268, 1064)
+
+[org/gnome/boxes]
+first-run=false
+view='icon-view'
+window-maximized=false
+window-position=[3842, 8]
+window-size=[630, 1064]
+
+[org/gnome/calendar]
+active-view='month'
+window-maximized=false
+window-size=(1268, 1064)
 
 [org/gnome/cheese]
 burst-delay=1000
@@ -84,7 +106,7 @@ autorun-x-content-open-folder=@as []
 autorun-x-content-start-app=['x-content/ostree-repository']
 
 [org/gnome/desktop/notifications]
-application-children=['gnome-network-panel', 'spotify', 'discord', 'org-gnome-diskutility', 'google-chrome', 'obsidian', 'org-gnome-nautilus', 'steam', 'net-lutris-lutris', 'lsi-steam', 'org-gnome-extensions-desktop', 'org-gnome-terminal', 'gnome-power-panel', 'visual-studio-code', 'ldtk', 'org-gnome-totem', 'org-gnome-shell-extensions', 'org-gnome-screenshot', 'org-gnome-settings', 'com-mattjakeman-extensionmanager', 'org-gnome-baobab', 'org-gnome-eog', 'emacsclient', 'minecraft-launcher']
+application-children=['gnome-network-panel', 'spotify', 'discord', 'org-gnome-diskutility', 'google-chrome', 'obsidian', 'org-gnome-nautilus', 'steam', 'net-lutris-lutris', 'lsi-steam', 'org-gnome-extensions-desktop', 'org-gnome-terminal', 'gnome-power-panel', 'visual-studio-code', 'ldtk', 'org-gnome-totem', 'org-gnome-shell-extensions', 'org-gnome-screenshot', 'org-gnome-settings', 'com-mattjakeman-extensionmanager', 'org-gnome-baobab', 'org-gnome-eog', 'emacsclient', 'minecraft-launcher', 'firefox']
 show-banners=true
 
 [org/gnome/desktop/notifications/application/com-mattjakeman-extensionmanager]
@@ -95,6 +117,9 @@ application-id='discord.desktop'
 
 [org/gnome/desktop/notifications/application/emacsclient]
 application-id='emacsclient.desktop'
+
+[org/gnome/desktop/notifications/application/firefox]
+application-id='firefox.desktop'
 
 [org/gnome/desktop/notifications/application/gnome-network-panel]
 application-id='gnome-network-panel.desktop'
@@ -193,6 +218,7 @@ move-to-monitor-right=@as []
 move-to-monitor-up=@as []
 move-to-workspace-down=@as []
 move-to-workspace-up=@as []
+switch-applications=@as []
 switch-to-workspace-down=['<Primary><Super>Down', '<Primary><Super>j']
 switch-to-workspace-left=['<Super>Page_Down']
 switch-to-workspace-right=['<Super>Page_Up']
@@ -241,7 +267,7 @@ sort-type='ascending'
 [org/gnome/file-roller/ui]
 sidebar-width=200
 window-height=1016
-window-width=1268
+window-width=568
 
 [org/gnome/gnome-screenshot]
 delay=0
@@ -267,7 +293,7 @@ search-filter-time-type='last_modified'
 search-view='list-view'
 
 [org/gnome/nautilus/window-state]
-initial-size=(1268, 1064)
+initial-size=(948, 512)
 maximized=false
 
 [org/gnome/nm-applet/eap/4c920b31-854b-3fd9-9b8d-8001f2901e02]
@@ -281,11 +307,12 @@ night-light-enabled=false
 custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']
 email=['<Super>e']
 home=['<Super>f']
+logout=['<Shift><Control><Alt>Delete']
 next=['<Primary><Alt>bracketright']
 play=['<Primary><Alt>BackSpace']
 previous=['<Primary><Alt>bracketleft']
 rotate-video-lock-static=@as []
-screensaver=['<Super>l']
+screensaver=@as []
 terminal=['<Super>t']
 volume-down=['<Primary><Alt>minus']
 volume-mute=['<Primary><Alt>0']
@@ -351,9 +378,9 @@ panel-position='left'
 skip-taskbar-mode=true
 
 [org/gnome/shell/extensions/pop-shell]
-activate-launcher=['<Super>space']
+activate-launcher=['<Control>Page_Up']
 active-hint=false
-focus-right=@as []
+focus-right=['<Super>l']
 gap-inner=uint32 2
 gap-outer=uint32 2
 hint-color-rgba='rgb(133,16,31)'
@@ -385,7 +412,7 @@ toggle-overview=@as []
 locations=@av []
 
 [org/gnome/software]
-check-timestamp=int64 1655724589
+check-timestamp=int64 1656236254
 first-run=false
 
 [org/gnome/tweaks]
@@ -411,7 +438,7 @@ selected-color=(true, 0.52156862745098043, 0.062745098039215685, 0.1215686274509
 [org/gtk/settings/file-chooser]
 date-format='regular'
 location-mode='path-bar'
-show-hidden=true
+show-hidden=false
 show-size-column=true
 show-type-column=true
 sidebar-width=157
@@ -419,7 +446,7 @@ sort-column='name'
 sort-directories-first=false
 sort-order='ascending'
 type-format='category'
-window-position=(358, 81)
+window-position=(3221, 65)
 window-size=(1203, 902)
 
 [org/tuf/manager]
