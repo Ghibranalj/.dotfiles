@@ -49,34 +49,28 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
                                         ;(unpin! t)
 
-(package! copilot
-  :recipe (:host github
-           :repo "zerolfx/copilot.el"
-           :files ("*.el" "dist")))
-
 (package! company-tabnine
-  :recipe (:host github :repo "TommyX12/company-tabnine" :files ("*.el" "dist")))
+  :recipe (:host github :repo "TommyX12/company-tabnine"))
 
 (package! minimap :recipe (:host github
                            :repo "dengste/minimap"))
 
-;;(package! emacs-format-all-the-code
-;;  :recipe (
-;;           :host github
-;;           :repo "lassik/emacs-format-all-the-code"
-;;            :files ("*.el")))
+(package! copilot
+  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
+
+(package! emacs-format-all-the-code
+  :recipe (
+           :host github
+           :repo "lassik/emacs-format-all-the-code"
+           :files ("*.el")))
 
 (package! company-box
   :recipe (
            :host github
            :repo "sebastiencs/company-box"
            :files ("*.el" )))
-(package! emmet-mode
-  :recipe (
-           :host github
-           :repo "smihica/emmet-mode"
-           :files ("*.el" "tools" "conf" "src")))
 
+(package! emmet-mode)
 
 (package! super-save
   :recipe (
@@ -96,11 +90,16 @@
            :repo "emacsorphanage/yascroll"
            :files ("*.el")))
 
-(package! highlight-indent-guides
-        :recipe (
-                 :host github
-                 :repo "DarthFennec/highlight-indent-guides"
-                 :files ("*.el")))
+;; (package! highlight-indent-guides
+;; :recipe (
+;; :host github
+;; :repo "DarthFennec/highlight-indent-guides"
+;; :files ("*.el")))
 
 ;; (package! all-the-icons-dired )
+
+(package! inheritenv)
+(package! language-id)
+
+;; web dev stuff
 ;;end of file

@@ -8,7 +8,7 @@ function start() {
 #important
 start xbindkeys
 
-start albert
+# start albert
 start discord
 start spotify
 # start noisetorch

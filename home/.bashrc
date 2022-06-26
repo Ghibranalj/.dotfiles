@@ -49,14 +49,11 @@ export LESS_TERMCAP_so=$'\e[01;33m'
 export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;4;31m'
 export MANPAGER='nvim +Man!'
+# export MANPAGER='emacspipe'
 
 alias less=most
 export VISUAL="emacsclient -c -a 'nvim' -t"
 export EDITOR="emacsclient -c -a 'nvim' -t"
-
-function use-nvim() {
-    EDITOR='emacsclient -c -t' "$@"
-}
 
 alias grep='grep --color=auto'
 
@@ -69,18 +66,18 @@ alias pickcolor="colorpicker --short --one-shot 2> /dev/null | xclip -sel c "
 function nav() {
     dir='.'
     while [[ $extc -ne 130 ]]; do
-        cd $dir
-        list="$(/bin/ls $@)"
+        list="$(/bin/ls $dir)"
         for l in $list; do
-            [[ -d $l ]] && dirlist="$dirlist $l" || flist="$l $flist"
+            [[ -d $dir/$l ]] && dirlist="$dirlist $l"
         done
         [[ $dirlist == *'..'* ]] || dirlist=".. $dirlist"
-        branch=$(__git_ps1)
-        # header=$(printf "$(dirs)${branch:+$branch:} \n$flist")
-        dir="$(echo $dirlist | tr ' ' '\n' | fzf --no-sort --preview="exa -g --icons --group-directories-first {}" --prompt='Search: ' --no-info)"
+        [[ -d "${dir}/.git" ]] && branch="($(cd "$dir"; git  branch | grep '^\*' | cut -d' ' -f2))" || branch=''
+        d="$(echo $dirlist | tr ' ' '\n' | fzf --no-sort --preview="exa -g --icons --group-directories-first $dir/{}" --prompt="Search $branch: " --no-info)"
         extc=$?
+        dir=$dir/$d
         unset dirlist list header flist branch
     done
+    cd $dir
     unset extc dir
 }
 

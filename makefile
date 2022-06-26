@@ -1,4 +1,4 @@
-.PHONY: all exec conf optimus udev keybind emacs gesture stow
+.PHONY: all exec conf optimus udev keybind emacs gesture stow sync
 
 all: exec conf emacs
 

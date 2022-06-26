@@ -94,10 +94,8 @@
 
 (defun on-new-frame ()
   "This is executed when a new frame is created."
-  ;; (+treemacs/toggle)
-  (+neotree/open)
-  ;; (tabify)
-  ;;TODO add more
+  (+treemacs/toggle)
+  ;; (+neotree/open)
   )
 
 ;; packages config
@@ -114,10 +112,10 @@
   '(doom-themes-treemacs-root-face :foreground "#F78C6C" )
   )
 
-(setq highlight-indent-guides-method 'character)
 
 ;; accept completion from copilot and fallback to company
-(defun my-tab ()
+(defun +copilot/tab ()
+  "Copilot completion."
   (interactive)
   (or (copilot-accept-completion)
       (company-indent-or-complete-common nil)))
@@ -127,17 +125,22 @@
   :bind (("C-TAB" . 'copilot-accept-completion-by-word)
          ("C-<tab>" . 'copilot-accept-completion-by-word)
          :map company-active-map
-         ("<tab>" . 'my-tab)
-         ("TAB" . 'my-tab)
+         ("<tab>" . '+copilot/tab)
+         ("TAB" . '+copilot/tab)
          :map company-mode-map
-         ("<tab>" . 'my-tab)
-         ("TAB" . 'my-tab)))
+         ("<tab>" . '+copilot/tab)
+         ("TAB" . '+copilot/tab)))
 
-(add-hook! prog-mode-hook 'copilot-mode)
 
+(use-package! web-mode
+  :mode (("\\.js\\'" . web-mode)
+         ("\\.jsx\\'" .  web-mode)
+         ("\\.ts\\'" . web-mode)
+         ("\\.tsx\\'" . web-mode)
+         ("\\.html\\'" . web-mode))
+  :commands web-mode)
 
 (after! company
-  (setq +lsp-company-backends '(company-tabnine :separate company-capf company-yasnippet))
   (setq company-show-quick-access t)
   (setq company-idle-delay 0)
   )
@@ -151,14 +154,11 @@
  minimap-window-location 'right ; Minimap on the right side
  minimap-width-fraction 0.0 ; slightly smaller minimap
  minimap-minimum-width 10 ; also slightly smaller minimap
-                                        ; seems to work better
  minimap-enlarge-certain-faces nil ; enlarge breaks BlockFont
  )
 (custom-set-faces!
   '(minimap-font-face :height 12 :group 'minimap))
 
-(add-hook! window-selection-change-functions
-           'minimap-mode)
 
 (defun +my/zen-toggle ()
   "Toggle zen mode."
@@ -173,7 +173,9 @@
 
  (:prefix ("c" . "code")
   :desc "Comment line" "c" #'evilnc-comment-or-uncomment-lines
-  :desc "Compile" "C" #'compile)
+  :desc "Compile" "C" #'compile
+  :desc "Format buffer" "f" #'format-all-buffer)
+
 
  (:prefix ("o" . "open")
   :desc "Open manpage" "m" #'man)
@@ -195,9 +197,8 @@
 
 
 (add-hook! 'prog-mode-hook #'format-all-mode)
-(add-hook! 'prog-mode-hook #'highlight-indent-guides-mode)
-;; (add-hook 'dired-mode-hook 'treemacs-icons-dired-mode)
+;; (add-hook! 'prog-mode-hook #'highlight-indent-guides-mode)
+(add-hook! 'prog-mode-hook #'lsp-headerline-breadcrumb-mode)
 (super-save-mode +1)
 ;; (minimap-mode 1)
 (beacon-mode 1)
-(lsp-headerline-breadcrumb-mode)
