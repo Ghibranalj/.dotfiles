@@ -1,6 +1,6 @@
 .PHONY: all exec conf optimus udev keybind emacs gesture stow sync dconf-dump
 
-all: exec conf emacs
+all: stow exec conf emacs
 
 exec:
 	./exec/app-arch.sh
