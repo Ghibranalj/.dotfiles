@@ -16,7 +16,8 @@ if ! command -v yay &>/dev/null; then
 fi
 
 # needed by dotfiles
-yay -Sy neovim advcpmv exa xclip xbindkeys blueman bluetooth-autoconnect most noisetorch alacritty tabbed
+yay -Sy neovim advcpmv exa xclip xbindkeys blueman bluetooth-autoconnect \
+	most noisetorch alacritty tabbed rofi rofi-emoji rofi-calc
 
 # other apps
 yay -Sy google-chrome spotify discord whatsapp-for-linux albert

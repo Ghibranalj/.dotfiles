@@ -42,7 +42,7 @@ window {
     background-color: @background;
     border:           1;
     padding:          5;
-    height: 100%;
+    height: 80%;
     width: 25em;
     location: west;
     anchor: west;
@@ -61,7 +61,6 @@ textbox {
     padding: 8px;
 }
 listview {
-    lines: 6;
     columns: 1;
     fixed-height: 0;
     border:           2px dash 0px 0px ;

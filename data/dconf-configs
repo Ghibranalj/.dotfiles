@@ -57,7 +57,7 @@ video-y-resolution=720
 
 [org/gnome/control-center]
 last-panel='keyboard'
-window-state=(2560, 1080, false)
+window-state=(1268, 1064, false)
 
 [org/gnome/desktop/a11y]
 always-show-universal-access-status=false
@@ -349,7 +349,7 @@ brightness=0.56000000000000005
 sigma=65
 
 [org/gnome/shell/extensions/caffeine]
-user-enabled=true
+user-enabled=false
 
 [org/gnome/shell/extensions/fildem-global-menu]
 hide-app-menu=true
@@ -412,7 +412,7 @@ toggle-overview=@as []
 locations=@av []
 
 [org/gnome/software]
-check-timestamp=int64 1656236254
+check-timestamp=int64 1656326596
 first-run=false
 
 [org/gnome/tweaks]

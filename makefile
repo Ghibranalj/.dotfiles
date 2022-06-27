@@ -1,4 +1,4 @@
-.PHONY: all exec conf optimus udev keybind emacs gesture stow sync
+.PHONY: all exec conf optimus udev keybind emacs gesture stow sync dconf-dump
 
 all: exec conf emacs
 
@@ -38,3 +38,6 @@ gesture:
 
 bin:
 	stow --adopt bin
+
+dconf-dump:
+	dconf dump / > data/dconf-configs
