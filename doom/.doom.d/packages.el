@@ -58,11 +58,11 @@
 (package! copilot
   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
 
-(package! emacs-format-all-the-code
-  :recipe (
-           :host github
-           :repo "lassik/emacs-format-all-the-code"
-           :files ("*.el")))
+;; (package! emacs-format-all-the-code
+;;   :recipe (
+;;            :host github
+;;            :repo "lassik/emacs-format-all-the-code"
+;;            :files ("*.el")))
 
 (package! company-box
   :recipe (

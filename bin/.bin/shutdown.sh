@@ -3,7 +3,7 @@
 # Options for powermenu
 lock="    Lock"
 logout="    Logout"
-shutdown="    Shutdown"
+shutdown="    Poweroff"
 reboot="    Reboot"
 sleep="   Sleep"
 #hibernate="💤   Hibernate"

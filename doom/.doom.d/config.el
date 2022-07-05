@@ -94,7 +94,7 @@
 
 (defun on-new-frame ()
   "This is executed when a new frame is created."
-  (+treemacs/toggle)
+  ;; (+treemacs/toggle)
   ;; (+neotree/open)
   )
 
@@ -169,13 +169,13 @@
 (map!
  :leader
  (:prefix ("b" . "buffer")
-  :desc "Format buffer" "f" #'format-all-buffer)
+  :desc "Format buffer" "f" #'+format/buffer)
 
  (:prefix ("c" . "code")
   :desc "Comment line" "c" #'evilnc-comment-or-uncomment-lines
   :desc "Compile" "C" #'compile
-  :desc "Format buffer" "f" #'format-all-buffer)
-
+  :desc "Format buffer" "f" #'+format/buffer
+  )
 
  (:prefix ("o" . "open")
   :desc "Open manpage" "m" #'man)
@@ -195,10 +195,15 @@
                                               (on-new-frame))))
   (on-new-frame))
 
-
 (add-hook! 'prog-mode-hook #'format-all-mode)
 ;; (add-hook! 'prog-mode-hook #'highlight-indent-guides-mode)
 (add-hook! 'prog-mode-hook #'lsp-headerline-breadcrumb-mode)
 (super-save-mode +1)
 ;; (minimap-mode 1)
 (beacon-mode 1)
+
+(remove-hook! 'before-save-hook 'format-all--buffer-from-hook)
+
+
+
+;;EOF

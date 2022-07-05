@@ -18,8 +18,8 @@ ex() {
         return 1
     fi
     case $1 in
-        *.tar.bz2) tar xjf $1 ;;
-        *.tar.gz) tar xzf $1 ;;
+        *.tar.bz2) tar xjvf $1 ;;
+        *.tar.gz) tar xzvf $1 ;;
         *.bz2) bunzip2 $1 ;;
         *.rar) unrar ex $1 ;;
         *.gz) gunzip $1 ;;
@@ -36,7 +36,7 @@ ex() {
     esac
 }
 
-source /usr/share/git/completion/git-prompt.sh
+[[ -f /usr/share/git/completion/git-prompt.sh ]] && source /usr/share/git/completion/git-prompt.sh
 
 export PS1="\[\033[38;5;6m\]\u\[\033[38;5;8m\]@\[\033[38;5;10m\]\h\[\033[38;5;8m\]-\[\033[38;5;6m\][\[\033[38;5;9m\]\W\[\033[38;5;7m\]\$(__git_ps1 ' (%s) ')\[\033[38;5;6m\]]\[\033[38;5;8m\]\\$ \[\$(tput  sgr0)\]"
 
@@ -71,7 +71,10 @@ function nav() {
             [[ -d $dir/$l ]] && dirlist="$dirlist $l"
         done
         [[ $dirlist == *'..'* ]] || dirlist=".. $dirlist"
-        [[ -d "${dir}/.git" ]] && branch="($(cd "$dir"; git  branch | grep '^\*' | cut -d' ' -f2))" || branch=''
+        [[ -d "${dir}/.git" ]] && branch="($(
+            cd "$dir"
+            git branch | grep '^\*' | cut -d' ' -f2
+        ))" || branch=''
         d="$(echo $dirlist | tr ' ' '\n' | fzf --no-sort --preview="exa -g --icons --group-directories-first $dir/{}" --prompt="Search $branch: " --no-info)"
         extc=$?
         dir=$dir/$d
@@ -209,6 +212,7 @@ alias vcode='/usr/bin/code'
 
 alias yas="yay -Slq | fzf -m --preview 'yay -Si {1}' | xargs -ro  yay -S"
 alias yar="yay -Qqe | fzf -m --preview 'yay -Si {1}' | xargs -ro  yay -Rns"
+alias yayu="yay -Qu | fzf -m --preview 'yay -Si {1}' | cut -d' ' -f1 | xargs -ro  yay -Syy"
 
 [ -d $HOME/.bin ] && export PATH=$PATH:$HOME/.bin
 [ -d $HOME/.emacs.d/bin ] && export PATH=$PATH:$HOME/.emacs.d/bin
