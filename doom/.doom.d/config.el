@@ -112,6 +112,7 @@
  (:prefix ("o" . "open")
   :desc "Open manpage" "m" #'man
   :desc "Open browser" "w" #'eaf-open-browser
+  :desc "Open google" "g" #'+my/google-search
   )
 
  (:prefix ("t" . "toggle")
@@ -129,6 +130,17 @@
 (add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
 (require 'eaf)
 (require 'eaf-browser)
+
+(defun +my/google-search ()
+  "Search Google inside eaf-browser."
+  (interactive)
+  (eaf-open-browser
+   (concat
+    "https://www.google.com/search?q="
+    (url-hexify-string (if mark-active
+                           (buffer-substring (region-beginning) (region-end))
+                         (read-string "Search Google for: "))))))
+
 
 (beacon-mode 1)
 ;;EOF
