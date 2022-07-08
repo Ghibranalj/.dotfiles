@@ -104,7 +104,7 @@
   :desc "Format buffer" "f" #'+format/buffer)
 
  (:prefix ("c" . "code")
-  :desc "Comment line" "c" #'evilnc-comment-or-uncomment-lines
+  :desc "Comment line" "c" #'+my/comment-or-uncomment
   :desc "Compile" "C" #'compile
   :desc "Format buffer" "f" #'+format/buffer
   )
@@ -141,6 +141,13 @@
                            (buffer-substring (region-beginning) (region-end))
                          (read-string "Search Google for: "))))))
 
+
+(defun +my/comment-or-uncomment()
+  "Comment or uncomment the current line or region."
+  (interactive)
+  (if mark-active
+      (comment-or-uncomment-region (region-beginning) (region-end))
+    (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
 
 (beacon-mode 1)
 ;;EOF
