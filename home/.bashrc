@@ -65,23 +65,27 @@ alias pickcolor="colorpicker --short --one-shot 2> /dev/null | xclip -sel c "
 
 function nav() {
     dir='.'
+    flags=$@
     while [[ $extc -ne 130 ]]; do
-        list="$(/bin/ls $dir)"
+        list="$(/bin/exa $flags $dir*/)"
         for l in $list; do
             [[ -d $dir/$l ]] && dirlist="$dirlist $l"
         done
         [[ $dirlist == *'..'* ]] || dirlist=".. $dirlist"
+
+        branch=''
         [[ -d "${dir}/.git" ]] && branch="($(
             cd "$dir"
             git branch | grep '^\*' | cut -d' ' -f2
-        ))" || branch=''
+        ))"
+
         d="$(echo $dirlist | tr ' ' '\n' | fzf --no-sort --preview="exa -g --icons --group-directories-first $dir/{}" --prompt="Search $branch: " --no-info)"
         extc=$?
         dir=$dir/$d
         unset dirlist list header flist branch
     done
     cd $dir
-    unset extc dir
+    unset extc dir flags
 }
 
 function delete() {
@@ -201,7 +205,7 @@ alias emacst='emacsclient -c -t'
 alias codet=emacst
 
 alias emacs-server='/usr/bin/emacs'
-alias restart-emacs='killall emacs ; emacs-server --daemon'
+alias restart-emacs='killall emacs ; emacs-server --daemon --debug-init'
 function code() {
     emacsclient -a 'emacs-server' -n -c $@
 }
