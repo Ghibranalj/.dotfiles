@@ -58,11 +58,6 @@
 (package! copilot
   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
 
-;; (package! emacs-format-all-the-code
-;;   :recipe (
-;;            :host github
-;;            :repo "lassik/emacs-format-all-the-code"
-;;            :files ("*.el")))
 
 (package! company-box
   :recipe (
@@ -100,18 +95,6 @@
 
 (package! inheritenv)
 (package! language-id)
-
-;; (package! webkit
-;;   :recipe(
-;;           :type git :host github :repo "akirakyle/emacs-webkit"
-;;           :branch "main"
-;;           :files (:defaults "*.js" "*.css" "*.so")
-;;           :pre-build ("make")
-;;           ))
-
-;; (use-package evil-collection-webkit
-;;   :config
-;;   (evil-collection-xwidget-setup))
 
 (package! sidekick
   :recipe (
