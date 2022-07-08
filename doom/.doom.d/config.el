@@ -113,43 +113,57 @@
  (:prefix ("o" . "open")
   :desc "Open manpage" "m" #'man
   :desc "Open browser" "w" #'eaf-open-browser-with-history
+  :desc "Open browser bookmark" "W" #'eaf-open-bookmark
   :desc "Open google" "g" #'+my/google-search
+  :desc "Open github" "G" #'+my/open-github
   )
 
  (:prefix ("t" . "toggle")
   :desc "Toggle minimap" "m" #'minimap-mode
   :desc "Toggle zen-mode" "z" #'+zen/toggle)
- )
 
-;; misc hook
-(use-package! company-box
-  :hook (company-mode . company-box-mode))
-(add-hook! 'prog-mode-hook #'format-all-mode)
-(add-hook! 'prog-mode-hook #'lsp-headerline-breadcrumb-mode)
+ (:prefix ("e" . "eval")
+  :desc "Evaluate buffer" "b" #'eval-buffer
+  :desc "Evaluate region" "r" #'eval-region
+  :desc "Evaluate line" "l" #'eval-line-by-line)
 
-;; eaf and browser
-(add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
-(require 'eaf)
-(require 'eaf-browser)
+)
+ ;; misc hook
+ (use-package! company-box
+   :hook (company-mode . company-box-mode))
+ (add-hook! 'prog-mode-hook #'format-all-mode)
+ (add-hook! 'prog-mode-hook #'lsp-headerline-breadcrumb-mode)
 
-(eaf-setq eaf-browser-enable-bookmark "true")
-(defvar eaf-browser-default-search-engine "google")
-(defun +my/google-search ()
-  "Search Google inside eaf-browser."
-  (interactive)
-  (eaf-search-it (if mark-active
-                     (buffer-substring (region-beginning) (region-end))
-                   (read-string "Search Google for: "))))
+ ;; eaf and browser
+ (add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
+ (require 'eaf)
+ (require 'eaf-browser)
 
-(setq browse-url-browser-function 'eaf-open-browser)
+ (eaf-setq eaf-browser-enable-bookmark "true")
+ (eaf-setq eaf-browser-enable-adblocker "true")
 
+ (defvar eaf-browser-default-search-engine "google")
 
-(defun +my/comment-or-uncomment()
-  "Comment or uncomment the current line or region."
-  (interactive)
-  (if mark-active
-      (comment-or-uncomment-region (region-beginning) (region-end))
-    (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
+ (defun +my/google-search ()
+   "Search Google inside eaf-browser."
+   (interactive)
+   (eaf-search-it (if mark-active
+                      (buffer-substring (region-beginning) (region-end))
+                    (read-string "Search Google for: "))))
 
-(beacon-mode 1)
-;;EOF
+ (defun +my/open-github ()
+   "Open github in eaf-browser."
+   (interactive)
+   (eaf-open-browser "github.com"))
+
+ (setq browse-url-browser-function 'eaf-open-browser)
+
+ (defun +my/comment-or-uncomment()
+   "Comment or uncomment the current line or region."
+   (interactive)
+   (if mark-active
+       (comment-or-uncomment-region (region-beginning) (region-end))
+     (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
+
+ (beacon-mode 1)
+ ;;EOF
