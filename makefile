@@ -31,7 +31,8 @@ keybind:
 
 emacs:
 	stow --adopt doom
-	./exec/emacs.sh
+	./exec/doom-emacs.sh
+
 
 gesture:
 	./gesture/exec.sh

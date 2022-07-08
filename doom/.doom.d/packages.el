@@ -101,5 +101,23 @@
 (package! inheritenv)
 (package! language-id)
 
-;; web dev stuff
-;;end of file
+;; (package! webkit
+;;   :recipe(
+;;           :type git :host github :repo "akirakyle/emacs-webkit"
+;;           :branch "main"
+;;           :files (:defaults "*.js" "*.css" "*.so")
+;;           :pre-build ("make")
+;;           ))
+
+;; (use-package evil-collection-webkit
+;;   :config
+;;   (evil-collection-xwidget-setup))
+
+(package! sidekick
+  :recipe (
+           :type git :host github :repo "VernonGrant/sidekick.el"
+           :files ("*.el")
+           :branch "main"
+           ))
+
+

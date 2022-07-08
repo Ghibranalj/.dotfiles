@@ -178,7 +178,9 @@
   )
 
  (:prefix ("o" . "open")
-  :desc "Open manpage" "m" #'man)
+  :desc "Open manpage" "m" #'man
+  :desc "Open browser" "w" #'eaf-open-browser
+  )
 
  (:prefix ("t" . "toggle")
   :desc "Toggle minimap" "m" #'minimap-mode
@@ -202,8 +204,7 @@
 ;; (minimap-mode 1)
 (beacon-mode 1)
 
-(remove-hook! 'before-save-hook 'format-all--buffer-from-hook)
-
-
-
+(add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
+(require 'eaf)
+(require 'eaf-browser)
 ;;EOF
