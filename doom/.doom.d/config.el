@@ -1,4 +1,6 @@
 (setq display-line-numbers-type 'relative)
+
+
 (setq org-directory "~/org/")
 
 (setq doom-theme 'doom-material-dark)
@@ -68,13 +70,13 @@
          ("TAB" . '+copilot/tab)))
 
 
-(use-package! web-mode
-  :mode (("\\.js\\'" . web-mode)
-         ("\\.jsx\\'" .  web-mode)
-         ("\\.ts\\'" . web-mode)
-         ("\\.tsx\\'" . web-mode)
-         ("\\.html\\'" . web-mode))
-  :commands web-mode)
+;; (use-package! web-mode
+;;   :mode (("\\.js\\'" . web-mode)
+;;          ("\\.jsx\\'" .  web-mode)
+;;          ("\\.ts\\'" . web-mode)
+;;          ("\\.tsx\\'" . web-mode)
+;;          ("\\.html\\'" . web-mode))
+;;   :commands web-mode)
 
 (after! company
   (setq company-show-quick-access t)
@@ -84,7 +86,6 @@
 (after! magit
   (setq magit-diff-refine-hunk 'all)
   )
-
 
 ;; Minimap
 (setq
@@ -111,7 +112,7 @@
 
  (:prefix ("o" . "open")
   :desc "Open manpage" "m" #'man
-  :desc "Open browser" "w" #'eaf-open-browser
+  :desc "Open browser" "w" #'eaf-open-browser-with-history
   :desc "Open google" "g" #'+my/google-search
   )
 
@@ -131,15 +132,16 @@
 (require 'eaf)
 (require 'eaf-browser)
 
+(eaf-setq eaf-browser-enable-bookmark "true")
+(defvar eaf-browser-default-search-engine "google")
 (defun +my/google-search ()
   "Search Google inside eaf-browser."
   (interactive)
-  (eaf-open-browser
-   (concat
-    "https://www.google.com/search?q="
-    (url-hexify-string (if mark-active
-                           (buffer-substring (region-beginning) (region-end))
-                         (read-string "Search Google for: "))))))
+  (eaf-search-it (if mark-active
+                     (buffer-substring (region-beginning) (region-end))
+                   (read-string "Search Google for: "))))
+
+(setq browse-url-browser-function 'eaf-open-browser)
 
 
 (defun +my/comment-or-uncomment()
