@@ -134,43 +134,47 @@
   :desc "Evaluate region" "r" #'eval-region
   :desc "Evaluate line" "l" #'eval-line-by-line)
 
-)
- ;; misc hook
- (use-package! company-box
-   :hook (company-mode . company-box-mode))
- (add-hook! 'prog-mode-hook #'format-all-mode)
- (add-hook! 'prog-mode-hook #'lsp-headerline-breadcrumb-mode)
+ )
+;; misc hook
+(use-package! company-box
+  :hook (company-mode . company-box-mode))
+(add-hook! 'prog-mode-hook #'format-all-mode)
+(add-hook! 'prog-mode-hook #'lsp-headerline-breadcrumb-mode)
 
- ;; eaf and browser
- (add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
- (require 'eaf)
- (require 'eaf-browser)
+;; eaf and browser
+(add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
+(require 'eaf)
+(require 'eaf-browser)
 
- (eaf-setq eaf-browser-enable-bookmark "true")
- (eaf-setq eaf-browser-enable-adblocker "true")
+(eaf-setq eaf-browser-enable-bookmark "true")
+(eaf-setq eaf-browser-enable-adblocker "true")
 
- (defvar eaf-browser-default-search-engine "google")
+(defvar eaf-browser-default-search-engine "google")
 
- (defun +my/google-search ()
-   "Search Google inside eaf-browser."
-   (interactive)
-   (eaf-search-it (if mark-active
-                      (buffer-substring (region-beginning) (region-end))
-                    (read-string "Search Google for: "))))
+(defun +my/google-search ()
+  "Search Google inside eaf-browser."
+  (interactive)
+  (eaf-open-browser
+   (concat
+    "https://www.google.com/search?q="
+    (url-hexify-string (if mark-active
+                           (buffer-substring (region-beginning) (region-end))
+                         (read-string "Search Google for: "))))))
 
- (defun +my/open-github ()
-   "Open github in eaf-browser."
-   (interactive)
-   (eaf-open-browser "github.com"))
 
- (setq browse-url-browser-function 'eaf-open-browser)
+(defun +my/open-github ()
+  "Open github in eaf-browser."
+  (interactive)
+  (eaf-open-browser "github.com"))
 
- (defun +my/comment-or-uncomment()
-   "Comment or uncomment the current line or region."
-   (interactive)
-   (if mark-active
-       (comment-or-uncomment-region (region-beginning) (region-end))
-     (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
+(setq browse-url-browser-function 'eaf-open-browser)
 
- (beacon-mode 1)
- ;;EOF
+(defun +my/comment-or-uncomment()
+  "Comment or uncomment the current line or region."
+  (interactive)
+  (if mark-active
+      (comment-or-uncomment-region (region-beginning) (region-end))
+    (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
+
+(beacon-mode 1)
+;;EOF
