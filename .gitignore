@@ -7,3 +7,4 @@ us.tmp
 my_layout.xkm
 /.vscode/
 /nvim/.config/nvim/autoload/
+/lvim/.config/lvim/plugin/*.lua
