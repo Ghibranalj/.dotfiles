@@ -1,4 +1,4 @@
-.PHONY: all exec conf optimus udev keybind emacs gesture stow sync dconf-dump
+.PHONY: all exec conf optimus udev keybind emacs gesture stow sync dconf-dump vim
 
 all: stow exec conf emacs vim
 
