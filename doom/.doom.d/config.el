@@ -26,7 +26,10 @@
   "This is executed when a new frame is created."
   ;; (+treemacs/toggle)
   ;; (+neotree/open)
-  )
+
+  (if window-system
+     (+my/setup-browser))
+)
 ;; Running on daemon startup
 (if (daemonp)
     (add-hook 'after-make-frame-functions (lambda (frame)
@@ -59,10 +62,10 @@
       (indent-relative)))
 
 (defun +copilot/tab-or-complete ()
-        "Copilot completion or complete."
-        (interactive)
-        (or (copilot-accept-completion)
-        (company-complete-common)))
+  "Copilot completion or complete."
+  (interactive)
+  (or (copilot-accept-completion)
+      (company-complete-common)))
 
 (use-package! copilot
   :hook (prog-mode . copilot-mode)
@@ -133,6 +136,9 @@
 
  )
 
+;; man pages
+(setq Man-notify-method 'pushy)
+
 (defun +my/comment-or-uncomment()
   "Comment or uncomment the current line or region."
   (interactive)
@@ -151,14 +157,17 @@
 (add-hook! 'prog-mode-hook #'format-all-mode)
 
 ;; eaf and browser
-(add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
-(require 'eaf)
-(require 'eaf-browser)
-
-(eaf-setq eaf-browser-enable-bookmark "true")
-(eaf-setq eaf-browser-enable-adblocker "true")
-(defvar eaf-browser-default-search-engine "google")
-(setq browse-url-browser-function 'eaf-open-browser)
+(defun +my/setup-browser ()
+  "Setup eaf and browser."
+  (message "Browser is being setup")
+  (add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
+  (require 'eaf)
+  (require 'eaf-browser)
+  (eaf-setq eaf-browser-enable-bookmark "true")
+  (eaf-setq eaf-browser-enable-adblocker "true")
+  (defvar eaf-browser-default-search-engine "google")
+  (setq browse-url-browser-function 'eaf-open-browser)
+  )
 
 (defun +my/google-search ()
   "Search Google inside eaf-browser."

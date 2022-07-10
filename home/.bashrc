@@ -200,17 +200,18 @@ function gitp() {
     git push origin $(git branch --show-current)
 }
 
-# open emacs in the terminal
-alias emacst='emacsclient -c -t'
+# Emacs aliases
+alias emacst='emacsclient -c -t '
 alias codet=emacst
-
 alias emacs-server='/usr/bin/emacs'
 alias restart-emacs='killall emacs ; emacs-server --daemon --debug-init'
-function code() {
-    emacsclient -a 'emacs-server' -n -c $@
-}
+alias code="emacsclient -a 'emacs-server' -n"
 alias emacs='code'
 alias vcode='/usr/bin/code'
+
+function man() {
+    emacst -e "(man \"$*\")"
+}
 
 [ -f /opt/asdf-vm/asdf.sh ] && source /opt/asdf-vm/asdf.sh
 
