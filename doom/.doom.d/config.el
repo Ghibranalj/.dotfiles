@@ -40,10 +40,11 @@
 
 
 ;; Tabs
-(setq centaur-tabs-set-bar 'under
-      centaur-tabs-set-close-button nil
-      centaur-tabs-height 42
-      )
+(after! centaur-tabs
+  (setq centaur-tabs-set-bar 'under
+        centaur-tabs-set-close-button nil
+        centaur-tabs-height 42
+        ))
 
 ;; tremacs colors
 (custom-set-faces!
@@ -88,13 +89,16 @@
   )
 
 ;; Minimap
-(setq
- ;; Configure minimap position
- minimap-window-location 'right ; Minimap on the right side
- minimap-width-fraction 0.0 ; slightly smaller minimap
- minimap-minimum-width 10 ; also slightly smaller minimap
- minimap-enlarge-certain-faces nil ; enlarge breaks BlockFont
- )
+
+(after! minimap
+  (setq
+   ;; Configure minimap position
+   minimap-window-location 'right ; Minimap on the right side
+   minimap-width-fraction 0.0 ; slightly smaller minimap
+   minimap-minimum-width 10 ; also slightly smaller minimap
+   minimap-enlarge-certain-faces nil ; enlarge breaks BlockFont
+   )
+  )
 (custom-set-faces!
   '(minimap-font-face :height 12 :group 'minimap))
 ;; (minimap-mode 1)
@@ -102,7 +106,10 @@
 (map!
  :leader
  (:prefix ("b" . "buffer")
-  :desc "Format buffer" "f" #'+format/buffer)
+  :desc "Format buffer" "f" #'+format/buffer
+  :desc "Switch buffer" "b" #'switch-to-buffer
+  :desc "Switch workspace buffer" "B" #'+vertico/switch-workspace-buffer
+  )
 
  (:prefix ("c" . "code")
   :desc "Comment line" "c" #'+my/comment-or-uncomment

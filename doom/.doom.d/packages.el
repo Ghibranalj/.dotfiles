@@ -52,12 +52,9 @@
 (package! company-tabnine
   :recipe (:host github :repo "TommyX12/company-tabnine"))
 
-(package! minimap :recipe (:host github
-                           :repo "dengste/minimap"))
 
 (package! copilot
   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
-
 
 (package! company-box
   :recipe (
@@ -104,3 +101,5 @@
            ))
 
 (package! verb)
+
+(package! all-the-icons-completion)
