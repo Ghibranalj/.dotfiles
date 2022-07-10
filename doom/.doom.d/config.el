@@ -57,19 +57,24 @@
   "Copilot completion."
   (interactive)
   (or (copilot-accept-completion)
-      (company-indent-or-complete-common nil)))
+      (indent-relative)))
+
+(defun +copilot/tab-or-complete ()
+        "Copilot completion or complete."
+        (interactive)
+        (or (copilot-accept-completion)
+        (company-complete-common)))
 
 (use-package! copilot
   :hook (prog-mode . copilot-mode)
   :bind (("C-TAB" . 'copilot-accept-completion-by-word)
          ("C-<tab>" . 'copilot-accept-completion-by-word)
          :map company-active-map
-         ("<tab>" . '+copilot/tab)
-         ("TAB" . '+copilot/tab)
+         ("<tab>" . '+copilot/tab-or-complete)
+         ("TAB" . '+copilot/tab-or-complete)
          :map company-mode-map
          ("<tab>" . '+copilot/tab)
          ("TAB" . '+copilot/tab)))
-
 
 ;; (use-package! web-mode
 ;;   :mode (("\\.js\\'" . web-mode)
