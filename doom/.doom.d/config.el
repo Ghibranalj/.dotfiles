@@ -28,8 +28,8 @@
   ;; (+neotree/open)
 
   (if window-system
-     (+my/setup-browser))
-)
+      (+my/setup-browser))
+  )
 ;; Running on daemon startup
 (if (daemonp)
     (add-hook 'after-make-frame-functions (lambda (frame)
@@ -166,13 +166,21 @@
   (eaf-setq eaf-browser-enable-bookmark "true")
   (eaf-setq eaf-browser-enable-adblocker "true")
   (defvar eaf-browser-default-search-engine "google")
-  (setq browse-url-browser-function 'eaf-open-browser)
   )
+
+(defun +my/open-browser(url)
+  "Open URL on eaf-browser when not terminal, chrome when terminal."
+  (if window-system
+      (eaf-open-browser url)
+    (browse-url-chrome url)
+    ))
+
+(setq browse-url-browser-function '+my/open-browser)
 
 (defun +my/google-search ()
   "Search Google inside eaf-browser."
   (interactive)
-  (eaf-open-browser
+  (+my/open-browser
    (concat
     "https://www.google.com/search?q="
     (url-hexify-string (if mark-active
@@ -184,7 +192,8 @@
   (interactive)
   (if (not (eq (magit-git-dir (projectile-project-root)) nil))
       (+vc/browse-at-remote-homepage)
-    (eaf-open-browser "github.com")
+    (+my/open-browser "github.com")
     ))
 
+(setq magit-clone-default-directory "~/Workspace/")
 ;;EOF
