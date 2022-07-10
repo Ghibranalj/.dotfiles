@@ -69,8 +69,8 @@
 
 (use-package! copilot
   :hook (prog-mode . copilot-mode)
-  :bind (("C-TAB" . 'copilot-accept-completion-by-word)
-         ("C-<tab>" . 'copilot-accept-completion-by-word)
+  :bind (("<backtab>" . 'copilot-accept-completion-by-word)
+         ("<backtab>" . 'copilot-accept-completion-by-word)
          :map company-active-map
          ("<tab>" . '+copilot/tab-or-complete)
          ("TAB" . '+copilot/tab-or-complete)
