@@ -12,7 +12,7 @@ last-used-version='0.3.1'
 favorites=['R', '≈']
 
 [org/blueman/general]
-window-properties=[586, 1032, 1572, 40]
+window-properties=[1268, 1064, 1928, 8]
 
 [org/blueman/plugins/powermanager]
 auto-power-on=@mb true
@@ -57,7 +57,7 @@ video-y-resolution=720
 
 [org/gnome/control-center]
 last-panel='keyboard'
-window-state=(1268, 1064, false)
+window-state=(948, 1032, false)
 
 [org/gnome/desktop/a11y]
 always-show-universal-access-status=false
@@ -106,8 +106,8 @@ autorun-x-content-open-folder=@as []
 autorun-x-content-start-app=['x-content/ostree-repository']
 
 [org/gnome/desktop/notifications]
-application-children=['gnome-network-panel', 'spotify', 'discord', 'org-gnome-diskutility', 'google-chrome', 'obsidian', 'org-gnome-nautilus', 'steam', 'net-lutris-lutris', 'lsi-steam', 'org-gnome-extensions-desktop', 'org-gnome-terminal', 'gnome-power-panel', 'visual-studio-code', 'ldtk', 'org-gnome-totem', 'org-gnome-shell-extensions', 'org-gnome-screenshot', 'org-gnome-settings', 'com-mattjakeman-extensionmanager', 'org-gnome-baobab', 'org-gnome-eog', 'emacsclient', 'minecraft-launcher', 'firefox']
-show-banners=true
+application-children=['gnome-network-panel', 'spotify', 'discord', 'org-gnome-diskutility', 'google-chrome', 'obsidian', 'org-gnome-nautilus', 'steam', 'net-lutris-lutris', 'lsi-steam', 'org-gnome-extensions-desktop', 'org-gnome-terminal', 'gnome-power-panel', 'visual-studio-code', 'ldtk', 'org-gnome-totem', 'org-gnome-shell-extensions', 'org-gnome-screenshot', 'org-gnome-settings', 'com-mattjakeman-extensionmanager', 'org-gnome-baobab', 'org-gnome-eog', 'emacsclient', 'minecraft-launcher', 'firefox', 'pavucontrol']
+show-banners=false
 
 [org/gnome/desktop/notifications/application/com-mattjakeman-extensionmanager]
 application-id='com.mattjakeman.ExtensionManager.desktop'
@@ -175,6 +175,9 @@ application-id='org.gnome.Terminal.desktop'
 [org/gnome/desktop/notifications/application/org-gnome-totem]
 application-id='org.gnome.Totem.desktop'
 
+[org/gnome/desktop/notifications/application/pavucontrol]
+application-id='pavucontrol.desktop'
+
 [org/gnome/desktop/notifications/application/spotify]
 application-id='spotify.desktop'
 
@@ -208,7 +211,6 @@ idle-delay=uint32 600
 allow-volume-above-100-percent=true
 
 [org/gnome/desktop/wm/keybindings]
-activate-window-menu=['<Control>Tab']
 close=['<Super>q', '<Alt>F4']
 maximize=@as []
 minimize=['<Super>comma']
@@ -267,7 +269,7 @@ sort-type='ascending'
 [org/gnome/file-roller/ui]
 sidebar-width=200
 window-height=1016
-window-width=568
+window-width=1268
 
 [org/gnome/gnome-screenshot]
 delay=0
@@ -293,7 +295,7 @@ search-filter-time-type='last_modified'
 search-view='list-view'
 
 [org/gnome/nautilus/window-state]
-initial-size=(948, 512)
+initial-size=(1268, 1064)
 maximized=false
 
 [org/gnome/nm-applet/eap/4c920b31-854b-3fd9-9b8d-8001f2901e02]
@@ -412,7 +414,7 @@ toggle-overview=@as []
 locations=@av []
 
 [org/gnome/software]
-check-timestamp=int64 1656326596
+check-timestamp=int64 1657427538
 first-run=false
 
 [org/gnome/tweaks]
@@ -446,7 +448,7 @@ sort-column='name'
 sort-directories-first=false
 sort-order='ascending'
 type-format='category'
-window-position=(3221, 65)
+window-position=(358, 81)
 window-size=(1203, 902)
 
 [org/tuf/manager]
