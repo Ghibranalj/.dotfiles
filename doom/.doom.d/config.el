@@ -173,6 +173,9 @@
 (defun +my/open-github ()
   "Open github in eaf-browser."
   (interactive)
-  (eaf-open-browser "github.com"))
+  (if (not (eq (magit-git-dir (projectile-project-root)) nil))
+      (+vc/browse-at-remote-homepage)
+    (eaf-open-browser "github.com")
+    ))
 
 ;;EOF
