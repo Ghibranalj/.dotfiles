@@ -168,11 +168,11 @@
   (defvar eaf-browser-default-search-engine "google")
   )
 
-(defun +my/open-browser(url)
-  "Open URL on eaf-browser when not terminal, chrome when terminal."
+(defun +my/open-browser(url &optional args)
+  "Open URL with ARGS on eaf-browser when not terminal, chrome when terminal."
   (if window-system
-      (eaf-open-browser url)
-    (browse-url-chrome url)
+      (eaf-open-browser url args)
+    (browse-url-chrome url args)
     ))
 
 (setq browse-url-browser-function '+my/open-browser)
