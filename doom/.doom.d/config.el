@@ -1,6 +1,5 @@
 (setq display-line-numbers-type 'relative)
 
-
 (setq org-directory "~/org/")
 
 (setq doom-theme 'doom-material-dark)
@@ -76,14 +75,6 @@
          ("<tab>" . '+copilot/tab)
          ("TAB" . '+copilot/tab)))
 
-;; (use-package! web-mode
-;;   :mode (("\\.js\\'" . web-mode)
-;;          ("\\.jsx\\'" .  web-mode)
-;;          ("\\.ts\\'" . web-mode)
-;;          ("\\.tsx\\'" . web-mode)
-;;          ("\\.html\\'" . web-mode))
-;;   :commands web-mode)
-
 (after! company
   (setq company-show-quick-access t)
   (setq company-idle-delay 0)
@@ -120,6 +111,7 @@
   :desc "Comment line" "c" #'+my/comment-or-uncomment
   :desc "Compile" "C" #'compile
   :desc "Format buffer" "f" #'+format/buffer
+  :desc "List all occurance" "l" #'helm-swoop
   )
 
  (:prefix ("o" . "open")
@@ -140,11 +132,21 @@
   :desc "Evaluate line" "l" #'eval-line-by-line)
 
  )
+
+(defun +my/comment-or-uncomment()
+  "Comment or uncomment the current line or region."
+  (interactive)
+  (if mark-active
+      (comment-or-uncomment-region (region-beginning) (region-end))
+    (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
+
+(beacon-mode 1)
+(lsp-headerline-breadcrumb-mode 1)
+
 ;; misc hook
 (use-package! company-box
   :hook (company-mode . company-box-mode))
 (add-hook! 'prog-mode-hook #'format-all-mode)
-(add-hook! 'prog-mode-hook #'lsp-headerline-breadcrumb-mode)
 
 ;; eaf and browser
 (add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
@@ -153,8 +155,8 @@
 
 (eaf-setq eaf-browser-enable-bookmark "true")
 (eaf-setq eaf-browser-enable-adblocker "true")
-
 (defvar eaf-browser-default-search-engine "google")
+(setq browse-url-browser-function 'eaf-open-browser)
 
 (defun +my/google-search ()
   "Search Google inside eaf-browser."
@@ -166,20 +168,9 @@
                            (buffer-substring (region-beginning) (region-end))
                          (read-string "Search Google for: "))))))
 
-
 (defun +my/open-github ()
   "Open github in eaf-browser."
   (interactive)
   (eaf-open-browser "github.com"))
 
-(setq browse-url-browser-function 'eaf-open-browser)
-
-(defun +my/comment-or-uncomment()
-  "Comment or uncomment the current line or region."
-  (interactive)
-  (if mark-active
-      (comment-or-uncomment-region (region-beginning) (region-end))
-    (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
-
-(beacon-mode 1)
 ;;EOF

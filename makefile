@@ -1,14 +1,12 @@
 .PHONY: all exec conf optimus udev keybind emacs gesture stow sync dconf-dump
 
-all: stow exec conf emacs
+all: stow exec conf emacs vim
 
 exec:
 	./exec/app-arch.sh
 	./exec/conf.sh
 	./exec/keybind.sh
 conf:
-
-	echo ++ SETTING UP BLUETOOTH ++
 	sudo rm /etc/bluetooth/main.conf
 	sudo cp configs/bluetooth/main.conf /etc/bluetooth/main.conf
 

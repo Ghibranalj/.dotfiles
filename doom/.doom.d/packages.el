@@ -51,55 +51,37 @@
 
 (package! company-tabnine
   :recipe (:host github :repo "TommyX12/company-tabnine"))
-
-
 (package! copilot
   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
-
 (package! company-box
   :recipe (
            :host github
            :repo "sebastiencs/company-box"
            :files ("*.el" )))
-
 (package! emmet-mode)
-
 (package! super-save
   :recipe (
            :host github
            :repo "bbatsov/super-save"
            :files ("*.el")))
-
 (package! beacon
   :recipe (
            :host github
            :repo "Malabarba/beacon"
            :files ("*.el")))
-
 (package! yascroll
   :recipe (
            :host github
            :repo "emacsorphanage/yascroll"
            :files ("*.el")))
-
-;; (package! highlight-indent-guides
-;; :recipe (
-;; :host github
-;; :repo "DarthFennec/highlight-indent-guides"
-;; :files ("*.el")))
-
-;; (package! all-the-icons-dired )
-
 (package! inheritenv)
 (package! language-id)
-
 (package! sidekick
   :recipe (
            :type git :host github :repo "VernonGrant/sidekick.el"
            :files ("*.el")
            :branch "main"
            ))
-
 (package! verb)
-
 (package! all-the-icons-completion)
+(package! helm-swoop)
