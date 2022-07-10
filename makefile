@@ -7,8 +7,6 @@ exec:
 	./exec/conf.sh
 	./exec/keybind.sh
 conf:
-	curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 	echo ++ SETTING UP BLUETOOTH ++
 	sudo rm /etc/bluetooth/main.conf
@@ -16,7 +14,6 @@ conf:
 
 stow:
 	stow --adopt home
-	stow --adopt nvim
 	stow --adopt alacritty
 	stow --adopt rofi
 
@@ -33,6 +30,10 @@ emacs:
 	stow --adopt doom
 	./exec/doom-emacs.sh
 
+vim:
+	./exec/vim.sh
+	rm ~/.config/lvim -rv
+	stow --adopt lvim
 
 gesture:
 	./gesture/exec.sh

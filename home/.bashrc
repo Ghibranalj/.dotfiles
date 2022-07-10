@@ -220,3 +220,10 @@ alias yayu="yay -Qu | fzf -m --preview 'yay -Si {1}' | cut -d' ' -f1 | xargs -ro
 
 [ -d $HOME/.bin ] && export PATH=$PATH:$HOME/.bin
 [ -d $HOME/.emacs.d/bin ] && export PATH=$PATH:$HOME/.emacs.d/bin
+[ -d $HOME/.local/bin ] && PATH=$PATH:$HOME/.local/bin
+
+if command -v lvim >/dev/null; then
+    alias vim='lvim'
+    alias nvim='lvim'
+    MANPAGER='lvim +Man!'
+fi
