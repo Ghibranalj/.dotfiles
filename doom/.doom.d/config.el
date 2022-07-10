@@ -108,6 +108,7 @@
   :desc "Format buffer" "f" #'+format/buffer
   :desc "Switch buffer" "b" #'switch-to-buffer
   :desc "Switch workspace buffer" "B" #'+vertico/switch-workspace-buffer
+  :desc "Switch to browser" "w" #'+my/consult-browser
   )
 
  (:prefix ("c" . "code")
@@ -196,4 +197,29 @@
     ))
 
 (setq magit-clone-default-directory "~/Workspace/")
-;;EOF
+
+(defvar +my/consult--eaf-source
+  (list :name     "Browser"
+        :category 'buffer
+        :narrow   ?o
+        :face     'consult-buffer
+        :history  'buffer-name-history
+        :state    #'consult--buffer-state
+        :require-match t
+        :items
+        (lambda ()
+          (mapcar #'buffer-name
+                  (seq-filter
+                   (lambda (x)
+                     (eq (buffer-local-value 'major-mode x) 'eaf-mode))
+                   (buffer-list))))))
+
+(after! consult
+  (add-to-list 'consult-buffer-sources '+my/consult--eaf-source 'append))
+
+(defun +my/consult-browser ()
+  "Open eaf-browser."
+  (interactive)
+  (consult-buffer '(+my/consult--eaf-source)))
+
+;; EOF
