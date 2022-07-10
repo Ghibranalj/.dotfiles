@@ -13,6 +13,14 @@ lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.colorscheme = "material"
 vim.g.material_style = "darker"
+
+
+-- vim options
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.scrolloff = 10
+vim.opt.clipboard = "unnamedplus"
+
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 

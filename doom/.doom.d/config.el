@@ -143,6 +143,8 @@
 (beacon-mode 1)
 (lsp-headerline-breadcrumb-mode 1)
 
+(setq scroll-margin 10)
+
 ;; misc hook
 (use-package! company-box
   :hook (company-mode . company-box-mode))
