@@ -16,6 +16,6 @@ keycode  48 = apostrophe quotedbl grave asciitilde
 keycode  22 = BackSpace BackSpace Delete Delete
 
 keycode  56 = b B BackSpace B
-keycode  24 = q Q Escape Q
+keycode  41 = f F Escape F
 
 keycode 57 = n N underscore underscore
