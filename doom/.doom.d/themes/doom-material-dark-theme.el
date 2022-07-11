@@ -35,10 +35,10 @@ Can be an integer to determine the exact padding."
    (grey base5)
 
    (red         '("#f57373" "#ff0000" "red"))
-   (orange      '("#F78C6C" "#ff5f00" "brightred"))
-   (green       '("#c3e88d" "#afff00" "green"))
+   (orange      '("#F78C6C" "#cf785e" "brightred"))
+   (green       '("#c3e88d" "#a6c57a" "green"))
    (teal        '("#44b9b1" "#00d7af" "brightgreen"))
-   (yellow      '("#ffcb6b" "#ffd700" "brightyellow"))
+   (yellow      '("#ffcb6b" "#f7eb95" "brightyellow"))
    (blue        '("#82aaff" "#5fafff" "brightblue"))
    (dark-blue   '("#7986E7" "#d7ffff" "blue"))
    (magenta     '("#c792ea" "#d787d7" "brightmagenta"))
@@ -84,8 +84,8 @@ Can be an integer to determine the exact padding."
   (;;;; emacs
    (lazy-highlight :background (doom-darken green 0.5) :foreground green :weight 'bold)
    (minibuffer-prompt :foreground yellow)
-   (region :background  (doom-lighten base1 0.05) :foreground nil :distant-foreground (doom-darken fg 0.2) :extend t)
-   (hl-line :background base2 :foreground nil)
+   (region :background  base2 :foreground nil :distant-foreground (doom-darken fg 0.2) :extend t)
+   (hl-line :background base1 :foreground nil)
    (mode-line
     :background modeline-bg :foreground modeline-fg
     :box (if -modeline-pad `(:line-width ,-modeline-pad :color ,modeline-bg)))
@@ -95,9 +95,9 @@ Can be an integer to determine the exact padding."
    (tooltip :background (doom-darken bg-alt 0.2) :foreground fg)
    (cursor :background yellow)
    (line-number-current-line
-     :inherit '(hl-line default)
-     :foreground cyan :distant-foreground nil
-     :weight 'normal :italic nil :underline nil :strike-through nil)
+    :inherit '(hl-line default)
+    :foreground cyan :distant-foreground nil
+    :weight 'normal :italic nil :underline nil :strike-through nil)
    (completions-first-difference :foreground yellow)
    (icomplete-first-match :foreground green :underline t :weight 'bold)
 

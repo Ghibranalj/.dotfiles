@@ -85,3 +85,4 @@
 (package! verb)
 (package! all-the-icons-completion)
 (package! helm-swoop)
+(package! systemd)

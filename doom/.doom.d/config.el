@@ -26,9 +26,9 @@
   "This is executed when a new frame is created."
   ;; (+treemacs/toggle)
   ;; (+neotree/open)
-
   (if window-system
       (+my/setup-browser))
+  (copilot-diagnose)
   )
 ;; Running on daemon startup
 (if (daemonp)

@@ -91,7 +91,7 @@ function nav() {
 function delete() {
     files="$(/bin/ls -a | fzf -m | tr '\n' ' ')"
     [[ $files == "" ]] && return
-    rm $@ $files
+    rm $@ -v $files
 }
 function make-homework() {
     if [ $# -eq 0 ]; then
@@ -134,7 +134,6 @@ function generate-ssh-github() {
     cat ~/.ssh/id_ed25519.pub
     clip ~/.ssh/id_ed25519.pub
     echo == copied to clipboard ==
-
 }
 
 function mkcdir() {
@@ -204,7 +203,7 @@ function gitp() {
 alias emacst='emacsclient -c -t '
 alias codet=emacst
 alias emacs-server='/usr/bin/emacs'
-alias restart-emacs='killall emacs ; emacs-server --daemon --debug-init'
+alias restart-emacs='systemctl restart emacs --user ; systemctl status --user emacs'
 alias code="emacsclient -a 'emacs-server' -n"
 alias emacs='code'
 alias vcode='/usr/bin/code'
