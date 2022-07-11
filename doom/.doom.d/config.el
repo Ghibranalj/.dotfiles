@@ -108,7 +108,7 @@
  (:prefix ("b" . "buffer")
   :desc "Format buffer" "f" #'+format/buffer
   :desc "Switch to browser" "w" #'+my/consult-browser
-  :desc "Switch to browser" "t" #'+my/consult-terminal
+  :desc "Switch to terminal in workspace" "t" #'+my/consult-terminal
   )
 
  (:prefix ("c" . "code")
@@ -133,7 +133,7 @@
  (:prefix ("e" . "eval")
   :desc "Evaluate buffer" "b" #'eval-buffer
   :desc "Evaluate region" "r" #'eval-region
-  :desc "Evaluate line" "l" #'eval-line-by-line)
+  :desc "Evaluate line" "l" #'+my/eval-line)
  )
 
 ;; man pages
@@ -155,6 +155,14 @@
 (use-package! company-box
   :hook (company-mode . company-box-mode))
 (add-hook! 'prog-mode-hook #'format-all-mode)
+
+(setq magit-clone-default-directory "~/Workspace/")
+
+(defun +my/eval-line ()
+  "Evaluate the current line."
+  (interactive)
+  (eval-region (line-beginning-position) (line-end-position)))
+
 
 ;; eaf and browser
 (defun +my/setup-browser ()
@@ -195,7 +203,6 @@
     (+my/open-browser "github.com")
     ))
 
-(setq magit-clone-default-directory "~/Workspace/")
 
 (defvar +my/consult--eaf-source
   (list :name     "Browser"
@@ -227,7 +234,11 @@
           (mapcar #'buffer-name
                   (seq-filter
                    (lambda (x)
-                     (eq (buffer-local-value 'major-mode x) 'vterm-mode))
+                     (and
+                      (eq (buffer-local-value 'major-mode x) 'vterm-mode)
+                      (+workspace-contains-buffer-p x)
+                      )
+                     )
                    (buffer-list))))))
 
 (defvar +my/consult--workspace-source
@@ -269,6 +280,6 @@
 (defun +my/consult-workspace ()
   "Open workspace."
   (interactive)
-  (consult-buffer '(+my/consult--workspace-source +my/consult--eaf-source +my/consult--terminal-source)))
+  (consult-buffer '(+my/consult--workspace-source +my/consult--terminal-source +my/consult--eaf-source)))
 
 ;; EOF
