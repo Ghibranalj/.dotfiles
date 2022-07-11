@@ -104,11 +104,11 @@
 
 (map!
  :leader
+ :desc "Switch buffer in workspace" "," #'+my/consult-workspace
  (:prefix ("b" . "buffer")
   :desc "Format buffer" "f" #'+format/buffer
-  :desc "Switch buffer" "b" #'switch-to-buffer
-  :desc "Switch workspace buffer" "B" #'+vertico/switch-workspace-buffer
   :desc "Switch to browser" "w" #'+my/consult-browser
+  :desc "Switch to browser" "t" #'+my/consult-terminal
   )
 
  (:prefix ("c" . "code")
@@ -134,7 +134,6 @@
   :desc "Evaluate buffer" "b" #'eval-buffer
   :desc "Evaluate region" "r" #'eval-region
   :desc "Evaluate line" "l" #'eval-line-by-line)
-
  )
 
 ;; man pages
@@ -214,12 +213,62 @@
                      (eq (buffer-local-value 'major-mode x) 'eaf-mode))
                    (buffer-list))))))
 
+
+(defvar +my/consult--terminal-source
+  (list :name     "Terminal"
+        :category 'buffer
+        :narrow   ?o
+        :face     'consult-buffer
+        :history  'buffer-name-history
+        :state    #'consult--buffer-state
+        :require-match t
+        :items
+        (lambda ()
+          (mapcar #'buffer-name
+                  (seq-filter
+                   (lambda (x)
+                     (eq (buffer-local-value 'major-mode x) 'vterm-mode))
+                   (buffer-list))))))
+
+(defvar +my/consult--workspace-source
+  (list :name    "Current workspace"
+        :category 'buffer
+        :narrow   ?o
+        :face     'consult-buffer
+        :history  'buffer-name-history
+        :state    #'consult--buffer-state
+        :require-match t
+        :items
+        (lambda ()
+          (mapcar #'buffer-name
+                  (seq-filter
+                   (lambda (x)
+                     (and
+                      (+workspace-contains-buffer-p x)
+                      (not (eq (buffer-local-value 'major-mode x) 'vterm-mode))
+                      )
+                     )
+                   (buffer-list))))))
+
 (after! consult
-  (add-to-list 'consult-buffer-sources '+my/consult--eaf-source 'append))
+  (add-to-list 'consult-buffer-sources '+my/consult--eaf-source 'append)
+  (add-to-list 'consult-buffer-sources '+my/consult--terminal-source 'append)
+  (add-to-list 'consult-buffer-sources '+my/consult--workspace-source 'append)
+  )
 
 (defun +my/consult-browser ()
   "Open eaf-browser."
   (interactive)
   (consult-buffer '(+my/consult--eaf-source)))
+
+(defun +my/consult-terminal ()
+  "Open terminal."
+  (interactive)
+  (consult-buffer '(+my/consult--terminal-source)))
+
+(defun +my/consult-workspace ()
+  "Open workspace."
+  (interactive)
+  (consult-buffer '(+my/consult--workspace-source +my/consult--eaf-source +my/consult--terminal-source)))
 
 ;; EOF
