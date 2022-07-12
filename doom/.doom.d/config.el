@@ -1,3 +1,23 @@
+
+(defun +my/custom-ascii ()
+"To display my ascii art to doom splash."
+  (mapc (lambda (line)
+          (insert (propertize (+doom-dashboard--center +doom-dashboard--width line)
+                              'face 'doom-dashboard-banner) " ")
+          (insert "\n"))
+        (split-string  "
+   ▄██████▄     ▄█    █▄     ▄█  ▀█████████▄  ▀█████████▄  ▄██   ▄
+  ███    ███   ███    ███   ███    ███    ███   ███    ███ ███   ██▄
+  ███    █▀    ███    ███   ███▌   ███    ███   ███    ███ ███▄▄▄███
+ ▄███         ▄███▄▄▄▄███▄▄ ███▌  ▄███▄▄▄██▀   ▄███▄▄▄██▀  ▀▀▀▀▀▀███
+▀▀███ ████▄  ▀▀███▀▀▀▀███▀  ███▌ ▀▀███▀▀▀██▄  ▀▀███▀▀▀██▄  ▄██   ███
+  ███    ███   ███    ███   ███    ███    ██▄   ███    ██▄ ███   ███
+  ███    ███   ███    ███   ███    ███    ███   ███    ███ ███   ███
+  ████████▀    ███    █▀    █▀   ▄█████████▀  ▄█████████▀   ▀█████▀
+--
+Doom Emacs" "\n" t)))
+(setq +doom-dashboard-ascii-banner-fn #'+my/custom-ascii)
+
 (setq display-line-numbers-type 'relative)
 
 (setq org-directory "~/org/")
@@ -298,4 +318,5 @@ Shows terminal in seperate section. Also shows browsers."
   :sort nil
   :history 'consult--buffer-history
   )
+
 ;; EOF
