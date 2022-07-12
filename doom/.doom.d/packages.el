@@ -86,3 +86,5 @@
 (package! all-the-icons-completion)
 (package! helm-swoop)
 (package! systemd)
+(package! lsp-ui)
+;;EOF

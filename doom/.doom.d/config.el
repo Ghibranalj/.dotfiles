@@ -28,7 +28,7 @@
   ;; (+neotree/open)
   (if window-system
       (+my/setup-browser))
-  (copilot-diagnose)
+  ;; (copilot-diagnose)
   )
 ;; Running on daemon startup
 (if (daemonp)
@@ -147,7 +147,6 @@
     (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
 
 (beacon-mode 1)
-(lsp-headerline-breadcrumb-mode 1)
 
 (setq scroll-margin 10)
 
@@ -155,6 +154,15 @@
 (use-package! company-box
   :hook (company-mode . company-box-mode))
 (add-hook! 'prog-mode-hook #'format-all-mode)
+
+(setq lsp-ui-sideline-show-diagnostics t)
+(setq lsp-ui-sideline-show-hover t)
+(setq lsp-ui-sideline-show-code-actions t)
+(setq lsp-ui-sideline-update-mode 'line)
+(add-hook! 'prog-mode-hook #'lsp-ui-mode)
+(add-hook! 'lsp-mode-hook #'lsp-ui-sideline-mode)
+(add-hook! 'lsp-mode-hook #'lsp-headerline-breadcrumb-mode)
+(setq lsp-headerline-breadcrumb-enable t)
 
 (setq magit-clone-default-directory "~/Workspace/")
 
@@ -278,8 +286,16 @@
   (consult-buffer '(+my/consult--terminal-source)))
 
 (defun +my/consult-workspace ()
-  "Open workspace."
+  "Switch to buffer in workspace.
+Shows terminal in seperate section. Also shows browsers."
   (interactive)
-  (consult-buffer '(+my/consult--workspace-source +my/consult--terminal-source +my/consult--eaf-source)))
-
+  (consult--multi
+   '(+my/consult--workspace-source +my/consult--terminal-source +my/consult--eaf-source))
+  :requre-match
+  (confirm-nonexistent-file-or-buffer)
+  :prompt
+  (format "Switch to buffer (%s)" (+workspace-current-name))
+  :sort nil
+  :history 'consult--buffer-history
+  )
 ;; EOF

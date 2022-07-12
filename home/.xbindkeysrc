@@ -1,4 +1,5 @@
 # For the benefit of emacs users: -*- shell-script -*-
+# eval: (format-all-mode -1)
 ###########################
 # xbindkeys configuration #
 ###########################
@@ -71,3 +72,7 @@ keystate_capslock = enable
 "rofi -show window -config ~/.config/rofi/sidebar.rasi -kb-row-down Alt+Tab -kb-row-up Alt+Shift+Tab"
     m:0x8 + c:23
     Alt + Tab
+
+"emacsclient --create-frame"
+    m:0xc + c:36
+    Control+Alt + Return
