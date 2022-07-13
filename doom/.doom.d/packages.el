@@ -87,4 +87,9 @@
 (package! helm-swoop)
 (package! systemd)
 (package! lsp-ui)
+
+
+;; uncomment this for vscde-like command palette
+;; (package! vertico-posframe)
+
 ;;EOF

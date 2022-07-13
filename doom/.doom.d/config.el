@@ -145,6 +145,7 @@ Doom Emacs" "\n" t)))
   :desc "Open browser bookmark" "W" #'eaf-open-bookmark
   :desc "Open google" "g" #'+my/google-search
   :desc "Open github" "G" #'+my/open-github
+  :desc "Open ssh connection" "s" #'+my/connect-remote-ssh
   )
 
  (:prefix ("t" . "toggle")
@@ -316,14 +317,44 @@ Doom Emacs" "\n" t)))
 Shows terminal in seperate section. Also shows browsers."
   (interactive)
   (consult--multi
-   '(+my/consult--workspace-source +my/consult--terminal-source +my/consult--eaf-source))
-  :requre-match
-  (confirm-nonexistent-file-or-buffer)
-  :prompt
-  (format "Switch to buffer (%s)" (+workspace-current-name))
-  :sort nil
-  :history 'consult--buffer-history
+   '(+my/consult--workspace-source +my/consult--terminal-source +my/consult--eaf-source)
+   :require-match
+   (confirm-nonexistent-file-or-buffer)
+   :prompt (format "Switch to buffer (%s): "
+                   (+workspace-current-name))
+   :history 'consult--buffer-history
+   :sort nil)
   )
 
-;; EOF
+(after! vertico-posframe
+  (setq vertico-posframe-parameters
+        '((left-fringe . 8)
+          (right-fringe . 8)))
+  ;; uncomment to enable vscode-like command palette (note doesn't work with eaf)
+  ;; (vertico-posframe-mode 1)
+  (setq vertico-posframe-poshandler 'posframe-poshandler-frame-top-center)
+  )
+
+(use-package! sidekick
+  :ensure t
+  :hook (sidekick-mode . (lambda () (require 'sidekick-evil)))
+  :config
+  (setq sidekick-window-hide-footer t)
+  (setq sidekick-window-take-focus t)
+  )
 (add-hook! 'Man-mode-hook '(lambda () (persp-add-buffer (current-buffer))))
+
+(defun remove-scratch-buffer ()
+  (if (get-buffer "*scratch*")
+      (kill-buffer "*scratch*")))
+(add-hook 'after-change-major-mode-hook 'remove-scratch-buffer)
+
+(defun +my/connect-remote-ssh()
+        (interactive)
+        (dired (format "/ssh:%s@%s:"
+                        (read-string "User: ")
+                        (read-string "Host: "))))
+
+(setq projectile-indexing-method 'native)
+(setq projectile-enable-caching t)
+; EOF
