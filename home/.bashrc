@@ -204,13 +204,22 @@ alias emacst='emacsclient -c -t '
 alias codet=emacst
 alias emacs-server='/usr/bin/emacs'
 alias restart-emacs='systemctl restart emacs --user ; systemctl status --user emacs'
-alias code="emacsclient -a 'emacs-server' -n"
+
+function code() {
+    local e=$(emacsclient -n -e "(> (length (frame-list)) 1)")
+    if [ "$e" = "t" ]; then
+        emacsclient -n -a "" "$@"
+    else
+        emacsclient -c -n -a "" "$@"
+    fi
+}
+
 alias emacs='code'
 alias vcode='/usr/bin/code'
 
-function man() {
-    emacst -e "(man \"$*\")"
-}
+# function man() {
+#     emacst -e "(man \"$*\")"
+# }
 
 [ -f /opt/asdf-vm/asdf.sh ] && source /opt/asdf-vm/asdf.sh
 
@@ -226,4 +235,10 @@ if command -v lvim >/dev/null; then
     alias vim='lvim'
     alias nvim='lvim'
     MANPAGER='lvim +Man!'
+fi
+
+if command -v rmtrash >/dev/null; then
+    alias rm='rmtrash'
+    alias rmdir='rmdirtrash'
+    alias sudo='sudo '
 fi
