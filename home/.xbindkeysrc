@@ -1,5 +1,5 @@
-# For the benefit of emacs users: -*- shell-script -*-
-# eval: (format-all-mode -1)
+# For the benefit of emacs users: -*- mode: sh; eval: (format-all-mode -1)-*-
+#
 ###########################
 # xbindkeys configuration #
 ###########################

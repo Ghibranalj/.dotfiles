@@ -136,6 +136,7 @@ Doom Emacs" "\n" t)))
   :desc "Compile" "C" #'compile
   :desc "Format buffer" "f" #'+format/buffer
   :desc "List all occurance" "l" #'helm-swoop
+  :desc "list all matches in project" "m" #'sidekick-at-point
   )
 
  (:prefix ("o" . "open")
@@ -202,6 +203,7 @@ Doom Emacs" "\n" t)))
   (eaf-setq eaf-browser-enable-bookmark "true")
   (eaf-setq eaf-browser-enable-adblocker "true")
   (defvar eaf-browser-default-search-engine "google")
+  (add-hook! 'eaf-mode-hook '(lambda () (persp-add-buffer (current-buffer))))
   )
 
 (defun +my/open-browser(url &optional args)
@@ -245,7 +247,9 @@ Doom Emacs" "\n" t)))
           (mapcar #'buffer-name
                   (seq-filter
                    (lambda (x)
-                     (eq (buffer-local-value 'major-mode x) 'eaf-mode))
+                     (and (eq (buffer-local-value 'major-mode x) 'eaf-mode)
+                          (+workspace-contains-buffer-p x)
+                          ))
                    (buffer-list))))))
 
 
@@ -270,7 +274,7 @@ Doom Emacs" "\n" t)))
                    (buffer-list))))))
 
 (defvar +my/consult--workspace-source
-  (list :name    "Current workspace"
+  (list :name    "Buffers"
         :category 'buffer
         :narrow   ?o
         :face     'consult-buffer
@@ -285,6 +289,7 @@ Doom Emacs" "\n" t)))
                      (and
                       (+workspace-contains-buffer-p x)
                       (not (eq (buffer-local-value 'major-mode x) 'vterm-mode))
+                      (not (eq (buffer-local-value 'major-mode x) 'eaf-mode))
                       )
                      )
                    (buffer-list))))))
@@ -295,6 +300,7 @@ Doom Emacs" "\n" t)))
   (add-to-list 'consult-buffer-sources '+my/consult--workspace-source 'append)
   )
 
+(require 'consult)
 (defun +my/consult-browser ()
   "Open eaf-browser."
   (interactive)
@@ -320,3 +326,4 @@ Shows terminal in seperate section. Also shows browsers."
   )
 
 ;; EOF
+(add-hook! 'Man-mode-hook '(lambda () (persp-add-buffer (current-buffer))))
