@@ -15,6 +15,7 @@ start spotify
 # start whatsapp
 start noisetorch -s alsa_input.usb-Generalplus_Usb_Audio_Device-00.mono-fallback -i
 # start /usr/bin/emacs --daemon
+emacsclient --create-frame --no-wait
 
 function link-usb() {
 	if [[ $(ls /run/media/$USER/) == "" ]]; then

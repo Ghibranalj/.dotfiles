@@ -1,6 +1,7 @@
+;;; ../.dotfiles/doom/.doom.d/config.el -*- lexical-binding: t; -*-
 
 (defun +my/custom-ascii ()
-"To display my ascii art to doom splash."
+  "To display my ascii art to doom splash."
   (mapc (lambda (line)
           (insert (propertize (+doom-dashboard--center +doom-dashboard--width line)
                               'face 'doom-dashboard-banner) " ")
@@ -122,41 +123,6 @@ Doom Emacs" "\n" t)))
   '(minimap-font-face :height 12 :group 'minimap))
 ;; (minimap-mode 1)
 
-(map!
- :leader
- :desc "Switch buffer in workspace" "," #'+my/consult-workspace
- (:prefix ("b" . "buffer")
-  :desc "Format buffer" "f" #'+format/buffer
-  :desc "Switch to browser" "w" #'+my/consult-browser
-  :desc "Switch to terminal in workspace" "t" #'+my/consult-terminal
-  )
-
- (:prefix ("c" . "code")
-  :desc "Comment line" "c" #'+my/comment-or-uncomment
-  :desc "Compile" "C" #'compile
-  :desc "Format buffer" "f" #'+format/buffer
-  :desc "List all occurance" "l" #'helm-swoop
-  :desc "list all matches in project" "m" #'sidekick-at-point
-  )
-
- (:prefix ("o" . "open")
-  :desc "Open manpage" "m" #'man
-  :desc "Open browser" "w" #'eaf-open-browser-with-history
-  :desc "Open browser bookmark" "W" #'eaf-open-bookmark
-  :desc "Open google" "g" #'+my/google-search
-  :desc "Open github" "G" #'+my/open-github
-  :desc "Open ssh connection" "s" #'+my/connect-remote-ssh
-  )
-
- (:prefix ("t" . "toggle")
-  :desc "Toggle minimap" "m" #'minimap-mode
-  :desc "Toggle zen-mode" "z" #'+zen/toggle)
-
- (:prefix ("e" . "eval")
-  :desc "Evaluate buffer" "b" #'eval-buffer
-  :desc "Evaluate region" "r" #'eval-region
-  :desc "Evaluate line" "l" #'+my/eval-line)
- )
 
 ;; man pages
 (setq Man-notify-method 'pushy)
@@ -205,6 +171,7 @@ Doom Emacs" "\n" t)))
   (eaf-setq eaf-browser-enable-adblocker "true")
   (defvar eaf-browser-default-search-engine "google")
   (add-hook! 'eaf-mode-hook '(lambda () (persp-add-buffer (current-buffer))))
+  (add-hook! 'eaf-mode-hook 'hide-mode-line-mode)
   )
 
 (defun +my/open-browser(url &optional args)
@@ -347,14 +314,20 @@ Shows terminal in seperate section. Also shows browsers."
 (defun remove-scratch-buffer ()
   (if (get-buffer "*scratch*")
       (kill-buffer "*scratch*")))
-(add-hook 'after-change-major-mode-hook 'remove-scratch-buffer)
+;; (add-hook 'after-change-major-mode-hook 'remove-scratch-buffer)
 
 (defun +my/connect-remote-ssh()
-        (interactive)
-        (dired (format "/ssh:%s@%s:"
-                        (read-string "User: ")
-                        (read-string "Host: "))))
+  (interactive)
+  (dired (format "/ssh:%s@%s:"
+                 (read-string "User: ")
+                 (read-string "Host: "))))
 
 (setq projectile-indexing-method 'native)
 (setq projectile-enable-caching t)
-; EOF
+
+(defun +my/save-current-workspace ()
+  "Save current workspace."
+  (interactive)
+  (+workspace/save (+workspace-current-name)))
+
+(load! "keymap.el")
