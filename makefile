@@ -1,6 +1,6 @@
-.PHONY: all exec conf optimus udev keybind emacs gesture stow sync dconf-dump vim
+.PHONY: all exec conf optimus udev keybind emacs gesture stow sync dconf-dump vim systemd
 
-all: stow exec conf emacs vim
+all: stow exec conf emacs vim systemd
 
 exec:
 	./exec/app-arch.sh
@@ -41,3 +41,7 @@ bin:
 
 dconf-dump:
 	dconf dump / > data/dconf-configs
+
+systemd:
+	ln -s systemd/user/*.service ~/.config/systemd/user/
+    systemctl enable --user --now emacs emacs-term

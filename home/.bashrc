@@ -200,26 +200,26 @@ function gitp() {
 }
 
 # Emacs aliases
-alias emacst='emacsclient -c -t '
+alias emacst='emacsclient -c -t -s term'
 alias codet=emacst
 alias emacs-server='/usr/bin/emacs'
 alias restart-emacs='systemctl restart emacs --user ; systemctl status --user emacs'
 
 function code() {
-    local e=$(emacsclient -n -e "(> (length (frame-list)) 1)")
+    local e=$(emacsclient -n -e -s server "(> (length (frame-list)) 1)")
     if [ "$e" = "t" ]; then
-        emacsclient -n -a "" "$@"
+        emacsclient -n -s server -a "" "$@"
     else
-        emacsclient -c -n -a "" "$@"
+        emacsclient -c -s server -n -a "" "$@"
     fi
 }
 
 alias emacs='code'
 alias vcode='/usr/bin/code'
 
-# function man() {
-#     emacst -e "(man \"$*\")"
-# }
+function man() {
+    emacst -s term -e "(man \"$*\")"
+}
 
 [ -f /opt/asdf-vm/asdf.sh ] && source /opt/asdf-vm/asdf.sh
 
