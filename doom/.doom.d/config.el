@@ -314,7 +314,13 @@ Shows terminal in seperate section. Also shows browsers."
 (defun remove-scratch-buffer ()
   (if (get-buffer "*scratch*")
       (kill-buffer "*scratch*")))
-;; (add-hook 'after-change-major-mode-hook 'remove-scratch-buffer)
+
+(if (and (daemonp) (string= (daemonp) "term"))
+    (progn
+      (add-hook 'after-change-major-mode-hook 'remove-scratch-buffer)
+      (add-hook 'server-after-make-frame-hook 'remove-scratch-buffer)
+      )
+  )
 
 (defun +my/connect-remote-ssh()
   (interactive)
@@ -329,5 +335,14 @@ Shows terminal in seperate section. Also shows browsers."
   "Save current workspace."
   (interactive)
   (+workspace/save (+workspace-current-name)))
+
+
+(setq dired-listing-switches "-agho --group-directories-first")
+(evil-collection-define-key 'normal 'dired-mode-map
+  "h" 'dired-up-directory
+  "l" 'dired-find-file
+  ;; "<right>" 'dired-up-directory
+  ;; "<left>" 'dired-find-file
+  )
 
 (load! "keymap.el")
