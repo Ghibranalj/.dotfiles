@@ -303,7 +303,6 @@ Shows terminal in seperate section. Also shows browsers."
   )
 
 (use-package! sidekick
-  :ensure t
   :hook (sidekick-mode . (lambda () (require 'sidekick-evil)))
   :config
   (setq sidekick-window-hide-footer t)

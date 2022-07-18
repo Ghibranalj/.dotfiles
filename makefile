@@ -43,5 +43,5 @@ dconf-dump:
 	dconf dump / > data/dconf-configs
 
 systemd:
-	ln -s systemd/user/*.service ~/.config/systemd/user/
-    systemctl enable --user --now emacs emacs-term
+	ln -P systemd/user/*.service ~/.config/systemd/user/
+	systemctl enable --user --now emacs emacs-term
