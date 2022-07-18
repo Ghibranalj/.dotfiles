@@ -141,7 +141,6 @@ Doom Emacs" "\n" t)))
 ;; misc hook
 (use-package! company-box
   :hook (company-mode . company-box-mode))
-(add-hook! 'prog-mode-hook #'format-all-mode)
 
 (setq lsp-ui-sideline-show-diagnostics t)
 (setq lsp-ui-sideline-show-hover t)
