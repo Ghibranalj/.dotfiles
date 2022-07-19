@@ -166,6 +166,8 @@ Doom Emacs" "\n" t)))
   (eval-region (line-beginning-position) (line-end-position)))
 
 (require 'persist)
+(add-hook! 'after-delete-frame-functions #'(lambda (frame) (persist--save-all)))
+
 ;; eaf and browser
 (defun +my/setup-browser ()
   "Setup eaf and browser."
@@ -352,7 +354,7 @@ Shows terminal in seperate section. Also shows browsers."
 (defun +my/connect-remote-ssh()
   (interactive)
   (dired (format "/ssh:%s@%s:"
-                 (+my/read-string "Username: " '+my/ssh-user-history)
+                 (+my/read-string "User: " '+my/ssh-user-history)
                  (+my/read-string "Host: " '+my/ssh-host-history))))
 
 (setq projectile-indexing-method 'native)
@@ -372,13 +374,18 @@ Shows terminal in seperate section. Also shows browsers."
   )
 (load! "keymap.el")
 
-(after! ivy
+(defun +my/setup-ivy ()
   (ivy-posframe-mode 1)
-  (define-key ivy-minibuffer-map (kbd "<escape>") 'minibuffer-keyboard-quit)
+  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center)))
   (setq ivy-posframe-parameters
         '((left-fringe . 10)
           (right-fringe . 10)))
+  (setq ivy-posframe-border-width 2)
+  (set-face-attribute 'ivy-posframe-border nil :background "#585858")
+  (set-face-attribute 'ivy-posframe nil :foreground "#212121")
+  (define-key ivy-minibuffer-map (kbd "<escape>") 'minibuffer-keyboard-quit)
   )
+(add-hook! '+my/new-gui-frame-hook '+my/setup-ivy)
 
 (defun +my/read-string (prompt &optional hist)
   "Read a string from the minibuffer with PROMPT. History is stored in HIST."
@@ -386,4 +393,3 @@ Shows terminal in seperate section. Also shows browsers."
     (if (string= string "")
         nil
       string)))
-
