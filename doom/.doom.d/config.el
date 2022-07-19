@@ -1,4 +1,5 @@
 ;;; ../.dotfiles/doom/.doom.d/config.el -*- lexical-binding: t; -*-
+;;;
 
 (defun +my/custom-ascii ()
   "To display my ascii art to doom splash."
@@ -216,6 +217,13 @@ Doom Emacs" "\n" t)))
                            (buffer-substring (region-beginning) (region-end))
                          (+my/read-string "Search Google: " '+my/google-search-history))))))
 
+(defun +my/clear-google-search-history ()
+  "Clear google search history."
+  (interactive)
+  (persist-reset '+my/google-search-history)
+  (setq +my/google-search-history nil)
+  )
+
 (defun +my/open-github ()
   "Open github in eaf-browser."
   (interactive)
@@ -353,9 +361,9 @@ Shows terminal in seperate section. Also shows browsers."
 
 (defun +my/connect-remote-ssh()
   (interactive)
-  (dired (format "/ssh:%s@%s:"
-                 (+my/read-string "User: " '+my/ssh-user-history)
-                 (+my/read-string "Host: " '+my/ssh-host-history))))
+  (dired (format "/scp:%s@%s:"
+                 (+my/read-string "User (ssh): " '+my/ssh-user-history)
+                 (+my/read-string "Host (ssh): " '+my/ssh-host-history))))
 
 (setq projectile-indexing-method 'native)
 (setq projectile-enable-caching t)
@@ -375,16 +383,21 @@ Shows terminal in seperate section. Also shows browsers."
 (load! "keymap.el")
 
 (defun +my/setup-ivy ()
+  (require 'ivy)
+  (require 'ivy-posframe)
+
   (ivy-posframe-mode 1)
-  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center)))
-  (setq ivy-posframe-parameters
-        '((left-fringe . 10)
-          (right-fringe . 10)))
   (setq ivy-posframe-border-width 2)
   (set-face-attribute 'ivy-posframe-border nil :background "#585858")
-  (set-face-attribute 'ivy-posframe nil :foreground "#212121")
+  (set-face-attribute 'ivy-posframe nil :background "#212121" :foreground "#EEFFFF")
   (define-key ivy-minibuffer-map (kbd "<escape>") 'minibuffer-keyboard-quit)
+
+  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center)))
+  (setq ivy-posframe-parameters
+        '((left-fringe . 8)
+          (right-fringe . 8)))
   )
+
 (add-hook! '+my/new-gui-frame-hook '+my/setup-ivy)
 
 (defun +my/read-string (prompt &optional hist)
