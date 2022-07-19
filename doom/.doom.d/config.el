@@ -43,14 +43,14 @@ Doom Emacs" "\n" t)))
 (super-save-mode +1)
 (setq super-save-auto-save-when-idle t)
 
+
+(defvar +my/new-frame-hook nil
+  "Hook run after a new frame is created.")
+
 (defun on-new-frame ()
   "This is executed when a new frame is created."
-  ;; (+treemacs/toggle)
-  ;; (+neotree/open)
-  (if window-system
-      (+my/setup-browser))
-  ;; (copilot-diagnose)
-  )
+  (run-hooks '+my/new-frame-hook))
+
 ;; Running on daemon startup
 (if (daemonp)
     (add-hook 'after-make-frame-functions (lambda (frame)
@@ -173,6 +173,9 @@ Doom Emacs" "\n" t)))
   (add-hook! 'eaf-mode-hook 'hide-mode-line-mode)
   )
 
+(add-hook! '+my/new-frame-hook #'(lambda()
+                                   (if window-system
+                                       (+my/setup-browser))))
 (defun +my/open-browser(url &optional args)
   "Open URL with ARGS on eaf-browser when not terminal, chrome when terminal."
   (if window-system
@@ -300,6 +303,9 @@ Shows terminal in seperate section. Also shows browsers."
   ;; (vertico-posframe-mode 1)
   (setq vertico-posframe-poshandler 'posframe-poshandler-frame-top-center)
   )
+(add-hook! '+my/new-frame-hook '(lambda()
+                                  (if window-system
+                                      (vertico-posframe-mode 1))))
 
 (use-package! sidekick
   :hook (sidekick-mode . (lambda () (require 'sidekick-evil)))
@@ -342,5 +348,4 @@ Shows terminal in seperate section. Also shows browsers."
   ;; "<right>" 'dired-up-directory
   ;; "<left>" 'dired-find-file
   )
-
 (load! "keymap.el")
