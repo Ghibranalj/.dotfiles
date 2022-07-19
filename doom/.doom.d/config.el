@@ -165,7 +165,7 @@ Doom Emacs" "\n" t)))
   (interactive)
   (eval-region (line-beginning-position) (line-end-position)))
 
-
+(require 'persist)
 ;; eaf and browser
 (defun +my/setup-browser ()
   "Setup eaf and browser."
@@ -386,3 +386,4 @@ Shows terminal in seperate section. Also shows browsers."
     (if (string= string "")
         nil
       string)))
+
