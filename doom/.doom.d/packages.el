@@ -90,6 +90,10 @@
 
 
 ;; uncomment this for vscde-like command palette
-;; (package! vertico-posframe)
-
+(package! vertico-posframe)
+;; (package! which-key-posframe)
 ;;EOF
+;; (package! dirvish)
+(package! ivy)
+(package! ivy-posframe)
+(package! persist)

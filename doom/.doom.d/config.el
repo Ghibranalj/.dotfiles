@@ -43,13 +43,20 @@ Doom Emacs" "\n" t)))
 (super-save-mode +1)
 (setq super-save-auto-save-when-idle t)
 
-
 (defvar +my/new-frame-hook nil
-  "Hook run after a new frame is created.")
+  "Hook run after a any new frame is created.")
+
+(defvar +my/new-gui-frame-hook nil
+  "Hook run after a any new gui frame is created.")
 
 (defun on-new-frame ()
   "This is executed when a new frame is created."
-  (run-hooks '+my/new-frame-hook))
+  (run-hooks '+my/new-frame-hook)
+  (if window-system
+      (run-hooks '+my/new-gui-frame-hook))
+
+  )
+
 
 ;; Running on daemon startup
 (if (daemonp)
@@ -166,16 +173,24 @@ Doom Emacs" "\n" t)))
   (add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
   (require 'eaf)
   (require 'eaf-browser)
+  (require 'eaf-demo)
   (eaf-setq eaf-browser-enable-bookmark "true")
   (eaf-setq eaf-browser-enable-adblocker "true")
   (defvar eaf-browser-default-search-engine "google")
   (add-hook! 'eaf-mode-hook '(lambda () (persp-add-buffer (current-buffer))))
   (add-hook! 'eaf-mode-hook 'hide-mode-line-mode)
-  )
 
-(add-hook! '+my/new-frame-hook #'(lambda()
-                                   (if window-system
-                                       (+my/setup-browser))))
+  (evil-collection-define-key 'normal 'eaf-mode-map*
+    "j" 'eaf-send-down-key
+    "k" 'eaf-send-up-key
+    "h" 'eaf-send-left-key
+    "l" 'eaf-send-right-key
+    "Q" 'kill-current-buffer
+    )
+  )
+(add-hook! '+my/new-gui-frame-hook '+my/setup-browser)
+
+
 (defun +my/open-browser(url &optional args)
   "Open URL with ARGS on eaf-browser when not terminal, chrome when terminal."
   (if window-system
@@ -185,6 +200,10 @@ Doom Emacs" "\n" t)))
 
 (setq browse-url-browser-function '+my/open-browser)
 
+;; TODO save this across emacs session
+(persist-defvar +my/google-search-history nil
+                "History for google search.")
+
 (defun +my/google-search ()
   "Search Google inside eaf-browser."
   (interactive)
@@ -193,7 +212,7 @@ Doom Emacs" "\n" t)))
     "https://www.google.com/search?q="
     (url-hexify-string (if mark-active
                            (buffer-substring (region-beginning) (region-end))
-                         (read-string "Search Google for: "))))))
+                         (+my/read-string "Search Google: " '+my/google-search-history))))))
 
 (defun +my/open-github ()
   "Open github in eaf-browser."
@@ -300,12 +319,11 @@ Shows terminal in seperate section. Also shows browsers."
         '((left-fringe . 8)
           (right-fringe . 8)))
   ;; uncomment to enable vscode-like command palette (note doesn't work with eaf)
-  ;; (vertico-posframe-mode 1)
+  ;; (vertico-posframe-mode 1
   (setq vertico-posframe-poshandler 'posframe-poshandler-frame-top-center)
   )
-(add-hook! '+my/new-frame-hook '(lambda()
-                                  (if window-system
-                                      (vertico-posframe-mode 1))))
+
+(add-hook! '+my/new-gui-frame-hook 'vertico-posframe-mode)
 
 (use-package! sidekick
   :hook (sidekick-mode . (lambda () (require 'sidekick-evil)))
@@ -326,11 +344,16 @@ Shows terminal in seperate section. Also shows browsers."
       )
   )
 
+(persist-defvar +my/ssh-user-history nil
+                "History for ssh user.")
+(persist-defvar +my/ssh-host-history nil
+                "History for ssh host.")
+
 (defun +my/connect-remote-ssh()
   (interactive)
   (dired (format "/ssh:%s@%s:"
-                 (read-string "User: ")
-                 (read-string "Host: "))))
+                 (+my/read-string "Username: " '+my/ssh-user-history)
+                 (+my/read-string "Host: " '+my/ssh-host-history))))
 
 (setq projectile-indexing-method 'native)
 (setq projectile-enable-caching t)
@@ -340,7 +363,6 @@ Shows terminal in seperate section. Also shows browsers."
   (interactive)
   (+workspace/save (+workspace-current-name)))
 
-
 (setq dired-listing-switches "-agho --group-directories-first")
 (evil-collection-define-key 'normal 'dired-mode-map
   "h" 'dired-up-directory
@@ -349,3 +371,18 @@ Shows terminal in seperate section. Also shows browsers."
   ;; "<left>" 'dired-find-file
   )
 (load! "keymap.el")
+
+(after! ivy
+  (ivy-posframe-mode 1)
+  (define-key ivy-minibuffer-map (kbd "<escape>") 'minibuffer-keyboard-quit)
+  (setq ivy-posframe-parameters
+        '((left-fringe . 10)
+          (right-fringe . 10)))
+  )
+
+(defun +my/read-string (prompt &optional hist)
+  "Read a string from the minibuffer with PROMPT. History is stored in HIST."
+  (let ((string (ivy-read prompt (symbol-value hist) :history hist :require-match nil)))
+    (if (string= string "")
+        nil
+      string)))

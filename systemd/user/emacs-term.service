@@ -1,13 +1,13 @@
 [Unit]
-Description=Emacs text editor
+Description=Emacs text editor (terminal)
 Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/emacs --daemon=term --debug-init
-ExecStop=/usr/bin/emacsclient --eval "(kill-emacs)"
+ExecStart=/usr/bin/emacs --daemon=term
+ExecStop=/usr/bin/emacsclient --eval -s term "(kill-emacs)"
 Environment=SSH_AUTH_SOCK=%t/keyring/ssh
-Restart=on-failure
+Restart=always
 
 [Install]
 WantedBy=default.target
