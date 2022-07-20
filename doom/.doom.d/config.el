@@ -35,7 +35,7 @@ Doom Emacs" "\n" t)))
                                 ))
 (setq doom-big-font (font-spec
                      :family "Source Code Pro"
-                     :size 24
+                     :size 20
                      ))
 
 ;; Auto save
@@ -57,7 +57,6 @@ Doom Emacs" "\n" t)))
       (run-hooks '+my/new-gui-frame-hook))
 
   )
-
 
 ;; Running on daemon startup
 (if (daemonp)
@@ -180,7 +179,7 @@ Doom Emacs" "\n" t)))
   (eaf-setq eaf-browser-enable-bookmark "true")
   (eaf-setq eaf-browser-enable-adblocker "true")
   (defvar eaf-browser-default-search-engine "google")
-  (add-hook! 'eaf-mode-hook '(lambda () (persp-add-buffer (current-buffer))))
+  (add-hook! 'eaf-mode-hook '+my/add-buffer-to-project)
   (add-hook! 'eaf-mode-hook 'hide-mode-line-mode)
 
   (evil-collection-define-key 'normal 'eaf-mode-map*
@@ -223,7 +222,6 @@ Doom Emacs" "\n" t)))
   (persist-reset '+my/google-search-history)
   (setq +my/google-search-history nil)
   )
-
 (defun +my/open-github ()
   "Open github in eaf-browser."
   (interactive)
@@ -328,8 +326,6 @@ Shows terminal in seperate section. Also shows browsers."
   (setq vertico-posframe-parameters
         '((left-fringe . 8)
           (right-fringe . 8)))
-  ;; uncomment to enable vscode-like command palette (note doesn't work with eaf)
-  ;; (vertico-posframe-mode 1
   (setq vertico-posframe-poshandler 'posframe-poshandler-frame-top-center)
   )
 
@@ -341,7 +337,7 @@ Shows terminal in seperate section. Also shows browsers."
   (setq sidekick-window-hide-footer t)
   (setq sidekick-window-take-focus t)
   )
-(add-hook! 'Man-mode-hook '(lambda () (persp-add-buffer (current-buffer))))
+(add-hook! 'Man-mode-hook '+my/add-buffer-to-project)
 
 (defun remove-scratch-buffer ()
   (if (get-buffer "*scratch*")
@@ -385,13 +381,11 @@ Shows terminal in seperate section. Also shows browsers."
 (defun +my/setup-ivy ()
   (require 'ivy)
   (require 'ivy-posframe)
-
   (ivy-posframe-mode 1)
   (setq ivy-posframe-border-width 2)
   (set-face-attribute 'ivy-posframe-border nil :background "#585858")
   (set-face-attribute 'ivy-posframe nil :background "#212121" :foreground "#EEFFFF")
   (define-key ivy-minibuffer-map (kbd "<escape>") 'minibuffer-keyboard-quit)
-
   (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center)))
   (setq ivy-posframe-parameters
         '((left-fringe . 8)
@@ -400,9 +394,32 @@ Shows terminal in seperate section. Also shows browsers."
 
 (add-hook! '+my/new-gui-frame-hook '+my/setup-ivy)
 
+
 (defun +my/read-string (prompt &optional hist)
   "Read a string from the minibuffer with PROMPT. History is stored in HIST."
   (let ((string (ivy-read prompt (symbol-value hist) :history hist :require-match nil)))
     (if (string= string "")
         nil
       string)))
+
+(defun +my/add-buffer-to-project ()
+  "Add current buffer to current project."
+  (interactive)
+  (persp-add-buffer (current-buffer))
+  )
+
+(add-hook! 'daemons-mode-hook '+my/add-buffer-to-project)
+(add-hook! 'daemons-output-mode-hook '+my/add-buffer-to-project)
+
+(evil-collection-define-key 'normal 'daemons-mode-map
+  "<ret>" 'daemons-status-at-point
+  "s" 'daemons-start-at-point
+  "S" 'daemons-stop-at-point
+  "r" 'daemons-reload-at-point
+  "R" 'daemons-restart-at-point
+  "e" 'daemons-enable-at-point
+  "d" 'daemons-disable-at-point
+  "t" 'daemons-systemd-toggle-user
+  )
+
+(setq vterm-always-compile-module t)

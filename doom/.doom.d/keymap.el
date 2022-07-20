@@ -6,8 +6,9 @@
  :nv  "M-<up>" #'drag-stuff-up
  :nv "M-<down>" #'drag-stuff-down
 
+ :ni "M-<mouse-1>"  #'mc/add-cursor-on-click
 
-:ni "M-<mouse-1>"  #'mc/add-cursor-on-click
+ "C-/" #'+my/comment-or-uncomment
 
  :leader
  :desc "Switch buffer in workspace" "," #'+my/consult-workspace
@@ -33,6 +34,7 @@
   :desc "Open github" "G" #'+my/open-github
   :desc "Open ssh connection" "s" #'+my/connect-remote-ssh
   :desc "open dired" "/" #'dired-jump
+  :desc "Open init daemon" "i" #'daemons
   )
 
  (:prefix ("t" . "toggle")
@@ -44,6 +46,7 @@
   :desc "Evaluate buffer" "b" #'eval-buffer
   :desc "Evaluate region" "r" #'eval-region
   :desc "Evaluate line" "l" #'+my/eval-line)
+
  (:prefix ("TAB" . "workspace")
   :desc "Save current worksppace to file" "S" #'+my/save-current-workspace
   )
