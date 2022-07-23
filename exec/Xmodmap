@@ -21,3 +21,4 @@ keycode  41 = f F Escape F
 keycode   9 = NoSymbol NoSymbol Escape
 
 keycode 57 = n N underscore underscore
+keycode  58 = m minus minus M
