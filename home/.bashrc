@@ -205,6 +205,9 @@ alias codet=emacst
 alias emacs-server='/usr/bin/emacs'
 alias restart-emacs='systemctl restart emacs --user ; systemctl status --user emacs'
 
+alias dbg-emacs='emacs-server --debug-init --fg-daemon=debug'
+alias kill-emacs="emacsclient -e  '(kill-emacs)'"
+
 function code() {
     local e=$(emacsclient -n -e -s server "(> (length (frame-list)) 1)")
     if [ "$e" = "t" ]; then

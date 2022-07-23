@@ -51,6 +51,7 @@
 
 (package! company-tabnine
   :recipe (:host github :repo "TommyX12/company-tabnine"))
+
 (package! copilot
   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
 (package! company-box
@@ -59,11 +60,6 @@
            :repo "sebastiencs/company-box"
            :files ("*.el" )))
 (package! emmet-mode)
-(package! super-save
-  :recipe (
-           :host github
-           :repo "bbatsov/super-save"
-           :files ("*.el")))
 (package! beacon
   :recipe (
            :host github

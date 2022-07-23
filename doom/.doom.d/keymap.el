@@ -1,6 +1,7 @@
 ;;; ../.dotfiles/doom/.doom.d/keymap.el -*- lexical-binding: t; -*-
 
 (map!
+
  :nv  "M-k" #'drag-stuff-up
  :nv "M-j" #'drag-stuff-down
  :nv  "M-<up>" #'drag-stuff-up
@@ -8,6 +9,8 @@
 
  :ni "M-<mouse-1>"  #'mc/add-cursor-on-click
 
+ :n "<f11>" #'evil-window-left
+ :n "<f12>" #'evil-window-right
  "C-/" #'+my/comment-or-uncomment
 
  :leader
@@ -16,7 +19,7 @@
   :desc "Format buffer" "f" #'+format/buffer
   :desc "Switch to browser" "w" #'+my/consult-browser
   :desc "Switch to terminal in workspace" "t" #'+my/consult-terminal
-  )
+  :desc "Search current buffer" "s" #'+default/search-buffer)
 
  (:prefix ("c" . "code")
   :desc "Comment line" "c" #'+my/comment-or-uncomment
@@ -45,10 +48,12 @@
  (:prefix ("e" . "eval")
   :desc "Evaluate buffer" "b" #'eval-buffer
   :desc "Evaluate region" "r" #'eval-region
-  :desc "Evaluate line" "l" #'+my/eval-line)
+  :desc "Evaluate line" "l" #'+my/eval-line
+  :desc "Evaluate last sexpr" "e" #'eval-last-sexp)
 
  (:prefix ("TAB" . "workspace")
   :desc "Save current worksppace to file" "S" #'+my/save-current-workspace
+  :desc "Delete other workspace" "D" #'+my/delete-other-workspace
   )
       ;;; <leader> m --- multiple cursors
  (:when (featurep! :editor multiple-cursors)
@@ -65,4 +70,8 @@
    :desc "Mark tag"           "s"         #'mc/mark-sgml-tag-pair
    :desc "Mark in defun"      "d"         #'mc/mark-all-like-this-in-defun
    :desc "Add cursor w/mouse" "<mouse-1>" #'mc/add-cursor-on-click))
+
+
+(:prefix-map ("s" . "search")
+ :desc "find file in current directory" "f" #'+my/find-file-in-directory)
  )

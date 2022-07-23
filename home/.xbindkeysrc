@@ -76,3 +76,7 @@ keystate_capslock = enable
 "emacsclient --create-frame"
     m:0xc + c:36
     Control+Alt + Return
+
+"rofi -show run -modi run"
+    m:0xc + c:53
+    Control+Alt + x

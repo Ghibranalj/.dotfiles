@@ -1,6 +1,6 @@
 ;;; ../.dotfiles/doom/.doom.d/config.el -*- lexical-binding: t; -*-
-;;;
 
+(load! "keymap.el")
 (defun +my/custom-ascii ()
   "To display my ascii art to doom splash."
   (mapc (lambda (line)
@@ -41,8 +41,18 @@ Doom Emacs" "\n" t)))
 ;; Auto save
 (setq auto-save-default t
       make-backup-files t)
-(super-save-mode +1)
-(setq super-save-auto-save-when-idle t)
+
+(defun +my/save-when-has-file ()
+  (when (buffer-file-name)
+    (save-buffer)))
+
+(defun +my/save-unless-insert (&rest _)
+  (unless (evil-insert-state-p)
+    (+my/save-when-has-file)))
+
+(add-hook! 'after-change-functions '+my/save-unless-insert)
+(add-hook! 'evil-insert-state-exit-hook '+my/save-when-has-file)
+
 
 (defvar +my/new-frame-hook nil
   "Hook run after a any new frame is created.")
@@ -55,7 +65,6 @@ Doom Emacs" "\n" t)))
   (run-hooks '+my/new-frame-hook)
   (if window-system
       (run-hooks '+my/new-gui-frame-hook))
-
   )
 
 ;; Running on daemon startup
@@ -67,7 +76,6 @@ Doom Emacs" "\n" t)))
 
 ;; Scroll bar
 (global-yascroll-bar-mode 1)
-
 
 ;; Tabs
 (after! centaur-tabs
@@ -88,46 +96,6 @@ Doom Emacs" "\n" t)))
   (interactive)
   (or (copilot-accept-completion)
       (indent-relative)))
-
-(defun +copilot/tab-or-complete ()
-  "Copilot completion or complete."
-  (interactive)
-  (or (copilot-accept-completion)
-      (company-complete-common)))
-
-(use-package! copilot
-  :hook (prog-mode . copilot-mode)
-  :bind (("<backtab>" . 'copilot-accept-completion-by-word)
-         ("<backtab>" . 'copilot-accept-completion-by-word)
-         :map company-active-map
-         ("<tab>" . '+copilot/tab-or-complete)
-         ("TAB" . '+copilot/tab-or-complete)
-         :map company-mode-map
-         ("<tab>" . '+copilot/tab)
-         ("TAB" . '+copilot/tab)))
-
-(after! company
-  (setq company-show-quick-access t)
-  (setq company-idle-delay 0)
-  )
-
-(after! magit
-  (setq magit-diff-refine-hunk 'all)
-  )
-
-;; Minimap
-
-(after! minimap
-  (setq
-   ;; Configure minimap position
-   minimap-window-location 'right ; Minimap on the right side
-   minimap-width-fraction 0.0 ; slightly smaller minimap
-   minimap-minimum-width 10 ; also slightly smaller minimap
-   minimap-enlarge-certain-faces nil ; enlarge breaks BlockFont
-   )
-  )
-(custom-set-faces!
-  '(minimap-font-face :height 12 :group 'minimap))
 ;; (minimap-mode 1)
 
 
@@ -143,7 +111,7 @@ Doom Emacs" "\n" t)))
 
 (beacon-mode 1)
 
-(setq scroll-margin 10)
+(setq scroll-margin 16)
 
 ;; misc hook
 (use-package! company-box
@@ -188,6 +156,7 @@ Doom Emacs" "\n" t)))
     "h" 'eaf-send-left-key
     "l" 'eaf-send-right-key
     "Q" 'kill-current-buffer
+    "R" 'eaf-restart-process
     )
   )
 (add-hook! '+my/new-gui-frame-hook '+my/setup-browser)
@@ -225,9 +194,11 @@ Doom Emacs" "\n" t)))
 (defun +my/open-github ()
   "Open github in eaf-browser."
   (interactive)
-  (if (not (eq (magit-git-dir (projectile-project-root)) nil))
+  (require 'browse-at-remote)
+  (if (car (browse-at-remote--get-remotes))
       (+vc/browse-at-remote-homepage)
     (+my/open-browser "github.com")
+
     ))
 
 
@@ -376,7 +347,6 @@ Shows terminal in seperate section. Also shows browsers."
   ;; "<right>" 'dired-up-directory
   ;; "<left>" 'dired-find-file
   )
-(load! "keymap.el")
 
 (defun +my/setup-ivy ()
   (require 'ivy)
@@ -393,7 +363,6 @@ Shows terminal in seperate section. Also shows browsers."
   )
 
 (add-hook! '+my/new-gui-frame-hook '+my/setup-ivy)
-
 
 (defun +my/read-string (prompt &optional hist)
   "Read a string from the minibuffer with PROMPT. History is stored in HIST."
@@ -423,3 +392,58 @@ Shows terminal in seperate section. Also shows browsers."
   )
 
 (setq vterm-always-compile-module t)
+
+(defun +my/delete-other-workspace ()
+  (interactive)
+  (dolist (workspace (+workspace-list-names))
+    (unless (eq workspace (+workspace-current-name))
+      (+workspace/delete workspace))))
+
+(setq rainbow-delimiters-max-face-count 6)
+(custom-set-faces!
+  '(rainbow-delimiters-depth-1-face :foreground "#B23F77")
+  '(rainbow-delimiters-depth-2-face :foreground "#B69457")
+  '(rainbow-delimiters-depth-3-face :foreground "#7BA55D")
+  '(rainbow-delimiters-depth-4-face :foreground "#4F86A0")
+  '(rainbow-delimiters-depth-5-face :foreground "#B55C2B")
+  '(rainbow-delimiters-depth-6-face :foreground "#144BC3")
+  )
+(add-hook! 'prog-mode-hook 'rainbow-delimiters-mode)
+
+(defun my-highlight-function (level responsive display)
+  "Highlight the current line with a face according to LEVEL.
+RESPONSIVE and DISPLAY are ignored."
+
+  (let* ((lvl (% level 6)))
+    (cond
+     ((eq lvl 0) 'rainbow-delimiters-depth-1-face)
+     ((eq lvl 1) 'rainbow-delimiters-depth-2-face)
+     ((eq lvl 2) 'rainbow-delimiters-depth-3-face)
+     ((eq lvl 3) 'rainbow-delimiters-depth-4-face)
+     ((eq lvl 4) 'rainbow-delimiters-depth-5-face)
+     ((eq lvl 5) 'rainbow-delimiters-depth-6-face)
+     )
+    )
+  )
+
+(setq highlight-indent-guides-highlighter-function 'my-highlight-function)
+
+(defun +my/find-file-in-directory (directory)
+  "Finds file in DIRECTORY recursively"
+  (interactive "P")
+  (let*(
+        (dir (or directory default-directory))
+        (relative (file-relative-name dir (getenv "HOME")))
+        (tramp-p (string-match-p "\/scp:" dir))
+        (command (if tramp-p
+                     "find . -type f"
+                   (format "cd %s; find . -type f" dir)))
+        (source (remove "" (split-string
+                            (shell-command-to-string command) "\n")))
+        (file
+         ;; TODO Change this to ivy-read when using ivy
+         (completing-read (format "Find file (~/%s): " relative) source )))
+    (when file
+      (if tramp-p
+          (find-file (expand-file-name file dir))
+        (find-file file)))))
