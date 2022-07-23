@@ -88,3 +88,4 @@
 (package! ivy-posframe)
 (package! persist)
 (package! daemons)
+(package! dired-hide-dotfiles)

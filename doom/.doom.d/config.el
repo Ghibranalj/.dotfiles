@@ -347,11 +347,14 @@ Shows terminal in seperate section. Also shows browsers."
   (+workspace/save (+workspace-current-name)))
 
 (setq dired-listing-switches "-agho --group-directories-first")
+(setq dired-dwim-target t)
+(setq delete-by-moving-to-trash t)
+(add-hook 'dired-mode-hook 'dired-hide-dotfiles-mode)
+
 (evil-collection-define-key 'normal 'dired-mode-map
   "h" 'dired-up-directory
   "l" 'dired-find-file
-  ;; "<right>" 'dired-up-directory
-  ;; "<left>" 'dired-find-file
+  "." 'dired-hide-dotfiles-mode
   )
 
 (defun +my/setup-ivy ()

@@ -80,3 +80,7 @@ keystate_capslock = enable
 "rofi -show run -modi run"
     m:0xc + c:53
     Control+Alt + x
+
+"bash -i -c \"$(alias | awk -F'[ =]' '{print $2}' | rofi -dmenu -p 'Alias')\""
+    m:0xc + c:37
+    Control+Alt + Control_L
