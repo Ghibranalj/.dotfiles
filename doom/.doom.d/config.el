@@ -133,8 +133,6 @@ Doom Emacs" "\n" t)))
   (interactive)
   (eval-region (line-beginning-position) (line-end-position)))
 
-(require 'persist)
-(add-hook! 'after-delete-frame-functions #'(lambda (frame) (persist--save-all)))
 
 ;; eaf and browser
 (defun +my/setup-browser ()
@@ -171,9 +169,6 @@ Doom Emacs" "\n" t)))
 
 (setq browse-url-browser-function '+my/open-browser)
 
-;; TODO save this across emacs session
-(persist-defvar +my/google-search-history nil
-                "History for google search.")
 
 (defun +my/google-search ()
   "Search Google inside eaf-browser."
@@ -321,10 +316,22 @@ Shows terminal in seperate section. Also shows browsers."
       )
   )
 
+(require 'persist)
 (persist-defvar +my/ssh-user-history nil
                 "History for ssh user.")
+
 (persist-defvar +my/ssh-host-history nil
                 "History for ssh host.")
+
+(persist-defvar +my/google-search-history nil
+                "History for google search.")
+(add-hook! '+my/new-frame-hook
+           '(lambda ()
+              (dolist (x '(+my/google-search-history
+                           +my/ssh-host-history
+                           +my/ssh-user-history))
+                (message "%s" x))))
+(add-hook! 'after-delete-frame-functions #'(lambda (frame) (persist--save-all)))
 
 (defun +my/connect-remote-ssh()
   (interactive)

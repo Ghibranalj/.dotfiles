@@ -203,7 +203,7 @@ function gitp() {
 alias emacst='emacsclient -c -t -s term'
 alias codet=emacst
 alias emacs-server='/usr/bin/emacs'
-alias restart-emacs='systemctl restart emacs --user ; systemctl status --user emacs'
+alias restart-emacs='systemctl reload-or-restart emacs --user ; systemctl status --user emacs'
 
 alias dbg-emacs='emacs-server --debug-init --fg-daemon=debug'
 alias kill-emacs="emacsclient -e  '(kill-emacs)'"
