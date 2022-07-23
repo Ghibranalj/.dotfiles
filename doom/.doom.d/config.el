@@ -327,11 +327,10 @@ Shows terminal in seperate section. Also shows browsers."
                 "History for google search.")
 (add-hook! '+my/new-frame-hook
            '(lambda ()
-              (dolist (x '(+my/google-search-history
-                           +my/ssh-host-history
-                           +my/ssh-user-history))
-                (message "%s" x))))
-(add-hook! 'after-delete-frame-functions #'(lambda (frame) (persist--save-all)))
+              (dolist (x persist--symbols)
+                (persist-load x))))
+
+(add-hook! 'after-delete-frame-functions '(lambda (frame) (persist--save-all)))
 
 (defun +my/connect-remote-ssh()
   (interactive)
