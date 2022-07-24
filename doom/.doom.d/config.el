@@ -142,8 +142,9 @@ Doom Emacs" "\n" t)))
   (require 'eaf)
   (require 'eaf-browser)
   (require 'eaf-video-player)
-  (eaf-setq eaf-browser-enable-bookmark "true")
-  (eaf-setq eaf-browser-enable-adblocker "true")
+  (require 'eaf-pdf-viewer)
+  ;; (setq eaf-browser-enable-bookmark t)
+  (setq eaf-browser-enable-adblocker t)
   (defvar eaf-browser-default-search-engine "google")
   (add-hook! 'eaf-mode-hook 'my-add-buffer-to-project)
   (add-hook! 'eaf-mode-hook 'hide-mode-line-mode)
@@ -195,7 +196,7 @@ Doom Emacs" "\n" t)))
 
     ))
 
-
+;; TODO diferenciate between video player and browser maybe?
 (defvar my-consult--eaf-source
   (list :name     "Browser"
         :category 'buffer
@@ -213,6 +214,7 @@ Doom Emacs" "\n" t)))
                           (+workspace-contains-buffer-p x)
                           ))
                    (buffer-list))))))
+
 
 
 (defvar my-consult--terminal-source
@@ -236,7 +238,7 @@ Doom Emacs" "\n" t)))
                    (buffer-list))))))
 
 (defvar my-consult--workspace-source
-  (list :name    "Buffers"
+  (list :name    "Workspace Buffer"
         :category 'buffer
         :narrow   ?o
         :face     'consult-buffer
@@ -252,9 +254,13 @@ Doom Emacs" "\n" t)))
                       (+workspace-contains-buffer-p x)
                       (not (eq (buffer-local-value 'major-mode x) 'vterm-mode))
                       (not (eq (buffer-local-value 'major-mode x) 'eaf-mode))
+                      (or (not (boundp 'minimap-buffer-name))
+                          (not (string= (buffer-name x) minimap-buffer-name )))
                       )
                      )
                    (buffer-list))))))
+
+
 
 (after! consult
   (add-to-list 'consult-buffer-sources 'my-consult--eaf-source 'append)
@@ -338,7 +344,7 @@ Shows terminal in seperate section. Also shows browsers."
                  (my-read-string "Host (ssh): " 'my-ssh-host-history))))
 
 (setq projectile-indexing-method 'native)
-(setq projectile-enable-caching t)
+;; (setq projectile-enable-caching t)
 
 (defun my-save-current-workspace ()
   "Save current workspace."
@@ -439,22 +445,26 @@ RESPONSIVE and DISPLAY are ignored."
 
 (setq highlight-indent-guides-highlighter-function 'my-highlight-function)
 
+
+;; (defun icomplete-exhibit ()
+;;   nil)
+(require 'async-completing-read)
+(setq acr-refresh-completion-ui 'consult-vertico--refresh)
 (defun my-find-file-in-directory (directory)
   "Finds file in DIRECTORY recursively"
   (interactive "P")
   (let*(
+        (shell "bash")
         (dir (or directory default-directory))
         (relative (file-relative-name dir (getenv "HOME")))
         (tramp-p (string-match-p "\/scp:" dir))
         (command (if tramp-p
                      "find . -type f"
                    (format "cd %s; find . -type f" dir)))
-        (source (remove "" (split-string
-                            (shell-command-to-string command) "\n")))
         (file
          ;; TODO Change this to ivy-read when using ivy
-         (completing-read (format "Find file (~/%s): " relative) source )))
-    (when file
-      (if tramp-p
-          (find-file (expand-file-name file dir))
-        (find-file file)))))
+         (async-completing-read (format "Find file (~/%s): " relative) (acr-lines-from-process shell "-c" command))))
+        (when (and file (not (string-match-p  "\*async-completing-read\*" file)))
+          (if tramp-p
+              (find-file (expand-file-name file dir))
+            (find-file file)))))

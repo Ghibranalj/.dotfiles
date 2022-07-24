@@ -89,3 +89,10 @@
 (package! persist)
 (package! daemons)
 (package! dired-hide-dotfiles)
+
+
+(package! async-completing-read
+  :recipe (
+           :type git :host github :repo "oantolin/async-completing-read"
+           :files ("*.el")
+           :branch "master"))
