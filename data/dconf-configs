@@ -1,9 +1,9 @@
 [ca/desrt/dconf-editor]
-saved-pathbar-path='/org/gnome/desktop/wm/keybindings/switch-applications'
-saved-view='/org/gnome/desktop/wm/keybindings/switch-applications'
+saved-pathbar-path='/org/gnome/shell/extensions/pop-shell/tile-reject'
+saved-view='/org/gnome/'
 window-height=1016
 window-is-maximized=false
-window-width=630
+window-width=1268
 
 [com/mattjakeman/ExtensionManager]
 last-used-version='0.3.1'
@@ -12,7 +12,7 @@ last-used-version='0.3.1'
 favorites=['R', '≈']
 
 [org/blueman/general]
-window-properties=[1268, 1064, 1928, 8]
+window-properties=[1262, 1056, 1932, 12]
 
 [org/blueman/plugins/powermanager]
 auto-power-on=@mb true
@@ -56,8 +56,8 @@ video-x-resolution=1280
 video-y-resolution=720
 
 [org/gnome/control-center]
-last-panel='keyboard'
-window-state=(948, 1032, false)
+last-panel='background'
+window-state=(2560, 1080, false)
 
 [org/gnome/desktop/a11y]
 always-show-universal-access-status=false
@@ -74,8 +74,8 @@ folder-children=['Utilities', 'YaST']
 [org/gnome/desktop/background]
 color-shading-type='solid'
 picture-options='zoom'
-picture-uri='file:///usr/share/backgrounds/gnome/blobs-l.svg'
-picture-uri-dark='file:///usr/share/backgrounds/gnome/blobs-d.svg'
+picture-uri='file:///usr/share/backgrounds/gnome/disco-l.jpg'
+picture-uri-dark='file:///usr/share/backgrounds/gnome/disco-d.jpg'
 primary-color='#3465a4'
 secondary-color='#000000'
 
@@ -106,8 +106,11 @@ autorun-x-content-open-folder=@as []
 autorun-x-content-start-app=['x-content/ostree-repository']
 
 [org/gnome/desktop/notifications]
-application-children=['gnome-network-panel', 'spotify', 'discord', 'org-gnome-diskutility', 'google-chrome', 'obsidian', 'org-gnome-nautilus', 'steam', 'net-lutris-lutris', 'lsi-steam', 'org-gnome-extensions-desktop', 'org-gnome-terminal', 'gnome-power-panel', 'visual-studio-code', 'ldtk', 'org-gnome-totem', 'org-gnome-shell-extensions', 'org-gnome-screenshot', 'org-gnome-settings', 'com-mattjakeman-extensionmanager', 'org-gnome-baobab', 'org-gnome-eog', 'emacsclient', 'minecraft-launcher', 'firefox', 'pavucontrol']
+application-children=['gnome-network-panel', 'spotify', 'discord', 'org-gnome-diskutility', 'google-chrome', 'obsidian', 'org-gnome-nautilus', 'steam', 'net-lutris-lutris', 'lsi-steam', 'org-gnome-extensions-desktop', 'org-gnome-terminal', 'gnome-power-panel', 'visual-studio-code', 'ldtk', 'org-gnome-totem', 'org-gnome-shell-extensions', 'org-gnome-screenshot', 'org-gnome-settings', 'com-mattjakeman-extensionmanager', 'org-gnome-baobab', 'org-gnome-eog', 'emacsclient', 'minecraft-launcher', 'firefox', 'pavucontrol', 'org-gnome-cheese', 'ca-desrt-dconf-editor', 'virtualbox']
 show-banners=false
+
+[org/gnome/desktop/notifications/application/ca-desrt-dconf-editor]
+application-id='ca.desrt.dconf-editor.desktop'
 
 [org/gnome/desktop/notifications/application/com-mattjakeman-extensionmanager]
 application-id='com.mattjakeman.ExtensionManager.desktop'
@@ -148,6 +151,9 @@ application-id='obsidian.desktop'
 [org/gnome/desktop/notifications/application/org-gnome-baobab]
 application-id='org.gnome.baobab.desktop'
 
+[org/gnome/desktop/notifications/application/org-gnome-cheese]
+application-id='org.gnome.Cheese.desktop'
+
 [org/gnome/desktop/notifications/application/org-gnome-diskutility]
 application-id='org.gnome.DiskUtility.desktop'
 
@@ -184,6 +190,9 @@ application-id='spotify.desktop'
 [org/gnome/desktop/notifications/application/steam]
 application-id='steam.desktop'
 
+[org/gnome/desktop/notifications/application/virtualbox]
+application-id='virtualbox.desktop'
+
 [org/gnome/desktop/notifications/application/visual-studio-code]
 application-id='visual-studio-code.desktop'
 
@@ -197,7 +206,7 @@ two-finger-scrolling-enabled=true
 [org/gnome/desktop/screensaver]
 color-shading-type='solid'
 picture-options='zoom'
-picture-uri='file:///usr/share/backgrounds/gnome/blobs-l.svg'
+picture-uri='file:///usr/share/backgrounds/gnome/disco-l.jpg'
 primary-color='#3465a4'
 secondary-color='#000000'
 
@@ -335,8 +344,8 @@ sleep-inactive-battery-type='nothing'
 [org/gnome/shell]
 disable-extension-version-validation=true
 disable-user-extensions=false
-disabled-extensions=['audio-output-switcher@anduchs', 'tiling-assistant@leleat-on-github', 'window-list@gnome-shell-extensions.gcampax.github.com', 'windowsNavigator@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'fildemGMenu@gonza.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'wsmatrix@martin.zurowietz.de', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'horizontal-workspace-indicator@tty2.io']
-enabled-extensions=['user-theme@gnome-shell-extensions.gcampax.github.com', 'caffeine@patapon.info', 'x11gestures@joseexposito.github.io', 'gsconnect@andyholmes.github.io', 'Hide_Activities@shay.shayel.org', 'sound-output-device-chooser@kgshank.net', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'screenshot-window-sizer@gnome-shell-extensions.gcampax.github.com', 'pop-shell@system76.com', 'blur-my-shell@aunetx', 'RemoveAppMenu@Dragon8oy.com', 'improved-workspace-indicator@michaelaquilina.github.io', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com']
+disabled-extensions=['tiling-assistant@leleat-on-github', 'window-list@gnome-shell-extensions.gcampax.github.com', 'windowsNavigator@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'wsmatrix@martin.zurowietz.de', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'horizontal-workspace-indicator@tty2.io', 'audio-output-switcher@anduchs', 'gsconnect@andyholmes.github.io']
+enabled-extensions=['user-theme@gnome-shell-extensions.gcampax.github.com', 'caffeine@patapon.info', 'x11gestures@joseexposito.github.io', 'Hide_Activities@shay.shayel.org', 'sound-output-device-chooser@kgshank.net', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'screenshot-window-sizer@gnome-shell-extensions.gcampax.github.com', 'blur-my-shell@aunetx', 'RemoveAppMenu@Dragon8oy.com', 'improved-workspace-indicator@michaelaquilina.github.io', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'audio-switcher@albertomosconi', 'fildemGMenu@gonza.com', 'pop-shell@system76.com']
 favorite-apps=@as []
 welcome-dialog-last-shown-version='42.0'
 
@@ -372,7 +381,7 @@ type='phone'
 
 [org/gnome/shell/extensions/gsconnect/preferences]
 window-maximized=false
-window-size=(640, 440)
+window-size=(625, 1008)
 
 [org/gnome/shell/extensions/improved-workspace-indicator]
 change-on-click=true
@@ -390,6 +399,7 @@ mouse-cursor-follows-active-window=false
 show-title=false
 smart-gaps=true
 tile-by-default=true
+tile-reject=['Ctrl', 'f']
 
 [org/gnome/shell/extensions/sound-output-device-chooser]
 show-output-devices=true
@@ -414,7 +424,7 @@ toggle-overview=@as []
 locations=@av []
 
 [org/gnome/software]
-check-timestamp=int64 1657427538
+check-timestamp=int64 1658636030
 first-run=false
 
 [org/gnome/tweaks]

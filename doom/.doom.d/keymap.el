@@ -11,18 +11,18 @@
 
  :n "<f11>" #'evil-window-left
  :n "<f12>" #'evil-window-right
- "C-/" #'+my/comment-or-uncomment
+ "C-/" #'my-comment-or-uncomment
 
  :leader
- :desc "Switch buffer in workspace" "," #'+my/consult-workspace
+ :desc "Switch buffer in workspace" "," #'my-consult-workspace
  (:prefix ("b" . "buffer")
   :desc "Format buffer" "f" #'+format/buffer
-  :desc "Switch to browser" "w" #'+my/consult-browser
-  :desc "Switch to terminal in workspace" "t" #'+my/consult-terminal
+  :desc "Switch to browser" "w" #'my-consult-browser
+  :desc "Switch to terminal in workspace" "t" #'my-consult-terminal
   :desc "Search current buffer" "s" #'+default/search-buffer)
 
  (:prefix ("c" . "code")
-  :desc "Comment line" "c" #'+my/comment-or-uncomment
+  :desc "Comment line" "c" #'my-comment-or-uncomment
   :desc "Compile" "C" #'compile
   :desc "Format buffer" "f" #'+format/buffer
   :desc "List all occurance" "l" #'helm-swoop
@@ -33,9 +33,9 @@
   :desc "Open manpage" "m" #'man
   :desc "Open browser" "w" #'eaf-open-browser-with-history
   :desc "Open browser bookmark" "W" #'eaf-open-bookmark
-  :desc "Open google" "g" #'+my/google-search
-  :desc "Open github" "G" #'+my/open-github
-  :desc "Open ssh connection" "s" #'+my/connect-remote-ssh
+  :desc "Open google" "g" #'my-google-search
+  :desc "Open github" "G" #'my-open-github
+  :desc "Open ssh connection" "s" #'my-connect-remote-ssh
   :desc "open dired" "/" #'dired-jump
   :desc "Open init daemon" "i" #'daemons
   )
@@ -48,12 +48,12 @@
  (:prefix ("e" . "eval")
   :desc "Evaluate buffer" "b" #'eval-buffer
   :desc "Evaluate region" "r" #'eval-region
-  :desc "Evaluate line" "l" #'+my/eval-line
+  :desc "Evaluate line" "l" #'my-eval-line
   :desc "Evaluate last sexpr" "e" #'eval-last-sexp)
 
  (:prefix ("TAB" . "workspace")
-  :desc "Save current worksppace to file" "S" #'+my/save-current-workspace
-  :desc "Delete other workspace" "D" #'+my/delete-other-workspace
+  :desc "Save current worksppace to file" "S" #'my-save-current-workspace
+  :desc "Delete other workspace" "D" #'my-delete-other-workspace
   )
       ;;; <leader> m --- multiple cursors
  (:when (featurep! :editor multiple-cursors)
@@ -73,5 +73,5 @@
 
 
 (:prefix-map ("s" . "search")
- :desc "find file in current directory" "f" #'+my/find-file-in-directory)
+ :desc "find file in current directory" "f" #'my-find-file-in-directory)
  )

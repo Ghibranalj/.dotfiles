@@ -1,7 +1,7 @@
 ;;; ../.dotfiles/doom/.doom.d/config.el -*- lexical-binding: t; -*-
 
 (load! "keymap.el")
-(defun +my/custom-ascii ()
+(defun my-custom-ascii ()
   "To display my ascii art to doom splash."
   (mapc (lambda (line)
           (insert (propertize (+doom-dashboard--center +doom-dashboard--width line)
@@ -18,7 +18,7 @@
   ████████▀    ███    █▀    █▀   ▄█████████▀  ▄█████████▀   ▀█████▀
 --
 Doom Emacs" "\n" t)))
-(setq +doom-dashboard-ascii-banner-fn #'+my/custom-ascii)
+(setq +doom-dashboard-ascii-banner-fn #'my-custom-ascii)
 
 (setq display-line-numbers-type 'relative)
 
@@ -42,29 +42,29 @@ Doom Emacs" "\n" t)))
 (setq auto-save-default t
       make-backup-files t)
 
-(defun +my/save-when-has-file ()
+(defun my-save-when-has-file ()
   (when (buffer-file-name)
     (save-buffer)))
 
-(defun +my/save-unless-insert (&rest _)
+(defun my-save-unless-insert (&rest _)
   (unless (evil-insert-state-p)
-    (+my/save-when-has-file)))
+    (my-save-when-has-file)))
 
-(add-hook! 'after-change-functions '+my/save-unless-insert)
-(add-hook! 'evil-insert-state-exit-hook '+my/save-when-has-file)
+(add-hook! 'after-change-functions 'my-save-unless-insert)
+(add-hook! 'evil-insert-state-exit-hook 'my-save-when-has-file)
 
 
-(defvar +my/new-frame-hook nil
+(defvar my-new-frame-hook nil
   "Hook run after a any new frame is created.")
 
-(defvar +my/new-gui-frame-hook nil
+(defvar my-new-gui-frame-hook nil
   "Hook run after a any new gui frame is created.")
 
 (defun on-new-frame ()
   "This is executed when a new frame is created."
-  (run-hooks '+my/new-frame-hook)
+  (run-hooks 'my-new-frame-hook)
   (if window-system
-      (run-hooks '+my/new-gui-frame-hook))
+      (run-hooks 'my-new-gui-frame-hook))
   )
 
 ;; Running on daemon startup
@@ -102,7 +102,7 @@ Doom Emacs" "\n" t)))
 ;; man pages
 (setq Man-notify-method 'pushy)
 
-(defun +my/comment-or-uncomment()
+(defun my-comment-or-uncomment()
   "Comment or uncomment the current line or region."
   (interactive)
   (if mark-active
@@ -128,76 +128,75 @@ Doom Emacs" "\n" t)))
 
 (setq magit-clone-default-directory "~/Workspace/")
 
-(defun +my/eval-line ()
+(defun my-eval-line ()
   "Evaluate the current line."
   (interactive)
   (eval-region (line-beginning-position) (line-end-position)))
 
 
 ;; eaf and browser
-(defun +my/setup-browser ()
+(defun my-setup-browser ()
   "Setup eaf and browser."
   (message "Browser is being setup")
   (add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
   (require 'eaf)
   (require 'eaf-browser)
-  (require 'eaf-demo)
+  (require 'eaf-video-player)
   (eaf-setq eaf-browser-enable-bookmark "true")
   (eaf-setq eaf-browser-enable-adblocker "true")
   (defvar eaf-browser-default-search-engine "google")
-  (add-hook! 'eaf-mode-hook '+my/add-buffer-to-project)
+  (add-hook! 'eaf-mode-hook 'my-add-buffer-to-project)
   (add-hook! 'eaf-mode-hook 'hide-mode-line-mode)
 
   (evil-collection-define-key 'normal 'eaf-mode-map*
     "j" 'eaf-send-down-key
     "k" 'eaf-send-up-key
-    "h" 'eaf-send-left-key
-    "l" 'eaf-send-right-key
+    ;; "h" 'eaf-send-left-key
+    ;; "l" 'eaf-send-right-key
     "Q" 'kill-current-buffer
     "R" 'eaf-restart-process
     )
   )
-(add-hook! '+my/new-gui-frame-hook '+my/setup-browser)
+(add-hook! 'my-new-gui-frame-hook 'my-setup-browser)
 
-
-(defun +my/open-browser(url &optional args)
+(defun my-open-browser(url &optional args)
   "Open URL with ARGS on eaf-browser when not terminal, chrome when terminal."
   (if window-system
       (eaf-open-browser url args)
     (browse-url-chrome url args)
     ))
 
-(setq browse-url-browser-function '+my/open-browser)
+(setq browse-url-browser-function 'my-open-browser)
 
 
-(defun +my/google-search ()
+(defun my-google-search ()
   "Search Google inside eaf-browser."
   (interactive)
-  (+my/open-browser
+  (my-open-browser
    (concat
     "https://www.google.com/search?q="
     (url-hexify-string (if mark-active
                            (buffer-substring (region-beginning) (region-end))
-                         (+my/read-string "Search Google: " '+my/google-search-history))))))
+                         (my-read-string "Search Google: " 'my-google-search-history))))))
 
-(defun +my/clear-google-search-history ()
+(defun my-clear-google-search-history ()
   "Clear google search history."
   (interactive)
-  (persist-reset '+my/google-search-history)
-  (setq +my/google-search-history nil)
+  (persist-reset 'my-google-search-history)
+  (setq my-google-search-history nil)
   )
-(defun +my/open-github ()
+(defun my-open-github ()
   "Open github in eaf-browser."
   (interactive)
   (require 'browse-at-remote)
   (if (car (browse-at-remote--get-remotes))
       (+vc/browse-at-remote-homepage)
-    (+my/open-browser "github.com")
+    (my-open-browser "github.com")
 
     ))
 
 
-(defvar +my/consult--eaf-source
+(defvar my-consult--eaf-source
   (list :name     "Browser"
         :category 'buffer
         :narrow   ?o
@@ -216,7 +215,7 @@ Doom Emacs" "\n" t)))
                    (buffer-list))))))
 
 
-(defvar +my/consult--terminal-source
+(defvar my-consult--terminal-source
   (list :name     "Terminal"
         :category 'buffer
         :narrow   ?o
@@ -236,7 +235,7 @@ Doom Emacs" "\n" t)))
                      )
                    (buffer-list))))))
 
-(defvar +my/consult--workspace-source
+(defvar my-consult--workspace-source
   (list :name    "Buffers"
         :category 'buffer
         :narrow   ?o
@@ -258,28 +257,28 @@ Doom Emacs" "\n" t)))
                    (buffer-list))))))
 
 (after! consult
-  (add-to-list 'consult-buffer-sources '+my/consult--eaf-source 'append)
-  (add-to-list 'consult-buffer-sources '+my/consult--terminal-source 'append)
-  (add-to-list 'consult-buffer-sources '+my/consult--workspace-source 'append)
+  (add-to-list 'consult-buffer-sources 'my-consult--eaf-source 'append)
+  (add-to-list 'consult-buffer-sources 'my-consult--terminal-source 'append)
+  (add-to-list 'consult-buffer-sources 'my-consult--workspace-source 'append)
   )
 
 (require 'consult)
-(defun +my/consult-browser ()
+(defun my-consult-browser ()
   "Open eaf-browser."
   (interactive)
-  (consult-buffer '(+my/consult--eaf-source)))
+  (consult-buffer '(my-consult--eaf-source)))
 
-(defun +my/consult-terminal ()
+(defun my-consult-terminal ()
   "Open terminal."
   (interactive)
-  (consult-buffer '(+my/consult--terminal-source)))
+  (consult-buffer '(my-consult--terminal-source)))
 
-(defun +my/consult-workspace ()
+(defun my-consult-workspace ()
   "Switch to buffer in workspace.
 Shows terminal in seperate section. Also shows browsers."
   (interactive)
   (consult--multi
-   '(+my/consult--workspace-source +my/consult--terminal-source +my/consult--eaf-source)
+   '(my-consult--workspace-source my-consult--terminal-source my-consult--eaf-source)
    :require-match
    (confirm-nonexistent-file-or-buffer)
    :prompt (format "Switch to buffer (%s): "
@@ -295,7 +294,7 @@ Shows terminal in seperate section. Also shows browsers."
   (setq vertico-posframe-poshandler 'posframe-poshandler-frame-top-center)
   )
 
-(add-hook! '+my/new-gui-frame-hook 'vertico-posframe-mode)
+(add-hook! 'my-new-gui-frame-hook 'vertico-posframe-mode)
 
 (use-package! sidekick
   :hook (sidekick-mode . (lambda () (require 'sidekick-evil)))
@@ -303,7 +302,7 @@ Shows terminal in seperate section. Also shows browsers."
   (setq sidekick-window-hide-footer t)
   (setq sidekick-window-take-focus t)
   )
-(add-hook! 'Man-mode-hook '+my/add-buffer-to-project)
+(add-hook! 'Man-mode-hook 'my-add-buffer-to-project)
 
 (defun remove-scratch-buffer ()
   (if (get-buffer "*scratch*")
@@ -317,47 +316,50 @@ Shows terminal in seperate section. Also shows browsers."
   )
 
 (require 'persist)
-(persist-defvar +my/ssh-user-history nil
+(persist-defvar my-ssh-user-history nil
                 "History for ssh user.")
 
-(persist-defvar +my/ssh-host-history nil
+(persist-defvar my-ssh-host-history nil
                 "History for ssh host.")
 
-(persist-defvar +my/google-search-history nil
+(persist-defvar my-google-search-history nil
                 "History for google search.")
-(add-hook! '+my/new-frame-hook
+(add-hook! 'my-new-frame-hook
            '(lambda ()
               (dolist (x persist--symbols)
                 (persist-load x))))
 
 (add-hook! 'after-delete-frame-functions '(lambda (frame) (persist--save-all)))
 
-(defun +my/connect-remote-ssh()
+(defun my-connect-remote-ssh()
   (interactive)
   (dired (format "/scp:%s@%s:"
-                 (+my/read-string "User (ssh): " '+my/ssh-user-history)
-                 (+my/read-string "Host (ssh): " '+my/ssh-host-history))))
+                 (my-read-string "User (ssh): " 'my-ssh-user-history)
+                 (my-read-string "Host (ssh): " 'my-ssh-host-history))))
 
 (setq projectile-indexing-method 'native)
 (setq projectile-enable-caching t)
 
-(defun +my/save-current-workspace ()
+(defun my-save-current-workspace ()
   "Save current workspace."
   (interactive)
   (+workspace/save (+workspace-current-name)))
 
-(setq dired-listing-switches "-agho --group-directories-first")
-(setq dired-dwim-target t)
-(setq delete-by-moving-to-trash t)
-(add-hook 'dired-mode-hook 'dired-hide-dotfiles-mode)
+(use-package! dired
+  :hook (dired-mode . dired-hide-dotfiles-mode)
+  :config
+  (setq dired-listing-switches "-agho --group-directories-first")
+  (setq dired-dwim-target t)
+  (setq delete-by-moving-to-trash t)
 
-(evil-collection-define-key 'normal 'dired-mode-map
-  "h" 'dired-up-directory
-  "l" 'dired-find-file
-  "." 'dired-hide-dotfiles-mode
+  (evil-collection-define-key 'normal 'dired-mode-map
+    "h" 'dired-up-directory
+    "l" 'dired-find-file
+    "." 'dired-hide-dotfiles-mode
+    )
   )
 
-(defun +my/setup-ivy ()
+(defun my-setup-ivy ()
   (require 'ivy)
   (require 'ivy-posframe)
   (ivy-posframe-mode 1)
@@ -371,23 +373,23 @@ Shows terminal in seperate section. Also shows browsers."
           (right-fringe . 8)))
   )
 
-(add-hook! '+my/new-gui-frame-hook '+my/setup-ivy)
+(add-hook! 'my-new-gui-frame-hook 'my-setup-ivy)
 
-(defun +my/read-string (prompt &optional hist)
+(defun my-read-string (prompt &optional hist)
   "Read a string from the minibuffer with PROMPT. History is stored in HIST."
   (let ((string (ivy-read prompt (symbol-value hist) :history hist :require-match nil)))
     (if (string= string "")
         nil
       string)))
 
-(defun +my/add-buffer-to-project ()
+(defun my-add-buffer-to-project ()
   "Add current buffer to current project."
   (interactive)
   (persp-add-buffer (current-buffer))
   )
 
-(add-hook! 'daemons-mode-hook '+my/add-buffer-to-project)
-(add-hook! 'daemons-output-mode-hook '+my/add-buffer-to-project)
+(add-hook! 'daemons-mode-hook 'my-add-buffer-to-project)
+(add-hook! 'daemons-output-mode-hook 'my-add-buffer-to-project)
 
 (evil-collection-define-key 'normal 'daemons-mode-map
   "<ret>" 'daemons-status-at-point
@@ -402,7 +404,7 @@ Shows terminal in seperate section. Also shows browsers."
 
 (setq vterm-always-compile-module t)
 
-(defun +my/delete-other-workspace ()
+(defun my-delete-other-workspace ()
   (interactive)
   (dolist (workspace (+workspace-list-names))
     (unless (eq workspace (+workspace-current-name))
@@ -437,7 +439,7 @@ RESPONSIVE and DISPLAY are ignored."
 
 (setq highlight-indent-guides-highlighter-function 'my-highlight-function)
 
-(defun +my/find-file-in-directory (directory)
+(defun my-find-file-in-directory (directory)
   "Finds file in DIRECTORY recursively"
   (interactive "P")
   (let*(
