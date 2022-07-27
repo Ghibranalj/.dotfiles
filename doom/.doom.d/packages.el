@@ -96,3 +96,5 @@
            :type git :host github :repo "oantolin/async-completing-read"
            :files ("*.el")
            :branch "master"))
+
+(package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))

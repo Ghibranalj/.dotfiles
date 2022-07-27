@@ -74,4 +74,8 @@
 
 (:prefix-map ("s" . "search")
  :desc "find file in current directory" "f" #'my-find-file-in-directory)
- )
+
+(:prefix-map ("g" . "git")
+          :desc "Forge pull" "p" #'forge-pull)
+
+)

@@ -27,16 +27,20 @@ Doom Emacs" "\n" t)))
 (setq doom-theme 'doom-material-dark)
 (setq doom-font (font-spec
                  :family "Source Code Pro"
-                 :size 15
-                 ))
+                 :size 15))
+
 (setq doom-variable-pitch-font (font-spec
                                 :family "Source Code Pro"
-                                :size 14
-                                ))
+                                :size 14))
+
 (setq doom-big-font (font-spec
                      :family "Source Code Pro"
-                     :size 20
-                     ))
+                     :size 20))
+
+(setq doom-bin "doom")
+
+(after! doom-modeline
+  (setq doom-modeline-persp-name t))
 
 ;; Auto save
 (setq auto-save-default t
@@ -64,8 +68,8 @@ Doom Emacs" "\n" t)))
   "This is executed when a new frame is created."
   (run-hooks 'my-new-frame-hook)
   (if window-system
-      (run-hooks 'my-new-gui-frame-hook))
-  )
+      (run-hooks 'my-new-gui-frame-hook)))
+
 
 ;; Running on daemon startup
 (if (daemonp)
@@ -81,14 +85,14 @@ Doom Emacs" "\n" t)))
 (after! centaur-tabs
   (setq centaur-tabs-set-bar 'under
         centaur-tabs-set-close-button nil
-        centaur-tabs-height 42
-        ))
+        centaur-tabs-height 42))
+
 
 ;; tremacs colors
 (custom-set-faces!
-  '(treemacs-root-face :foreground "#F78C6C" )
-  '(doom-themes-treemacs-root-face :foreground "#F78C6C" )
-  )
+  '(treemacs-root-face :foreground "#F78C6C")
+  '(doom-themes-treemacs-root-face :foreground "#F78C6C"))
+
 
 ;; Coplilot
 (defun +copilot/tab ()
@@ -96,11 +100,23 @@ Doom Emacs" "\n" t)))
   (interactive)
   (or (copilot-accept-completion)
       (indent-relative)))
-;; (minimap-mode 1)
 
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (("<backtab>" . 'copilot-accept-completion-by-word)
+         ("<backtab>" . 'copilot-accept-completion-by-word)
+         :map company-active-map
+         ("<tab>" . '+copilot/tab)
+         ("TAB" . '+copilot/tab)
+         :map company-mode-map
+         ("<tab>" . '+copilot/tab)
+         ("TAB" . '+copilot/tab)))
 
 ;; man pages
 (setq Man-notify-method 'pushy)
+;; (add-hook! 'Man-mode-hook 'writeroom-mode)
+;; (remove-hook! 'writeroom-mode-hook '+zen-enable-text-scaling-mode-h)
+;; (remove-hook! 'writeroom-mode-hook '+zen-enable-mixed-pitch-mode-h)
 
 (defun my-comment-or-uncomment()
   "Comment or uncomment the current line or region."
@@ -110,8 +126,12 @@ Doom Emacs" "\n" t)))
     (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
 
 (beacon-mode 1)
-
-(setq scroll-margin 16)
+(setq scroll-margin 16
+      scroll-conservatively 101
+      scroll-up-aggressively 0.01
+      scroll-down-aggressively 0.01
+      scroll-preserve-screen-position t
+      auto-window-vscroll t)
 
 ;; misc hook
 (use-package! company-box
@@ -152,20 +172,22 @@ Doom Emacs" "\n" t)))
   (evil-collection-define-key 'normal 'eaf-mode-map*
     "j" 'eaf-send-down-key
     "k" 'eaf-send-up-key
-    ;; "h" 'eaf-send-left-key
-    ;; "l" 'eaf-send-right-key
+    "h" 'eaf-send-left-key
+    "l" 'eaf-send-right-key
     "Q" 'kill-current-buffer
     "R" 'eaf-restart-process
+    "B" '(lambda () (interactive) (eaf-execute-app-cmd 'eaf-py-proxy-insert_or_save_as_bookmark))
     )
   )
+
 (add-hook! 'my-new-gui-frame-hook 'my-setup-browser)
 
 (defun my-open-browser(url &optional args)
   "Open URL with ARGS on eaf-browser when not terminal, chrome when terminal."
   (if window-system
       (eaf-open-browser url args)
-    (browse-url-chrome url args)
-    ))
+    (browse-url-chrome url args)))
+
 
 (setq browse-url-browser-function 'my-open-browser)
 
@@ -184,17 +206,17 @@ Doom Emacs" "\n" t)))
   "Clear google search history."
   (interactive)
   (persist-reset 'my-google-search-history)
-  (setq my-google-search-history nil)
-  )
+  (setq my-google-search-history nil))
+
 (defun my-open-github ()
   "Open github in eaf-browser."
   (interactive)
   (require 'browse-at-remote)
   (if (car (browse-at-remote--get-remotes))
       (+vc/browse-at-remote-homepage)
-    (my-open-browser "github.com")
+    (my-open-browser "github.com")))
 
-    ))
+
 
 ;; TODO diferenciate between video player and browser maybe?
 (defvar my-consult--eaf-source
@@ -211,8 +233,8 @@ Doom Emacs" "\n" t)))
                   (seq-filter
                    (lambda (x)
                      (and (eq (buffer-local-value 'major-mode x) 'eaf-mode)
-                          (+workspace-contains-buffer-p x)
-                          ))
+                          (+workspace-contains-buffer-p x)))
+
                    (buffer-list))))))
 
 
@@ -232,9 +254,9 @@ Doom Emacs" "\n" t)))
                    (lambda (x)
                      (and
                       (eq (buffer-local-value 'major-mode x) 'vterm-mode)
-                      (+workspace-contains-buffer-p x)
-                      )
-                     )
+                      (+workspace-contains-buffer-p x)))
+
+
                    (buffer-list))))))
 
 (defvar my-consult--workspace-source
@@ -255,9 +277,9 @@ Doom Emacs" "\n" t)))
                       (not (eq (buffer-local-value 'major-mode x) 'vterm-mode))
                       (not (eq (buffer-local-value 'major-mode x) 'eaf-mode))
                       (or (not (boundp 'minimap-buffer-name))
-                          (not (string= (buffer-name x) minimap-buffer-name )))
-                      )
-                     )
+                          (not (string= (buffer-name x) minimap-buffer-name)))))
+
+
                    (buffer-list))))))
 
 
@@ -265,8 +287,8 @@ Doom Emacs" "\n" t)))
 (after! consult
   (add-to-list 'consult-buffer-sources 'my-consult--eaf-source 'append)
   (add-to-list 'consult-buffer-sources 'my-consult--terminal-source 'append)
-  (add-to-list 'consult-buffer-sources 'my-consult--workspace-source 'append)
-  )
+  (add-to-list 'consult-buffer-sources 'my-consult--workspace-source 'append))
+
 
 (require 'consult)
 (defun my-consult-browser ()
@@ -290,15 +312,15 @@ Shows terminal in seperate section. Also shows browsers."
    :prompt (format "Switch to buffer (%s): "
                    (+workspace-current-name))
    :history 'consult--buffer-history
-   :sort nil)
-  )
+   :sort nil))
+
 
 (after! vertico-posframe
   (setq vertico-posframe-parameters
         '((left-fringe . 8)
           (right-fringe . 8)))
-  (setq vertico-posframe-poshandler 'posframe-poshandler-frame-top-center)
-  )
+  (setq vertico-posframe-poshandler 'posframe-poshandler-frame-top-center))
+
 
 (add-hook! 'my-new-gui-frame-hook 'vertico-posframe-mode)
 
@@ -306,8 +328,8 @@ Shows terminal in seperate section. Also shows browsers."
   :hook (sidekick-mode . (lambda () (require 'sidekick-evil)))
   :config
   (setq sidekick-window-hide-footer t)
-  (setq sidekick-window-take-focus t)
-  )
+  (setq sidekick-window-take-focus t))
+
 (add-hook! 'Man-mode-hook 'my-add-buffer-to-project)
 
 (defun remove-scratch-buffer ()
@@ -317,9 +339,9 @@ Shows terminal in seperate section. Also shows browsers."
 (if (and (daemonp) (string= (daemonp) "term"))
     (progn
       (add-hook 'after-change-major-mode-hook 'remove-scratch-buffer)
-      (add-hook 'server-after-make-frame-hook 'remove-scratch-buffer)
-      )
-  )
+      (add-hook 'server-after-make-frame-hook 'remove-scratch-buffer)))
+
+
 
 (require 'persist)
 (persist-defvar my-ssh-user-history nil
@@ -354,21 +376,18 @@ Shows terminal in seperate section. Also shows browsers."
 (use-package! dired
   :hook (dired-mode . dired-hide-dotfiles-mode)
   :config
-  (setq dired-listing-switches "-agho --group-directories-first")
-  (setq dired-dwim-target t)
-  (setq delete-by-moving-to-trash t)
-
+  (setq dired-listing-switches "-agho --group-directories-first"
+        dired-dwim-target t
+        delete-by-moving-to-trash nil
+        dired-mouse-drag-files t)
   (evil-collection-define-key 'normal 'dired-mode-map
-    "h" 'dired-up-directory
-    "l" 'dired-find-file
-    "." 'dired-hide-dotfiles-mode
-    )
-  )
+    "h" '(lambda () (interactive) (find-alternate-file ".."))
+    "l" 'dired-find-alternate-file
+    "." 'dired-hide-dotfiles-mode))
 
 (defun my-setup-ivy ()
   (require 'ivy)
   (require 'ivy-posframe)
-  (ivy-posframe-mode 1)
   (setq ivy-posframe-border-width 2)
   (set-face-attribute 'ivy-posframe-border nil :background "#585858")
   (set-face-attribute 'ivy-posframe nil :background "#212121" :foreground "#EEFFFF")
@@ -377,7 +396,7 @@ Shows terminal in seperate section. Also shows browsers."
   (setq ivy-posframe-parameters
         '((left-fringe . 8)
           (right-fringe . 8)))
-  )
+  (ivy-posframe-mode 1))
 
 (add-hook! 'my-new-gui-frame-hook 'my-setup-ivy)
 
@@ -391,8 +410,8 @@ Shows terminal in seperate section. Also shows browsers."
 (defun my-add-buffer-to-project ()
   "Add current buffer to current project."
   (interactive)
-  (persp-add-buffer (current-buffer))
-  )
+  (persp-add-buffer (current-buffer)))
+
 
 (add-hook! 'daemons-mode-hook 'my-add-buffer-to-project)
 (add-hook! 'daemons-output-mode-hook 'my-add-buffer-to-project)
@@ -405,8 +424,8 @@ Shows terminal in seperate section. Also shows browsers."
   "R" 'daemons-restart-at-point
   "e" 'daemons-enable-at-point
   "d" 'daemons-disable-at-point
-  "t" 'daemons-systemd-toggle-user
-  )
+  "t" 'daemons-systemd-toggle-user)
+
 
 (setq vterm-always-compile-module t)
 
@@ -423,8 +442,8 @@ Shows terminal in seperate section. Also shows browsers."
   '(rainbow-delimiters-depth-3-face :foreground "#7BA55D")
   '(rainbow-delimiters-depth-4-face :foreground "#4F86A0")
   '(rainbow-delimiters-depth-5-face :foreground "#B55C2B")
-  '(rainbow-delimiters-depth-6-face :foreground "#144BC3")
-  )
+  '(rainbow-delimiters-depth-6-face :foreground "#144BC3"))
+
 (add-hook! 'prog-mode-hook 'rainbow-delimiters-mode)
 
 (defun my-highlight-function (level responsive display)
@@ -440,31 +459,45 @@ RESPONSIVE and DISPLAY are ignored."
      ((eq lvl 4) 'rainbow-delimiters-depth-5-face)
      ((eq lvl 5) 'rainbow-delimiters-depth-6-face)
      )
-    )
-  )
+    ))
 
 (setq highlight-indent-guides-highlighter-function 'my-highlight-function)
 
-
-;; (defun icomplete-exhibit ()
-;;   nil)
 (require 'async-completing-read)
 (setq acr-refresh-completion-ui 'consult-vertico--refresh)
 (defun my-find-file-in-directory (directory)
   "Finds file in DIRECTORY recursively"
-  (interactive "P")
+  (interactive `(,default-directory))
   (let*(
         (shell "bash")
-        (dir (or directory default-directory))
-        (relative (file-relative-name dir (getenv "HOME")))
-        (tramp-p (string-match-p "\/scp:" dir))
+        (find (if (executable-find "fd")
+                  "fd -tf -tl -c never -H -E .git -I --prune -L"
+                "find -type f -printf '%P\n'"))
+        (tramp-p (string-match-p "\/scp:" directory))
         (command (if tramp-p
-                     "find . -type f"
-                   (format "cd %s; find . -type f" dir)))
+                     find
+                   (format "cd %s; %s" directory find)))
+        (display-directory (if (and (not tramp-p) (string-match-p (getenv "HOME") directory))
+                               (replace-regexp-in-string "/\./$" ""
+                                                         (format "~/%s" (file-relative-name directory (getenv "HOME"))))
+                             directory))
         (file
-         ;; TODO Change this to ivy-read when using ivy
-         (async-completing-read (format "Find file (~/%s): " relative) (acr-lines-from-process shell "-c" command))))
-        (when (and file (not (string-match-p  "\*async-completing-read\*" file)))
-          (if tramp-p
-              (find-file (expand-file-name file dir))
-            (find-file file)))))
+         (async-completing-read (format "Find file (%s): " display-directory ) (acr-lines-from-process shell "-c" command))))
+    (when (and file (not (string-match-p  "\*async-completing-read\*" file)))
+      (if tramp-p
+          (find-file (expand-file-name file directory))
+        (find-file file)))))
+
+(define-generic-mode 'xmodmap-mode
+  '(?!)
+  '("add" "clear" "keycode" "keysym" "pointer" "remove")
+  nil
+  '("[xX]modmap\\(rc\\)?\\'")
+  nil
+  "Simple mode for xmodmap files.")
+(add-hook! 'xmodmap-mode-hook 'display-line-numbers-mode)
+
+(add-hook! 'c-mode-hook (lambda () (c-toggle-comment-style -1)))
+(use-package! lsp-tailwindcss)
+
+(add-hook! magit-post-refresh-hook 'forge-pull)

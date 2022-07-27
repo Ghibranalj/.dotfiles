@@ -5,3 +5,5 @@
 	defaultBranch = master
 [alias]
 	adog = log --all --decorate --oneline --graph
+[github]
+	user = ghibranalj

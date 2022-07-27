@@ -1,5 +1,3 @@
-! -*- mode: sh; eval: (format-all-mode -1) -*-
-
 keycode 108 = Caps_Lock Caps_Lock Caps_Lock Caps_Lock Caps_Lock Caps_Lock
 keycode  66 = Mode_switch Mode_switch Mode_switch Mode_switch Mode_switch Mode_switch
 
@@ -18,7 +16,7 @@ keycode  22 = BackSpace BackSpace Delete Delete
 
 keycode  56 = b B BackSpace B
 keycode  41 = f F Escape F
-keycode   9 = NoSymbol NoSymbol Escape
+! keycode   9 = NoSymbol NoSymbol Escape
 
 keycode 57 = n N underscore underscore
 keycode 58 = m M minus minus
