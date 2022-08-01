@@ -1,27 +1,7 @@
 ;;; ../.dotfiles/doom/.doom.d/config.el -*- lexical-binding: t; -*-
 
 (load! "keymap.el")
-(defun my-custom-ascii ()
-  "To display my ascii art to doom splash."
-  (mapc (lambda (line)
-          (insert (propertize (+doom-dashboard--center +doom-dashboard--width line)
-                              'face 'doom-dashboard-banner) " ")
-          (insert "\n"))
-        (split-string  "
-   ▄██████▄     ▄█    █▄     ▄█  ▀█████████▄  ▀█████████▄  ▄██   ▄
-  ███    ███   ███    ███   ███    ███    ███   ███    ███ ███   ██▄
-  ███    █▀    ███    ███   ███▌   ███    ███   ███    ███ ███▄▄▄███
- ▄███         ▄███▄▄▄▄███▄▄ ███▌  ▄███▄▄▄██▀   ▄███▄▄▄██▀  ▀▀▀▀▀▀███
-▀▀███ ████▄  ▀▀███▀▀▀▀███▀  ███▌ ▀▀███▀▀▀██▄  ▀▀███▀▀▀██▄  ▄██   ███
-  ███    ███   ███    ███   ███    ███    ██▄   ███    ██▄ ███   ███
-  ███    ███   ███    ███   ███    ███    ███   ███    ███ ███   ███
-  ████████▀    ███    █▀    █▀   ▄█████████▀  ▄█████████▀   ▀█████▀
---
-Doom Emacs" "\n" t)))
-(setq +doom-dashboard-ascii-banner-fn #'my-custom-ascii)
-
 (setq display-line-numbers-type 'relative)
-
 (setq org-directory "~/org/")
 
 (setq doom-theme 'doom-material-dark)
@@ -46,17 +26,8 @@ Doom Emacs" "\n" t)))
 (setq auto-save-default t
       make-backup-files t)
 
-(defun my-save-when-has-file ()
-  (when (buffer-file-name)
-    (save-buffer)))
-
-(defun my-save-unless-insert (&rest _)
-  (unless (evil-insert-state-p)
-    (my-save-when-has-file)))
-
-(add-hook! 'after-change-functions 'my-save-unless-insert)
-(add-hook! 'evil-insert-state-exit-hook 'my-save-when-has-file)
-
+(load! "my-packages/evil-megasave-mode.el")
+(add-hook! 'prog-mode-hook 'evil-megasave-mode)
 
 (defvar my-new-frame-hook nil
   "Hook run after a any new frame is created.")
@@ -236,8 +207,6 @@ Doom Emacs" "\n" t)))
                           (+workspace-contains-buffer-p x)))
 
                    (buffer-list))))))
-
-
 
 (defvar my-consult--terminal-source
   (list :name     "Terminal"
@@ -499,5 +468,4 @@ RESPONSIVE and DISPLAY are ignored."
 
 (add-hook! 'c-mode-hook (lambda () (c-toggle-comment-style -1)))
 (use-package! lsp-tailwindcss)
-
 (add-hook! magit-post-refresh-hook 'forge-pull)
