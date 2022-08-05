@@ -1,13 +1,10 @@
 ;;; ../.dotfiles/doom/.doom.d/keymap.el -*- lexical-binding: t; -*-
 
 (map!
-
  :nv  "M-k" #'drag-stuff-up
  :nv "M-j" #'drag-stuff-down
  :nv  "M-<up>" #'drag-stuff-up
  :nv "M-<down>" #'drag-stuff-down
-
- :ni "M-<mouse-1>"  #'mc/add-cursor-on-click
 
  :n "<f11>" #'evil-window-left
  :n "<f12>" #'evil-window-right
@@ -44,7 +41,6 @@
   :desc "Toggle minimap" "m" #'minimap-mode
   :desc "Toggle zen-mode" "z" #'+zen/toggle)
 
-
  (:prefix ("e" . "eval")
   :desc "Evaluate buffer" "b" #'eval-buffer
   :desc "Evaluate region" "r" #'eval-region
@@ -54,28 +50,32 @@
  (:prefix ("TAB" . "workspace")
   :desc "Save current worksppace to file" "S" #'my-save-current-workspace
   :desc "Delete other workspace" "D" #'my-delete-other-workspace
+  :desc "Add buffer to workspace" "a" #'persp-add-buffer
   )
-      ;;; <leader> m --- multiple cursors
- (:when (featurep! :editor multiple-cursors)
-  (:prefix-map ("m" . "multiple-cursors")
-   :desc "Edit lines"         "l"         #'mc/edit-lines
-   :desc "Mark next"          "n"         #'mc/mark-next-like-this
-   :desc "Unmark next"        "N"         #'mc/unmark-next-like-this
-   :desc "Mark previous"      "p"         #'mc/mark-previous-like-this
-   :desc "Unmark previous"    "P"         #'mc/unmark-previous-like-this
-   :desc "Mark all"           "t"         #'mc/mark-all-like-this
-   :desc "Mark all DWIM"      "m"         #'mc/mark-all-like-this-dwim
-   :desc "Edit line endings"  "e"         #'mc/edit-ends-of-lines
-   :desc "Edit line starts"   "a"         #'mc/edit-beginnings-of-lines
-   :desc "Mark tag"           "s"         #'mc/mark-sgml-tag-pair
-   :desc "Mark in defun"      "d"         #'mc/mark-all-like-this-in-defun
-   :desc "Add cursor w/mouse" "<mouse-1>" #'mc/add-cursor-on-click))
 
+ (:prefix-map ("s" . "search")
+  :desc "find file in current directory" "f" #'my-find-file-in-directory)
 
-(:prefix-map ("s" . "search")
- :desc "find file in current directory" "f" #'my-find-file-in-directory)
+ (:prefix-map ("g" . "git")
+  :desc "Forge pull" "p" #'forge-pull)
 
-(:prefix-map ("g" . "git")
-          :desc "Forge pull" "p" #'forge-pull)
+ (:prefix-map ("v" . "Verb")
+  :desc "Send request at point" "v" #'verb-send-request-on-point
+  :desc "Send request on new window" "r" #'verb-send-request-on-point-other-window
+  :desc "Kill reponse window and buffer" "k" #'verb-kill-all-response-buffers
+  :desc "Send request ignore reponse" "R" #'verb-send-request-on-point-no-window
+  :desc "Show headers" "h" #'verb-toggle-show-headers)
 
-)
+ (:prefix-map ("m" . "Music")
+  :desc "Start music" "m" #'my-start-smudge
+  :desc "Search music" "s" #'smudge-track-search
+  :desc "Toggle music" "T" #'my-pause-music-start-again
+  :desc "Toggle music" "t" #'smudge-controller-toggle-play
+  :desc "Select device" "d" #'smudge-select-device
+  :desc "Volume up" "+" #'smudge-controller-volume-up
+  :desc "Volume down" "-" #'smudge-controller-volume-down
+  :desc "Volume mute" "0" #'smudge-controller-volume-mute-unmute
+  :desc "My playlist" "p" #'smudge-my-playlists
+  :desc "Reload daemon" "r" #'my-reload-spotifyd
+  )
+ )

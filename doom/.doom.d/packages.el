@@ -98,3 +98,4 @@
            :branch "master"))
 
 (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
+(package! smudge)

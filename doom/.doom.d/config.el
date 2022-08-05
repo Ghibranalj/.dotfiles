@@ -19,8 +19,6 @@
 
 (setq doom-bin "doom")
 
-(after! doom-modeline
-  (setq doom-modeline-persp-name t))
 
 ;; Auto save
 (setq auto-save-default t
@@ -203,11 +201,8 @@
           (mapcar #'buffer-name
                   (seq-filter
                    (lambda (x)
-                     (and (eq (buffer-local-value 'major-mode x) 'eaf-mode)
-                          (+workspace-contains-buffer-p x)))
-
-                   (buffer-list))))))
-
+                     (eq (buffer-local-value 'major-mode x) 'eaf-mode))
+                   (persp-buffer-list))))))
 (defvar my-consult--terminal-source
   (list :name     "Terminal"
         :category 'buffer
@@ -221,12 +216,8 @@
           (mapcar #'buffer-name
                   (seq-filter
                    (lambda (x)
-                     (and
-                      (eq (buffer-local-value 'major-mode x) 'vterm-mode)
-                      (+workspace-contains-buffer-p x)))
-
-
-                   (buffer-list))))))
+                     (eq (buffer-local-value 'major-mode x) 'vterm-mode))
+                   (persp-buffer-list))))))
 
 (defvar my-consult--workspace-source
   (list :name    "Workspace Buffer"
@@ -242,22 +233,16 @@
                   (seq-filter
                    (lambda (x)
                      (and
-                      (+workspace-contains-buffer-p x)
                       (not (eq (buffer-local-value 'major-mode x) 'vterm-mode))
                       (not (eq (buffer-local-value 'major-mode x) 'eaf-mode))
                       (or (not (boundp 'minimap-buffer-name))
                           (not (string= (buffer-name x) minimap-buffer-name)))))
-
-
-                   (buffer-list))))))
-
-
+                   (persp-buffer-list))))))
 
 (after! consult
   (add-to-list 'consult-buffer-sources 'my-consult--eaf-source 'append)
   (add-to-list 'consult-buffer-sources 'my-consult--terminal-source 'append)
   (add-to-list 'consult-buffer-sources 'my-consult--workspace-source 'append))
-
 
 (require 'consult)
 (defun my-consult-browser ()
@@ -283,13 +268,11 @@ Shows terminal in seperate section. Also shows browsers."
    :history 'consult--buffer-history
    :sort nil))
 
-
 (after! vertico-posframe
   (setq vertico-posframe-parameters
         '((left-fringe . 8)
           (right-fringe . 8)))
   (setq vertico-posframe-poshandler 'posframe-poshandler-frame-top-center))
-
 
 (add-hook! 'my-new-gui-frame-hook 'vertico-posframe-mode)
 
@@ -309,8 +292,6 @@ Shows terminal in seperate section. Also shows browsers."
     (progn
       (add-hook 'after-change-major-mode-hook 'remove-scratch-buffer)
       (add-hook 'server-after-make-frame-hook 'remove-scratch-buffer)))
-
-
 
 (require 'persist)
 (persist-defvar my-ssh-user-history nil
@@ -371,10 +352,11 @@ Shows terminal in seperate section. Also shows browsers."
 
 (defun my-read-string (prompt &optional hist)
   "Read a string from the minibuffer with PROMPT. History is stored in HIST."
-  (let ((string (ivy-read prompt (symbol-value hist) :history hist :require-match nil)))
-    (if (string= string "")
+  (let ((result
+         (completing-read prompt (symbol-value hist) nil nil nil hist)))
+    (if (string= result "")
         nil
-      string)))
+      result)))
 
 (defun my-add-buffer-to-project ()
   "Add current buffer to current project."
@@ -451,11 +433,12 @@ RESPONSIVE and DISPLAY are ignored."
                                                          (format "~/%s" (file-relative-name directory (getenv "HOME"))))
                              directory))
         (file
-         (async-completing-read (format "Find file (%s): " display-directory ) (acr-lines-from-process shell "-c" command))))
-    (when (and file (not (string-match-p  "\*async-completing-read\*" file)))
+         (async-completing-read (format "Find file (%s): " display-directory ) (acr-lines-from-process shell "-c" command)
+                                (lambda (x) (not (string-match-p  "\*async-completing-read\*" x))))))
+    (when file
       (if tramp-p
           (find-file (expand-file-name file directory))
-        (find-file file)))))
+        (find-file (expand-file-name file))))))
 
 (define-generic-mode 'xmodmap-mode
   '(?!)
@@ -469,3 +452,32 @@ RESPONSIVE and DISPLAY are ignored."
 (add-hook! 'c-mode-hook (lambda () (c-toggle-comment-style -1)))
 (use-package! lsp-tailwindcss)
 (add-hook! magit-post-refresh-hook 'forge-pull)
+
+(defun my-lookup-password (&rest keys)
+  (auth-source-forget-all-cached)
+  (let ((result (apply #'auth-source-search keys)))
+    (if result
+        (funcall (plist-get (car result) :secret))
+      result)))
+
+(setq smudge-oauth2-callback-port "3725")
+(defun my-start-smudge ()
+  (interactive)
+  (require 'smudge)
+  (my-reload-spotifyd)
+  (setq smudge-oauth2-client-secret (my-lookup-password :host "api.spotify.com"))
+  (setq smudge-oauth2-client-id (my-lookup-password :host "id.spotify.com"))
+  (global-smudge-remote-mode)
+  )
+
+(defun my-pause-music-start-again (time)
+  (interactive '("2 min"))
+  (unless (featurep 'smudge)
+    (my-start-smudge))
+  (smudge-controller-toggle-play)
+  (run-at-time time nil #'smudge-controller-toggle-play)
+  )
+
+(defun my-reload-spotifyd ()
+  (interactive)
+  (shell-command "systemctl reload-or-restart --user spotifyd"))
