@@ -1,4 +1,4 @@
-.PHONY: all exec conf optimus udev keybind emacs gesture stow sync dconf-dump vim systemd spotifyd
+.PHONY: all exec conf optimus udev keybind emacs gesture stow sync dconf-dump vim systemd spotifyd spotify
 
 all: stow exec conf emacs vim systemd
 
@@ -50,3 +50,6 @@ spotifyd:
 	stow --adopt spotifyd
 	yay -S spotifyd
 	systemctl enable --user --now spotifyd
+
+spotify:
+	./exec/spicetify.sh

@@ -78,7 +78,8 @@
    :desc "Volume mute" "0" #'smudge-controller-volume-mute-unmute
    :desc "My playlist" "p" #'smudge-my-playlists
    :desc "Reload daemon" "r" #'my-reload-spotifyd
-   :desc "Next track" "}" #'smudge-controller-next-track
-   :desc "Previous track" "{" #'smudge-controller-previous-track
+   :desc "Next track"  "]" #'smudge-controller-next-track
+   :desc "Previous track" "[" #'smudge-controller-previous-track
+   :desc "Set volume" "v" #'my-smudge-set-volume
    )
   )

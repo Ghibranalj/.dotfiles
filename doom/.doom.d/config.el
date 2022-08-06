@@ -466,7 +466,8 @@ RESPONSIVE and DISPLAY are ignored."
 (defun my-start-smudge ()
   (interactive)
   (require 'smudge)
-  (my-reload-spotifyd)
+  (unless (my-is-service-active-p "spotifyd")
+    (my-reload-spotifyd))
   (setq smudge-oauth2-client-secret (my-lookup-password :host "api.spotify.com"))
   (setq smudge-oauth2-client-id (my-lookup-password :host "id.spotify.com"))
   (global-smudge-remote-mode)
@@ -483,3 +484,13 @@ RESPONSIVE and DISPLAY are ignored."
 (defun my-reload-spotifyd ()
   (interactive)
   (shell-command "systemctl reload-or-restart --user spotifyd"))
+
+(defun my-smudge-set-volume (volume)
+  (interactive "nVolume%%: ")
+  (when (and  smudge-selected-device-id (<= volume 100) (>= volume 0) )
+    (smudge-api-set-volume smudge-selected-device-id volume))
+  )
+
+(defun my-is-service-active-p (service)
+  (let ((active (shell-command-to-string (format "systemctl is-active --user %s" service))))
+    (string-match-p "active" active)))

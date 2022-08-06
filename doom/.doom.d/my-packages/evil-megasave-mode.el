@@ -19,9 +19,9 @@ Also saves when you exit evil-insert-state or evil-replace-state."
       (progn
         (add-hook 'after-change-functions 'evil-megasave--save-unless-insert nil t)
         (add-hook 'evil-insert-state-exit-hook 'evil-megasave--save-when-has-file nil t)
-        (add-hook 'evil-emacs-state-exit-hook 'evil-megasave--save-when-has-file nil t))
-    (progn
-      (remove-hook 'after-change-functions 'evil-megasave--save-unless-insert t)
+        (add-hook 'evil-emacs-state-exit-hook 'evil-megasave--save-when-has-file nil t)
+      )
+    (progn (removeafter-change-functions 'evil-megasave--save-unless-insert t)
       (remove-hook 'evil-insert-state-exit-hook 'evil-megasave--save-when-has-file t)
       (remove-hook 'evil-emacs-state-exit-hook 'evil-megasave--save-when-has-file t)
       ))
