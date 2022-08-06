@@ -26,6 +26,8 @@
 
 (load! "my-packages/evil-megasave-mode.el")
 (add-hook! 'prog-mode-hook 'evil-megasave-mode)
+(add-hook! 'git-commit-mode-hook 'evil-megasave-mode)
+(add-hook! 'conf-mode-hook 'evil-megasave-mode)
 
 (defvar my-new-frame-hook nil
   "Hook run after a any new frame is created.")
@@ -474,8 +476,8 @@ RESPONSIVE and DISPLAY are ignored."
   (interactive '("2 min"))
   (unless (featurep 'smudge)
     (my-start-smudge))
-  (smudge-controller-toggle-play)
-  (run-at-time time nil #'smudge-controller-toggle-play)
+  (smudge-api-pause)
+  (run-at-time time nil #'smudge-api-play)
   )
 
 (defun my-reload-spotifyd ()

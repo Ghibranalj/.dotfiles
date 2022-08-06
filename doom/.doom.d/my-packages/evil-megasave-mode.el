@@ -5,7 +5,7 @@
     (save-buffer)))
 
 (defun evil-megasave--save-unless-insert (&rest _)
-  (unless (or (evil-insert-state-p) (evil-replace-state-p))
+  (unless (or (evil-insert-state-p) (evil-replace-state-p) (evil-emacs-state-p))
     (evil-megasave--save-when-has-file)))
 
 
@@ -18,10 +18,13 @@ Also saves when you exit evil-insert-state or evil-replace-state."
   (if evil-megasave-mode
       (progn
         (add-hook 'after-change-functions 'evil-megasave--save-unless-insert nil t)
-        (add-hook 'evil-insert-state-exit-hook 'evil-megasave--save-when-has-file nil t))
+        (add-hook 'evil-insert-state-exit-hook 'evil-megasave--save-when-has-file nil t)
+        (add-hook 'evil-emacs-state-exit-hook 'evil-megasave--save-when-has-file nil t))
     (progn
       (remove-hook 'after-change-functions 'evil-megasave--save-unless-insert t)
-      (remove-hook 'evil-insert-state-exit-hook 'evil-megasave--save-when-has-file t)))
+      (remove-hook 'evil-insert-state-exit-hook 'evil-megasave--save-when-has-file t)
+      (remove-hook 'evil-emacs-state-exit-hook 'evil-megasave--save-when-has-file t)
+      ))
   )
 
 (provide 'evil-megasave-mode)

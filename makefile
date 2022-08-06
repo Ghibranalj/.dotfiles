@@ -1,4 +1,4 @@
-.PHONY: all exec conf optimus udev keybind emacs gesture stow sync dconf-dump vim systemd
+.PHONY: all exec conf optimus udev keybind emacs gesture stow sync dconf-dump vim systemd spotifyd
 
 all: stow exec conf emacs vim systemd
 
@@ -45,3 +45,8 @@ dconf-dump:
 systemd:
 	ln -Pf systemd/user/*.service ~/.config/systemd/user/
 	systemctl enable --user --now emacs emacs-term
+
+spotifyd:
+	stow --adopt spotifyd
+	yay -S spotifyd
+	systemctl enable --user --now spotifyd
