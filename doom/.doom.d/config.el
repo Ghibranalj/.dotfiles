@@ -1,4 +1,4 @@
-;;; ../.dotfiles/doom/.doom.d/config.el -*- lexical-binding: t; -*-
+;;; $DOOM_DIR/config.el -*- lexical-binding: t; -*-
 
 (load! "keymap.el")
 (setq display-line-numbers-type 'relative)
@@ -11,11 +11,11 @@
 
 (setq doom-variable-pitch-font (font-spec
                                 :family "Source Code Pro"
-                                :size 14))
+                                :size 15))
 
 (setq doom-big-font (font-spec
                      :family "Source Code Pro"
-                     :size 20))
+                     :size 22))
 
 (setq doom-bin "doom")
 
@@ -449,8 +449,8 @@ RESPONSIVE and DISPLAY are ignored."
   '("[xX]modmap\\(rc\\)?\\'")
   nil
   "Simple mode for xmodmap files.")
-(add-hook! 'xmodmap-mode-hook 'display-line-numbers-mode)
 
+(add-hook! 'xmodmap-mode-hook 'display-line-numbers-mode)
 (add-hook! 'c-mode-hook (lambda () (c-toggle-comment-style -1)))
 (use-package! lsp-tailwindcss)
 (add-hook! magit-post-refresh-hook 'forge-pull)
@@ -491,6 +491,13 @@ RESPONSIVE and DISPLAY are ignored."
     (smudge-api-set-volume smudge-selected-device-id volume))
   )
 
-(defun my-is-service-active-p (service)
-  (let ((active (shell-command-to-string (format "systemctl is-active --user %s" service))))
-    (string-match-p "active" active)))
+(defun my-is-service-active-p (service &optional root)
+  "Return t if SERVICE is active. use --user if ROOT is nil"
+  (let ((active (s-trim
+          (shell-command-to-string
+           (format "systemctl is-active %s %s" (if root "" "--user") service)))))
+    (string= active "active")))
+
+(defun my-open-man (page)
+       (interactive `(,(completing-read "Man: " nil)))
+       (man page))

@@ -84,3 +84,43 @@ keystate_capslock = enable
 "bash -i -c \"$(alias | awk -F'[ =]' '{print $2}' | rofi -dmenu -p 'Alias')\""
     m:0xc + c:37
     Control+Alt + Control_L
+
+"~/.bin/terminal"
+    m:0xc + c:28
+    Control+Alt + t
+
+"volume down"
+    m:0xc + c:20
+    Control+Alt + minus
+
+"volume up"
+    m:0xc + c:21
+    Control+Alt + equal
+
+"volume mute"
+    m:0xc + c:19
+    Control+Alt + 0
+
+"player pause"
+    m:0xc + c:22
+    Control+Alt + BackSpace
+
+"player next"
+    m:0xc + c:35
+    Control+Alt + bracketright
+
+"player prev"
+    m:0xc + c:34
+    Control+Alt + bracketleft
+
+"player stop"
+    m:0xc + c:51
+    Control+Alt + backslash
+
+"brightness up"
+    m:0x0 + c:233
+    XF86MonBrightnessUp
+
+"brightness down"
+    m:0x0 + c:232
+    XF86MonBrightnessDown

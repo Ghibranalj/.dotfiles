@@ -32,7 +32,7 @@ colors: {
 
 window:
   {
-    padding: { x: 12, y: 12, dynamic_padding: false },
+    padding: { x: 6, y: 6, dynamic_padding: false },
 
     opacity: 1.0,
     title: "Terminal",
@@ -46,7 +46,7 @@ font:
 
     italic: { family: Source Code Pro, style: Italic },
 
-    size: 11.0,
+    size: 7.5,
 
     offset: { x: 0, y: 1 },
   }

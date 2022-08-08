@@ -12,6 +12,7 @@
 
  :leader
  :desc "Switch buffer in workspace" "," #'my-consult-workspace
+ :desc "Yank from kill ring" "y" #'yank-from-kill-ring
  (:prefix ("b" . "buffer")
   :desc "Format buffer" "f" #'+format/buffer
   :desc "Switch to browser" "w" #'my-consult-browser
@@ -28,7 +29,8 @@
    )
 
   (:prefix ("o" . "open")
-   :desc "Open manpage" "m" #'man
+   :desc "Open manpage" "M" #'man
+   :desc "Open manpage" "m" #'my-open-man
    :desc "Open browser" "w" #'eaf-open-browser-with-history
    :desc "Open browser bookmark" "W" #'eaf-open-bookmark
    :desc "Open google" "g" #'my-google-search

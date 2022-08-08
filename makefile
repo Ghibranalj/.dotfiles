@@ -1,4 +1,4 @@
-.PHONY: all exec conf optimus udev keybind emacs gesture stow sync dconf-dump vim systemd spotifyd spotify
+.PHONY: all exec conf optimus udev keybind emacs gesture stow sync dconf-dump vim systemd spotifyd spotify dwm
 
 all: stow exec conf emacs vim systemd
 
@@ -53,3 +53,6 @@ spotifyd:
 
 spotify:
 	./exec/spicetify.sh
+
+dwm:
+	ln -s dwm/autostart.sh ~/.local/share

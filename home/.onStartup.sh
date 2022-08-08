@@ -8,15 +8,10 @@ function start() {
 #important
 start xbindkeys
 
-# start albert
 start discord
 start spotify
-# start noisetorch
-# start whatsapp
 start noisetorch -s alsa_input.usb-Generalplus_Usb_Audio_Device-00.mono-fallback -i
-# start /usr/bin/emacs --daemon
 emacsclient --create-frame --no-wait
-
 function link-usb() {
 	if [[ $(ls /run/media/$USER/) == "" ]]; then
 		unlink $HOME/USB/*
@@ -31,6 +26,7 @@ function link-usb() {
 		ln -s $d $HOME/USB/
 	done
 }
+
 while true; do
 	link-usb
 	sleep 2
