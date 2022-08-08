@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# -*- mode:sh -*-
+
+case $1 in
+    play)
+        echo "Starting..."
+        playerctl --player=spotify,spotifyd,%any play
+        ;;
+    stop)
+        playerctl --player=spotify,spotifyd,%any stop
+        echo "Stopping..."
+        ;;
+    pause)
+        playerctl --player=spotify,spotifyd,%any play-pause
+        ;;
+    next)
+        playerctl --player=spotify,spotifyd,%any next
+        ;;
+    prev)
+        playerctl --player=spotify,spotifyd,%any previous
+        ;;
+    *)
+        echo "Usage: $0 {play|stop|restart|pause|next|prev}"
+        exit 1
+        ;;
+esac

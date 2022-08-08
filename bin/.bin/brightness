@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# -*- mode:sh -*-
+
+case $1 in
+    get)
+        V=$(brightnessctl get)
+        M=$(brightnessctl max)
+        echo $((V * 100 / M))%
+        ;;
+    up)
+        brightnessctl set +5%
+        ;;
+    down)
+        brightnessctl set 5%-
+        ;;
+    *)
+        echo "Usage: $0 {get|up|down}"
+        exit 1
+        ;;
+esac

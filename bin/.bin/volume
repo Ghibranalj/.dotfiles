@@ -1,0 +1,16 @@
+#!/bin/sh
+# -*- mode:sh -*-
+
+STEP=5
+if [[ "$1" == "up" ]]; then
+    pamixer -i $STEP #to increase 5%
+
+elif [[ "$1" == "down" ]]; then
+    pamixer -d $STEP #to decrease 5%
+
+elif [[ "$1" == "mute" ]]; then
+    pamixer -t #to toggle mute
+fi
+
+PERCENTAGE=`pamixer --get-volume-human`
+notify-send "volume $PERCENTAGE" -i "multimedia-volume-control" -t 400
