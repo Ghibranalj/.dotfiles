@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+# In minutes
+IDLE_TRESHOLD=5
+LOGOUT_TRESHOLD=30
+
+treshhold_millis=$((IDLE_TRESHOLD * 60 * 1000))
+logout_millis=$((LOGOUT_TRESHOLD * 60 * 1000))
+
+IS_ASLEEP=false
+IS_LOGGED_OFF=false
+while true; do
+    IDLE=$(xprintidle)
+
+    # treshhold_millis=$((20 * 1000))
+    SHOULD_BE_ASLEEP=false
+    if [[ $IDLE -ge $treshhold_millis ]]; then
+        SHOULD_BE_ASLEEP=true
+    else
+        IS_ASLEEP=false
+    fi
+
+    if [[ "$SHOULD_BE_ASLEEP" == "true" && "$IS_ASLEEP" == "false" ]]; then
+        IS_ASLEEP=true
+        echo "Going to sleep"
+        xset dpms force suspend
+    fi
+
+    # TODO uncomment for logout
+    if [[ $IS_ASLEEP == "true" && $IDLE -gt $logout_millis && $IS_LOGGED_OFF == "false" ]]; then
+        IS_LOGGED_OFF=true
+        xset dpms force off
+    else
+        IS_LOGGED_OFF=false
+    fi
+    sleep 30
+done

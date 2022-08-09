@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-source ~/.bashrc
 
-~/.bin/screen.sh &
+$HOME/.bin/screen.sh &
 
 function disable-accel() {
     while true; do
@@ -17,7 +16,8 @@ nm-applet &
 pasystray &
 killall -KILL emacs &
 # xscreensaver -no-splash &
+$HOME/.bin/screensaverd &
 
 sleep 2
 feh /usr/share/backgrounds/gnome/blobs-d.svg --bg-scale &
-~/.onStartup.sh &
+$HOME/.onStartup.sh &
