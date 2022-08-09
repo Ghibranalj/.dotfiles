@@ -11,6 +11,4 @@ if [[ $IGNORE == *"$1"* ]]; then
     exit 0
 fi
 
-echo "$1;;$2;;$3" >> "$file"
-
-# echo "$1;;$2;;$3;;$4;;$5" >> "$file.tmp"
+echo "$1;;$2;;$3;;$(date '+%H:%M %d %b')" >> "$file"
