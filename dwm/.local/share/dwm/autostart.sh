@@ -2,7 +2,6 @@
 source ~/.bashrc
 
 ~/.bin/screen.sh &
-~/.onStartup.sh &
 
 function disable-accel() {
     while true; do
@@ -16,8 +15,9 @@ disable-accel &
 blueman-applet &
 nm-applet &
 pasystray &
-~/.bin/dwm-bar.sh &
 killall -KILL emacs &
 
-sleep 1
+sleep 2
 feh /usr/share/backgrounds/gnome/blobs-d.svg --bg-scale &
+~/.onStartup.sh &
+~/.bin/dwm-bar.sh &
