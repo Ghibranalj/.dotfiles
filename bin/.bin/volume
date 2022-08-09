@@ -12,5 +12,24 @@ elif [[ "$1" == "mute" ]]; then
     pamixer -t #to toggle mute
 fi
 
-PERCENTAGE=`pamixer --get-volume-human`
-notify-send "volume $PERCENTAGE" -i "multimedia-volume-control" -t 400
+NUMBER=$(pamixer --get-volume)
+
+[[ $(pamixer --get-mute) == "true" ]] && NUMBER="0"
+
+N=$(($NUMBER / 5))
+for i in $(seq 1 $N); do
+    BAR+="|"
+done
+IDFILE="$HOME/.cache/volume/id"
+
+if [[ -f $IDFILE ]]; then
+    ID=$(cat $IDFILE)
+else
+    ID="0"
+    mkdir -p $HOME/.cache/volume
+    touch $IDFILE
+fi
+    
+notify-send "Volume $NUMBER%    $BAR" -i "multimedia-volume-control" -c "Volume" -r $ID -p > $IDFILE
+
+play /usr/share/sounds/gnome/default/alerts/drip.ogg

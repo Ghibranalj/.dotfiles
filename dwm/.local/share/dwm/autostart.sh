@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source ~/.bashrc
 
 ~/.bin/screen.sh &
 ~/.onStartup.sh &
@@ -15,7 +16,8 @@ disable-accel &
 blueman-applet &
 nm-applet &
 pasystray &
+~/.bin/dwm-bar.sh &
 killall -KILL emacs &
-dwm-bar.sh &
-sleep 2
+
+sleep 1
 feh /usr/share/backgrounds/gnome/blobs-d.svg --bg-scale &
