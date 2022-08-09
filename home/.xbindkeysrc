@@ -38,7 +38,7 @@
 keystate_capslock = enable
 #keystate_scrolllock= enable
 
-#"echo `whoami` > ~/test"
+#"echo `whoami` > $HOME/test"
 #    m:0xc + c:28
 #    # Control+Alt + t
 "blueman-manager"
@@ -69,7 +69,7 @@ keystate_capslock = enable
     m:0xc + c:26
     Control+Alt + e
 # "rofi -show window -kb-row-down Alt+Tab"
-"rofi -show window -config ~/.config/rofi/sidebar.rasi -kb-row-down Alt+Tab -kb-row-up Alt+Shift+Tab"
+"rofi -show window -config $HOME/.config/rofi/sidebar.rasi -kb-row-down Alt+Tab -kb-row-up Alt+Shift+Tab"
     m:0x8 + c:23
     Alt + Tab
 
@@ -85,42 +85,66 @@ keystate_capslock = enable
     m:0xc + c:37
     Control+Alt + Control_L
 
-"~/.bin/terminal"
+"$HOME/.bin/terminal"
     m:0xc + c:28
     Control+Alt + t
 
-"volume down"
+"$HOME/.bin/volume down"
     m:0xc + c:20
     Control+Alt + minus
 
-"volume up"
+"$HOME/.bin/volume up"
     m:0xc + c:21
     Control+Alt + equal
 
-"volume mute"
+"$HOME/.bin/volume mute"
     m:0xc + c:19
     Control+Alt + 0
 
-"player pause"
+"$HOME/.bin/player pause"
     m:0xc + c:22
     Control+Alt + BackSpace
 
-"player next"
+"$HOME/.bin/player next"
     m:0xc + c:35
     Control+Alt + bracketright
 
-"player prev"
+"$HOME/.bin/player prev"
     m:0xc + c:34
     Control+Alt + bracketleft
 
-"player stop"
+"$HOME/.bin/player stop"
     m:0xc + c:51
     Control+Alt + backslash
 
-"brightness up"
+"$HOME/.bin/brightness up"
     m:0x0 + c:233
     XF86MonBrightnessUp
 
-"brightness down"
+"$HOME/.bin/brightness down"
     m:0x0 + c:232
     XF86MonBrightnessDown
+
+"$HOME/.bin/brightness up"
+    m:0xc + c:11
+    Control+Alt + Insert
+
+"$HOME/.bin/brightness up"
+    m:0xc + c:33
+    Control+Alt + p
+
+"$HOME/.bin/brightness down"
+    m:0xc + c:32
+    Control+Alt + o
+
+"$HOME/.bin/volume up"
+    m:0x0 + c:123
+    XF86AudioRaiseVolume
+
+"$HOME/.bin/volume down"
+    m:0x0 + c:122
+    XF86AudioLowerVolume
+
+"$HOME/.bin/volume mute"
+    m:0x0 + c:121
+    XF86AudioMute

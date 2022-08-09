@@ -5,9 +5,7 @@ function start() {
 	disown
 }
 
-#important
 start xbindkeys
-
 start discord
 start spotify
 start noisetorch -s alsa_input.usb-Generalplus_Usb_Audio_Device-00.mono-fallback -i

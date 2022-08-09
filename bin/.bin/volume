@@ -20,16 +20,8 @@ N=$(($NUMBER / 5))
 for i in $(seq 1 $N); do
     BAR+="|"
 done
-IDFILE="$HOME/.cache/volume/id"
 
-if [[ -f $IDFILE ]]; then
-    ID=$(cat $IDFILE)
-else
-    ID="0"
-    mkdir -p $HOME/.cache/volume
-    touch $IDFILE
-fi
-    
-notify-send "Volume $NUMBER%    $BAR" -i "multimedia-volume-control" -c "Volume" -r $ID -p > $IDFILE
+ID=379
+notify-send "Volume $NUMBER%    $BAR" -i "multimedia-volume-control" -c "Volume" -r $ID -p
 
 play /usr/share/sounds/gnome/default/alerts/drip.ogg

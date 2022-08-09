@@ -22,7 +22,7 @@ $shutdown" | rofi -dmenu -i -p "Power" \
 )
 
 if [ "$selected_option" == "$lock" ]; then
-	loginctl lock-session
+	xset dpms force off
 elif [ "$selected_option" == "$logout" ]; then
 	session=$(loginctl session-status | head -n 1 | awk '{print $1}')
 	loginctl terminate-session $session -o cmd -f shutdown

@@ -3,9 +3,8 @@
 
 case $1 in
     get)
-        V=$(brightnessctl get)
-        M=$(brightnessctl max)
-        echo $((V * 100 / M))%
+        PERC=$(awk -F',' '{print $4}' <<<"$(brightnessctl -d amdgpu_bl0 -m)")
+        echo $PERC
         ;;
     up)
         brightnessctl set +5%
@@ -18,3 +17,12 @@ case $1 in
         exit 1
         ;;
 esac
+
+PERC=$(awk -F',' '{print $4}' <<<"$(brightnessctl -d amdgpu_bl0 -m)" | tr -d '%')
+ID=234
+N=$(($PERC / 5 - 2))
+for i in $(seq 1 $N); do
+    BAR+="|"
+done
+
+notify-send "Brightness:$PERC% $BAR" -r $ID -c "Brightness"

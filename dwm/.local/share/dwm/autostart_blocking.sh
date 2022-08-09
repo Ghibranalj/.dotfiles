@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
-# echo "THISWORKD" >> ~/THIS_WORKS
+while true; do
+    ~/.bin/dwm-bar.sh
+done &

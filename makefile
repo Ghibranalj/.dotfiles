@@ -1,4 +1,4 @@
-.PHONY: all exec conf optimus udev keybind emacs gesture stow sync dconf-dump vim systemd spotifyd spotify dwm
+.PHONY: all exec conf optimus udev keybind emacs gesture stow sync dconf-dump vim systemd spotifyd spotify dwm xorg
 
 all: stow exec conf emacs vim systemd
 
@@ -44,7 +44,9 @@ dconf-dump:
 
 systemd:
 	ln -Pf systemd/user/*.service ~/.config/systemd/user/
+	systemctl --user daemon-reload
 	systemctl enable --user --now emacs emacs-term
+	systemctl enable --user --now xbindkeys
 
 spotifyd:
 	stow --adopt spotifyd
@@ -54,5 +56,8 @@ spotifyd:
 spotify:
 	./exec/spicetify.sh
 
-dwm:
-	ln -s dwm/autostart.sh ~/.local/share
+dwm: xorg
+	stow dwm
+
+xorg:
+	sudo cp xorg/* /etc/X11/xorg.conf.d/
