@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
 # -*- mode:sh -*-
 
+PERC=$(awk -F',' '{print $4}' <<<"$(brightnessctl -d amdgpu_bl0 -m)" | tr -d '%')
 case $1 in
     get)
-        PERC=$(awk -F',' '{print $4}' <<<"$(brightnessctl -d amdgpu_bl0 -m)")
-        echo $PERC
+        echo $PERC%
         ;;
     up)
         brightnessctl set +5%
         ;;
     down)
         brightnessctl set 5%-
+        ;;
+    off)
+        xset dpms force off
         ;;
     *)
         echo "Usage: $0 {get|up|down}"

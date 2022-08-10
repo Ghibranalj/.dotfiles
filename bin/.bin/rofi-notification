@@ -8,7 +8,7 @@
 
 DIR="$HOME/.cache/dunst"
 file="$DIR/dunst.log"
-CLR="======== CLEAR ========"
+CLR="==================== CLEAR ======================"
 
 DATASTORE="notificons.gdbm"
 put() {
@@ -43,6 +43,7 @@ function get-entries() {
             if [ "$ICON" == "" ]; then
                 ICON=$(fd -j8 -1 -c never "$ICON_NAME" /usr/share/pixmaps)
             fi
+            [[ $ICON == "" ]] && ICON="-"
             put "$ICON_NAME" "$ICON"
         fi
 
@@ -50,20 +51,30 @@ function get-entries() {
     done <"$file"
 }
 
+MICE=$(xinput | sed '/Touchpad\|Mouse/s/.*id=\([0-9]*\).*/\1/;t;d')
+
 while true; do
 
-    ITEM=$(get-entries |
-        rofi -dmenu -multi-select -p "Notification " -config ~/.config/rofi/notification.rasi -show-icons)
+    for MOUSE in $MICE; do
+        xinput --enable $MOUSE
+    done
+
+    ITEM=$(get-entries | rofi -dmenu -multi-select -p "Notifications: " -config ~/.config/rofi/notification.rasi \
+        -show-icons -no-custom -asnc-pre-read 1)
     EXITCODE="$?"
 
-    if [[ "$ITEM" == "$CLR" ]]; then
-        rm $file
+    if [[ "$ITEM" == "" && "$EXITCODE" == "1" ]]; then
         exit 0
     fi
 
-    echo "$EXITCODE" "$ITEM"
-    if [[ $ITEM == "" ]]; then
-        exit 0
+    for MOUSE in $MICE; do
+        xinput --disable $MOUSE
+    done
+
+    if [[ "$ITEM" == "$CLR" ]]; then
+        echo -n "" >$file
+        continue
+        # exit 0
     fi
 
     OUT=$(echo "$ITEM" | awk -F' : ' '{printf("%s;;%s;;%s;;%s\n",$1,$2,$3,$4)}')

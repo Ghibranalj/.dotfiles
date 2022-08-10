@@ -17,7 +17,7 @@ pasystray &
 killall -KILL emacs &
 # xscreensaver -no-splash &
 $HOME/.bin/screensaverd &
+$HOME/.onStartup.sh &
 
 sleep 2
 feh /usr/share/backgrounds/gnome/blobs-d.svg --bg-scale &
-$HOME/.onStartup.sh &
