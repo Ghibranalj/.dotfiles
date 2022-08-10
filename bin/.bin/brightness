@@ -21,11 +21,24 @@ case $1 in
         ;;
 esac
 
-PERC=$(awk -F',' '{print $4}' <<<"$(brightnessctl -d amdgpu_bl0 -m)" | tr -d '%')
-ID=234
+NUMBER=$(awk -F',' '{print $4}' <<<"$(brightnessctl -d amdgpu_bl0 -m)" | tr -d '%')
 N=$(($PERC / 5 - 2))
+
+N=$(bc <<< "($NUMBER / 3.33)")
 for i in $(seq 1 $N); do
     BAR+="|"
 done
+echo $N
 
-notify-send "Brightness:$PERC% $BAR" -r $ID -c "Brightness"
+COL="#ffffff"
+if [[ $NUMBER -gt 75 ]]; then
+    COL="#ff0000"
+elif [[ $NUMBER -gt 50 ]]; then
+    COL="#ffff00"
+elif [[ $NUMBER -gt 25 ]]; then
+    COL="#00ff00"
+fi
+ICON=/usr/share/icons/Adwaita41/scalable/status/display-brightness-symbolic.svg
+
+ID=234
+notify-send -i "$ICON" "Brightness: $NUMBER%" "<span color=\'$COL\'>$BAR</span>" -c "Volume" -r $ID

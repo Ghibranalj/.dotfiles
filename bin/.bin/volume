@@ -16,12 +16,23 @@ NUMBER=$(pamixer --get-volume)
 
 [[ $(pamixer --get-mute) == "true" ]] && NUMBER="0"
 
-N=$(($NUMBER / 5))
+N=$(bc <<< "($NUMBER / 3.33)")
 for i in $(seq 1 $N); do
     BAR+="|"
 done
+echo $N
 
+COL="#ffffff"
+if [[ $NUMBER -gt 75 ]]; then
+    COL="#ff0000"
+elif [[ $NUMBER -gt 50 ]]; then
+    COL="#ffff00"
+elif [[ $NUMBER -gt 25 ]]; then
+    COL="#00ff00"
+fi
+ICON=/usr/share/icons/Adwaita41/scalable/apps/multimedia-volume-control-symbolic.svg
 ID=379
-notify-send "Volume $NUMBER%    $BAR" -i "multimedia-volume-control" -c "Volume" -r $ID -p
+
+notify-send -i "$ICON" "Volume $NUMBER%" "<span color=\'$COL\'>$BAR</span>" -c "Volume" -r $ID
 
 play /usr/share/sounds/gnome/default/alerts/drip.ogg
