@@ -8,3 +8,5 @@ my_layout.xkm
 /.vscode/
 /nvim/.config/nvim/autoload/
 /lvim/.config/lvim/plugin/*.lua
+*.gdbm
+/doom/.doom.d/custom.el

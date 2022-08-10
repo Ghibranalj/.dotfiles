@@ -1,55 +1,8 @@
 #!/usr/bin/env bash
 # -*- mode: sh; -*-
 
-# this script has many dependencies, and is not meant to be run standalone
-# 1. fd
-# 2. gdbmtool
-# 3. gdbm
-
 DIR="$HOME/.cache/dunst"
 file="$DIR/dunst.log"
-CLR="==================== CLEAR ======================"
-
-DATASTORE="notificons.gdbm"
-put() {
-    KEY="$1"
-    VAL="$2"
-    gdbmcmd="store $KEY $VAL"
-    gdbmtool -s $DATASTORE <<<"$gdbmcmd"
-}
-get() {
-    KEY="$1"
-    gdbmcmd="fetch $KEY"
-    out=$(gdbmtool -s $DATASTORE <<<"$gdbmcmd")
-    [[ $out == *"No uch item found"* ]] && echo -n "" || echo "$out"
-}
-
-function get-entries() {
-    echo $CLR
-    while read -r line; do
-
-        APP=$(awk -F";;" '{print $1}' <<<"$line")
-
-        ICON_NAME=$(echo "$APP" | awk '{print tolower($0) }')
-        ICON_NAME=$(awk '{$1=$1}1' OFS="-" <<<"$ICON_NAME")
-
-        TITLE=$(awk -F";;" '{print $2}' <<<"$line")
-        DESC=$(awk -F";;" '{print $3}' <<<"$line")
-        TIME=$(awk -F";;" '{print $4}' <<<"$line")
-
-        ICON=$(get "$ICON_NAME")
-        if [[ $ICON == "" ]]; then
-            ICON=$(fd -j8 -c never "$ICON_NAME" /usr/share/icons | grep apps | head -1)
-            if [ "$ICON" == "" ]; then
-                ICON=$(fd -j8 -1 -c never "$ICON_NAME" /usr/share/pixmaps)
-            fi
-            [[ $ICON == "" ]] && ICON="-"
-            put "$ICON_NAME" "$ICON"
-        fi
-
-        echo -en "$APP : $TITLE : $DESC : $TIME \x00icon\x1f$ICON\n"
-    done <"$file"
-}
 
 MICE=$(xinput | sed '/Touchpad\|Mouse/s/.*id=\([0-9]*\).*/\1/;t;d')
 
@@ -59,8 +12,10 @@ while true; do
         xinput --enable $MOUSE
     done
 
-    ITEM=$(get-entries | rofi -dmenu -multi-select -p "Notifications: " -config ~/.config/rofi/notification.rasi \
-        -show-icons -no-custom -asnc-pre-read 1)
+    [[ "$(cat "$file")" == "" ]] && exit 0
+
+    LINE=$(rofi -dmenu -p "Notifications: " -config ~/.config/rofi/notification.rasi \
+        -show-icons -no-custom -asnc-pre-read 1 -no-sort -format d -i -markup-rows -input "$file")
     EXITCODE="$?"
 
     if [[ "$ITEM" == "" && "$EXITCODE" == "1" ]]; then
@@ -71,23 +26,5 @@ while true; do
         xinput --disable $MOUSE
     done
 
-    if [[ "$ITEM" == "$CLR" ]]; then
-        echo -n "" >$file
-        continue
-        # exit 0
-    fi
-
-    OUT=$(echo "$ITEM" | awk -F' : ' '{printf("%s;;%s;;%s;;%s\n",$1,$2,$3,$4)}')
-    if [ "$OUT" == ";;;;;;" ]; then
-        continue
-    fi
-
-    while read -r line; do
-        line=${line//\//\\/}
-        echo $line
-        sed -i -e "s|^$line$||g" $file
-    done <<<"$OUT"
-
-    sed -i -r '/^\s*$/d' $file
-    sed -i -r '/\D+%\s*$/d' $file
+    sed -i "$LINE"d "$file"
 done
