@@ -1,37 +1,108 @@
 #!/usr/bin/env bash
 
-H=$(date +%H)
-if [ $H -ge 0 -a $H -lt 6 ]; then
-    E="💤"
-elif [ $H -ge 6 -a $H -lt 12 ]; then
-    E="🐓"
-elif [ $H -ge 12 -a $H -lt 18 ]; then
-    E="☀️"
-elif [ $H -ge 18 -a $H -lt 24 ]; then
-    E="🌙"
-fi
+function clock() {
+    local H=$(date +%H)
+    local E
+    if [ $H -ge 0 -a $H -lt 6 ]; then
+        E="💤"
+    elif [ $H -ge 6 -a $H -lt 12 ]; then
+        E="🐓"
+    elif [ $H -ge 12 -a $H -lt 18 ]; then
+        E="☀️"
+    elif [ $H -ge 18 -a $H -lt 24 ]; then
+        E="🌙"
+    fi
 
-NOTIF_FILE="$HOME/.cache/dunst/dunst.log"
-if [[ -f $NOTIF_FILE ]]; then
-    notif_num=$(cat $NOTIF_FILE | wc -l)
-else
-    notif_num='0'
-fi
+    printf ' \x01%s' "$E $(date '+%H:%M %d/%m/%y')"
+}
 
-[[ "$(acpi | awk -F[,:] '{ print $2 }' | sed -n '2 p' | xargs)" == "Charging" ]]\
-    && CHARGING="⚡" || CHARGING=""
-BAT_PERC=$(acpi | awk -F[,:] '{ print $3 }' | sed -n '2 p' | xargs)
-[[ $BAT_PERC -le 30  ]]\
-    && BAT_ICON="🪫" || BAT_ICON="🔋"
-BAT="$BAT_ICON$CHARGING$BAT_PERC"
+function vol() {
+    printf ' \x02奄 %s' "$(pamixer --get-volume-human)"
+}
 
-TIME="$E $(date '+%a %d %b %H:%M')"
-VOL=$(printf '\x01奄 %s' "$(pamixer --get-volume-human | xargs)")
-BAT=$(printf '\x03 %s' "$BAT")
-if [ $notif_num -gt 0 ]; then
-    NOTIF=$(printf ' \x04🔔%s' $notif_num)
-else
-    NOTIF=""
-fi
+function battery() {
 
-xsetroot -name "$TIME $VOL$BAT$NOTIF"
+    local BATTERY_NAME="Battery 1"
+    BATTERY_STATUS=$(acpi | grep "$BATTERY_NAME")
+
+    local CHARGING
+    [[ "$(awk -F[,:] '{ print $2 }' <<<"$BATTERY_STATUS")" == "Charging" ]] &&
+        CHARGING="⚡"
+
+    local BAT_PERC=$(awk -F[,:] '{ print $3 }' <<<"$BATTERY_STATUS" | tr -d "%" | xargs)
+
+    local BAT_ICON
+    local COLOR
+    if [[ $BAT_PERC -ge 95 ]]; then
+        BAT_ICON=""
+        COLOR="#bababa"
+    elif [[ $BAT_PERC -ge 75 ]]; then
+        BAT_ICON=""
+        COLOR="#bababa"
+    elif [[ $BAT_PERC -ge 50 ]]; then
+        BAT_ICON=""
+        COLOR="#FFFF00"
+    elif [[ $BAT_PERC -ge 25 ]]; then
+        COLOR="#FFA500"
+        BAT_ICON=""
+    else
+        COLOR="#FF0000"
+        BAT_ICON=""
+    fi
+
+    local BAT="<span color='$COLOR'>$BAT_ICON</span>$CHARGING $BAT_PERC%"
+    printf ' \x03%s' "$BAT"
+}
+
+function notif() {
+
+    NOTIF_FILE="$HOME/.cache/dunst/dunst.log"
+    local notif_count
+    if [[ -f $NOTIF_FILE ]]; then
+        notif_count=$(cat $NOTIF_FILE | wc -l)
+    else
+        notif_count='0'
+    fi
+
+    if [[ $notif_count -gt 0 ]]; then
+        printf ' \x04🔔 %s' $notif_count
+    else
+        echo -n ""
+    fi
+}
+
+function music() {
+    OUT="$($HOME/.bin/spotify-now -i "%artist %title" -e "EROR" -p "Paused")"
+
+    if [[ $OUT == "EROR" ]]; then
+        echo -n ""
+    else
+        printf ' \x05🎶 %s' "$OUT"
+    fi
+}
+function caffeine() {
+
+    CAFFEINE_FILE=$HOME/.cache/caffeine
+
+    local CAFFEINE_STATUS
+
+    if [[ -f $CAFFEINE_FILE ]]; then
+        CAFFEINE_STATUS="On "
+    else
+        CAFFEINE_STATUS="Off"
+    fi
+
+    CAFFEINE_ICON="☕"
+
+    printf ' \x06%s' "$CAFFEINE_ICON$CAFFEINE_STATUS"
+}
+
+VOL=$(vol)
+BAT=$(battery)
+TIME=$(clock)
+NOTIF=$(notif)
+MUSIC=$(music)
+CAFF=$(caffeine)
+
+echo -e "$MUSIC$TIME$VOL$BAT$CAFF$NOTIF"
+xsetroot -name "$MUSIC$TIME$VOL$BAT$CAFF$NOTIF"

@@ -5,7 +5,7 @@
 # 2. gdbmtool
 # 3. gdbm
 #
-IGNORE="notify-send"
+IGNORE="notify-send blueman"
 
 DIR="$HOME/.cache/dunst"
 file="$DIR/dunst.log"
@@ -51,7 +51,7 @@ if [[ "$ICON" == "-" ]]; then
     TITLE="<big>$1</big> "
 fi
 #NOTiF="<i>$1</i>: $2 | <small>$3</small> <sub>$(date '+%H:%M %d %b')</sub> \x00icon\x1f$ICON"
-NOTIF="$TITLE<span>$2</span> : <small>$3</small> <sub>$(date '+%H:%M %d %b')</sub>\x00icon\x1f$ICON"
+NOTIF="$TITLE$2 : <small>$3</small> <sub>$(date '+%H:%M %d/%m/%y')</sub>\x00icon\x1f$ICON"
 
 NOTIF=${NOTIF//\&/&amp;}
 

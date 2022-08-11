@@ -12,8 +12,8 @@ elif [[ "$1" == "mute" ]]; then
     pamixer -t #to toggle mute
 fi
 
-NUMBER=$(pamixer --get-volume)
 
+NUMBER=$(pamixer --get-volume)
 [[ $(pamixer --get-mute) == "true" ]] && NUMBER="0"
 
 N=$(bc <<< "($NUMBER / 3.33)")

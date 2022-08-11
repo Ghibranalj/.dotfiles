@@ -9,10 +9,17 @@ logout_millis=$((LOGOUT_TRESHOLD * 60 * 1000))
 
 IS_ASLEEP=false
 IS_LOGGED_OFF=false
+CAFFEINE_FILE=$HOME/.cache/caffeine
+
 while true; do
     IDLE=$(xprintidle)
 
-    # treshhold_millis=$((20 * 1000))
+    if [[ -f $CAFFEINE_FILE ]]; then
+        IS_ASLEEP=false
+        IS_LOGGED_OFF=false
+        continue
+    fi
+
     SHOULD_BE_ASLEEP=false
     if [[ $IDLE -ge $treshhold_millis ]]; then
         SHOULD_BE_ASLEEP=true
