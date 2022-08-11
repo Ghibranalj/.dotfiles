@@ -19,5 +19,5 @@ killall -KILL emacs &
 $HOME/.bin/screensaverd &
 $HOME/.onStartup.sh &
 
-sleep 2
-feh /usr/share/backgrounds/gnome/blobs-d.svg --bg-scale &
+sleep 1
+feh "$HOME/.local/share/dwm/background.png" --bg-scale &
