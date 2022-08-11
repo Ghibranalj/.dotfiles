@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # -*- mode:sh -*-
 
+# Required packages
+# 1. brightnessctl
+
 PERC=$(awk -F',' '{print $4}' <<<"$(brightnessctl -d amdgpu_bl0 -m)" | tr -d '%')
 case $1 in
     get)

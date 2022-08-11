@@ -69,7 +69,7 @@ keystate_capslock = enable
     m:0xc + c:26
     Control+Alt + e
 # "rofi -show window -kb-row-down Alt+Tab"
-"rofi -show window -config $HOME/.config/rofi/sidebar.rasi -kb-row-down Alt+Tab -kb-row-up Alt+Shift+Tab"
+"$HOME/.bin/rofi-window.sh"
     m:0x8 + c:23
     Alt + Tab
 

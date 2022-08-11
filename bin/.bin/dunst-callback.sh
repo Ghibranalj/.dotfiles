@@ -4,7 +4,7 @@
 # 1. fd
 # 2. gdbmtool
 # 3. gdbm
-#
+
 IGNORE="notify-send blueman"
 
 DIR="$HOME/.cache/dunst"
@@ -50,9 +50,7 @@ ICON=$(getIcon "$1")
 if [[ "$ICON" == "-" ]]; then
     TITLE="<big>$1</big> "
 fi
-#NOTiF="<i>$1</i>: $2 | <small>$3</small> <sub>$(date '+%H:%M %d %b')</sub> \x00icon\x1f$ICON"
-NOTIF="$TITLE$2 : <small>$3</small> <sub>$(date '+%H:%M %d/%m/%y')</sub>\x00icon\x1f$ICON"
-
+NOTIF="$TITLE$2 : <small>$3</small> <sub>$(date '+%H:%M %d/%m/%y')</sub>;;;;$ICON;;;;$5"
 NOTIF=${NOTIF//\&/&amp;}
 
 if [[ "$(cat "$file")" == "" ]]; then

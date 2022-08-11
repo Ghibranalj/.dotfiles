@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+kill -TERM "$(pidof dwm)"

@@ -1,30 +1,7 @@
 #!/usr/bin/env bash
 # -*- mode: sh; -*-
 
-DIR="$HOME/.cache/dunst"
-file="$DIR/dunst.log"
-
-MICE=$(xinput | sed '/Touchpad\|Mouse/s/.*id=\([0-9]*\).*/\1/;t;d')
-
-while true; do
-
-    for MOUSE in $MICE; do
-        xinput --enable $MOUSE
-    done
-
-    [[ "$(cat "$file")" == "" ]] && exit 0
-
-    LINE=$(rofi -dmenu -p "Notifications: " -config ~/.config/rofi/notification.rasi \
-        -show-icons -no-custom -asnc-pre-read 1 -no-sort -format d -i -markup-rows -input "$file")
-    EXITCODE="$?"
-
-    if [[ "$ITEM" == "" && "$EXITCODE" == "1" ]]; then
-        exit 0
-    fi
-
-    for MOUSE in $MICE; do
-        xinput --disable $MOUSE
-    done
-
-    sed -i "$LINE"d "$file"
-done
+export YOFF=30px
+export HEIGHT=40%
+rofi -location 3 -hover-select -me-select-entry '' -me-accept-entry MousePrimary\
+    -show notif -modi "notif:$HOME/.bin/rofi-notification.sh"

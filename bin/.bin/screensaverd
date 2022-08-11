@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# packages required:
+# 1. xprintidle
+
 
 # In minutes
 IDLE_TRESHOLD=5

@@ -1,6 +1,9 @@
 #!/bin/sh
 # -*- mode:sh -*-
 
+# Required packages:
+# 1. pamixer
+
 STEP=5
 if [[ "$1" == "up" ]]; then
     pamixer -i $STEP #to increase 5%
