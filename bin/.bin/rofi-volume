@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# -*- mode: sh; -*-
+
+export YOFF=27px
+# export HEIGHT=10%
+export WIDTH=20%
+export COL=3
+export LINES=1
+rofi -location 3 -hover-select -me-select-entry '' -me-accept-entry MousePrimary\
+    -show notif -modi "notif:$HOME/.bin/modi/rofi-volume.sh" -theme-str 'entry { enabled: false;} inputbar {enabled: false;}'
