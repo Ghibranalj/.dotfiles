@@ -13,10 +13,22 @@
     esac
 
 VOL="$($HOME/.bin/volume get --no-prompt)"
-# echo -en "\0prompt\x1fVolume\n"
+N=$(bc <<< "($VOL / 3)")
+for i in $(seq 1 $N); do
+    BAR+="|"
+done
+COL="#ffffff"
+if [[ $VOL -gt 75 ]]; then
+    COL="#ff0000"
+elif [[ $VOL -gt 50 ]]; then
+    COL="#ffff00"
+elif [[ $VOL -gt 25 ]]; then
+    COL="#00ff00"
+fi
+
 echo -en "\0markup-rows\x1ftrue\n"
 echo -en "\0no-custom\x1ftrue\n"
-echo -en "\0Message\x1fCurrent volume: $VOL\n"
+echo -en "\0Message\x1fVolume:$VOL% $BAR\n"
 HIGH=/usr/share/icons/Adwaita41/scalable/status/audio-volume-high-symbolic.svg
 LOW=/usr/share/icons/Adwaita41/scalable/status/audio-volume-low-symbolic.svg
 # /usr/share/icons/Adwaita41/scalable/status/audio-volume-medium-symbolic.svg

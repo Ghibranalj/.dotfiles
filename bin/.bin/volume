@@ -17,7 +17,7 @@ elif [[ "$1" == "mute" ]]; then
 elif [[ "$1" == "get" ]]; then
     VOL=$(pamixer --get-volume)
     [[ $(pamixer --get-mute) == "true" ]] && VOL="0"
-    echo $VOL% #to show volume status
+    echo $VOL #to show volume status
 fi
 
 [[ "$2" == "--no-prompt" ]] && exit 0
