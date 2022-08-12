@@ -13,8 +13,14 @@ elif [[ "$1" == "down" ]]; then
 
 elif [[ "$1" == "mute" ]]; then
     pamixer -t #to toggle mute
+
+elif [[ "$1" == "get" ]]; then
+    VOL=$(pamixer --get-volume)
+    [[ $(pamixer --get-mute) == "true" ]] && VOL="0"
+    echo $VOL% #to show volume status
 fi
 
+[[ "$2" == "--no-prompt" ]] && exit 0
 
 NUMBER=$(pamixer --get-volume)
 [[ $(pamixer --get-mute) == "true" ]] && NUMBER="0"

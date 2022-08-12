@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # -*- mode: sh; -*-
 
-export YOFF=30px
+export YOFF=27px
 export HEIGHT=40%
 rofi -location 3 -hover-select -me-select-entry '' -me-accept-entry MousePrimary\
-    -show notif -modi "notif:$HOME/.bin/rofi-notification.sh"
+    -show notif -modi "notif:$HOME/.bin/modi/rofi-notification.sh"

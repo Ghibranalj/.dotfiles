@@ -1,6 +1,4 @@
-/*
--*- mode: css -*-
-*/
+/* -*- mode: css -*- */
 
 configuration {
   font: "Source Code Pro 13";
@@ -11,6 +9,7 @@ configuration {
   scroll-method: 0;
   disable-history: false;
   sidebar-mode: false;
+  hover-select: true;
   /* separator-style: solid; */
 }
 * {
@@ -47,12 +46,13 @@ window {
   y-offset: env(YOFF, 0);
   background-color: @background;
   border-radius: 8;
-  border: 1;
+  border: 2;
   padding: 20;
   height: env(HEIGHT, 0);
   width: env(WIDTH,30%);
 }
 mainbox {
+  display:none;
   border: 0;
   padding: 0;
   border-radius: 8;
