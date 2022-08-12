@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 # packages required:
 # 1. xprintidle
-
+# 2. xsecurelock
 
 # In minutes
 IDLE_TRESHOLD=5
-LOGOUT_TRESHOLD=30
+LOGOUT_TRESHOLD=10
 
 treshhold_millis=$((IDLE_TRESHOLD * 60 * 1000))
 logout_millis=$((LOGOUT_TRESHOLD * 60 * 1000))
 
 IS_ASLEEP=false
-IS_LOGGED_OFF=false
+IS_LOCKED=false
 CAFFEINE_FILE=$HOME/.cache/caffeine
 
 while true; do
@@ -19,7 +19,7 @@ while true; do
 
     if [[ -f $CAFFEINE_FILE ]]; then
         IS_ASLEEP=false
-        IS_LOGGED_OFF=false
+        IS_LOCKED=false
         continue
     fi
 
@@ -28,20 +28,21 @@ while true; do
         SHOULD_BE_ASLEEP=true
     else
         IS_ASLEEP=false
+        IS_LOCKED=false
     fi
 
     if [[ "$SHOULD_BE_ASLEEP" == "true" && "$IS_ASLEEP" == "false" ]]; then
         IS_ASLEEP=true
         echo "Going to sleep"
-        xset dpms force suspend
+        xset dpms force off
     fi
 
     # TODO uncomment for logout
-    if [[ $IS_ASLEEP == "true" && $IDLE -gt $logout_millis && $IS_LOGGED_OFF == "false" ]]; then
-        IS_LOGGED_OFF=true
-        xset dpms force off
-    else
-        IS_LOGGED_OFF=false
+    if [[ $IS_ASLEEP == "true" && $IDLE -gt $logout_millis && $IS_LOCKED == "false" ]]; then
+        echo "Going to logout"
+        IS_LOCKED=true
+        XSECURELOCK_PASSWORD_PROMPT='asterisks' xsecurelock&
     fi
+
     sleep 30
 done
