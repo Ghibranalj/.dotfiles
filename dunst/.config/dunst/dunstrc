@@ -118,7 +118,7 @@
 
     ### Text ###
 
-    font = Source Code Pro 10
+    font = Source Code Pro 9
 
     # The spacing between lines.  If the height is smaller than the
     # font height, it will get raised to the font height.
@@ -370,9 +370,7 @@
 # GLib based applications export their desktop-entry name. In comparison to the appname,
 # the desktop-entry won't get localized.
 
-[Any]
-  summary = "*"
-  script = /home/gibi/.bin/dunst-callback.sh
+#### rofi-script
 
 [Volume]
    category = "Volume"
@@ -463,3 +461,9 @@
 #    set_stack_tag = "volume"
 #
 # vim: ft=cfg
+
+# from rofi-scripts -----
+[Any]
+     summary = "*"
+     script = /home/gibi/.config/rofi-scripts/dunst/dunst-callback.sh
+# end of rofi-scripts -----
