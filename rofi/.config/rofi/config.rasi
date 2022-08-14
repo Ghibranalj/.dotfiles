@@ -10,7 +10,9 @@ configuration {
   disable-history: false;
   sidebar-mode: false;
   hover-select: true;
-  /* separator-style: solid; */
+  me-select-entry: "";
+  me-accept-entry: [ MousePrimary, MouseSecondary, MouseDPrimary ]; /* separator-style: solid; */
+  
 }
 * {
   red: rgba (240, 113, 120, 100 %);
@@ -49,10 +51,10 @@ window {
   border: 2;
   padding: 20;
   height: env(HEIGHT, 0);
-  width: env(WIDTH,30%);
+  width: env(WIDTH, 30%);
 }
 mainbox {
-  display:none;
+  display: none;
   border: 0;
   padding: 0;
   border-radius: 8;
@@ -67,9 +69,9 @@ textbox {
   padding: 8px;
 }
 listview {
-  lines:env(LINES,8);
+  lines: env(LINES, 8);
   /* line-style: solid ; */
-  columns: env(COL,1);
+  columns: env(COL, 1);
   fixed-height: 0;
   border: 2px solid 0px 0px;
   border-color: @separatorcolor;

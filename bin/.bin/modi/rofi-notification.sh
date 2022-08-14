@@ -7,6 +7,7 @@ CLR="Clear notifications"
 
 if [[ "$*" == "$CLR" ]]; then
     echo -n "" >"$file"
+    exit 0
 elif [[ $ROFI_RETV -ne 0 ]]; then
     LINE=$ROFI_INFO
     sed -i "$LINE"d "$file"

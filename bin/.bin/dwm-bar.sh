@@ -17,7 +17,7 @@ function clock() {
 }
 
 function vol() {
-    printf ' \x02奄 %s' "$(pamixer --get-volume-human)"
+    printf ' \x08%s\x02%s ' '🔉' "$(pamixer --get-volume-human)"
 }
 
 function battery() {
@@ -73,6 +73,7 @@ function notif() {
 
 function music() {
     OUT="$($HOME/.bin/spotify-now -i "%artist %title" -e "EROR" -p "Paused")"
+    OUT=${OUT//\&/&amp;}
 
     if [[ $OUT == "EROR" ]]; then
         echo -n ""
@@ -97,12 +98,25 @@ function caffeine() {
     printf ' \x06%s' "$CAFFEINE_ICON$CAFFEINE_STATUS"
 }
 
+function bluetooth() {
+    local NUM_DEVICES=$(bluetoothctl devices Connected | wc -l)
+    [[ "$NUM_DEVICES" == "0" ]] && NUM_DEVICES=""
+
+    printf '\x07%s' "<span color='#5255ba' font_stretch='expanded' font_size='large' rise='-1pt'></span> $NUM_DEVICES"
+}
+
+function puluseaudio(){
+    printf '\x08%s' "<span font_size='x-large' rise='1pt'>☰</span> "
+}
+
 VOL=$(vol)
 BAT=$(battery)
 TIME=$(clock)
 NOTIF=$(notif)
 MUSIC=$(music)
 CAFF=$(caffeine)
+BLU=$(bluetooth)
+# PULSE=$(puluseaudio)
 
-echo -e "$MUSIC$TIME$VOL$BAT$CAFF$NOTIF"
-xsetroot -name "$MUSIC$TIME$VOL$BAT$CAFF$NOTIF"
+echo -e "$MUSIC$TIME$VOL$BAT$CAFF$BLUE$BLU$NOTIF"
+xsetroot -name "$MUSIC$TIME$VOL$PULSE$BAT$CAFF$BLUE$BLU$NOTIF"

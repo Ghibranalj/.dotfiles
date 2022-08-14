@@ -15,13 +15,15 @@ IS_LOCKED=false
 CAFFEINE_FILE=$HOME/.cache/caffeine
 
 while true; do
-    IDLE=$(xprintidle)
+    sleep 30
 
     if [[ -f $CAFFEINE_FILE ]]; then
         IS_ASLEEP=false
         IS_LOCKED=false
         continue
     fi
+
+    IDLE=$(xprintidle)
 
     SHOULD_BE_ASLEEP=false
     if [[ $IDLE -ge $treshhold_millis ]]; then
@@ -41,8 +43,6 @@ while true; do
     if [[ $IS_ASLEEP == "true" && $IDLE -gt $logout_millis && $IS_LOCKED == "false" ]]; then
         echo "Going to logout"
         IS_LOCKED=true
-        XSECURELOCK_PASSWORD_PROMPT='asterisks' xsecurelock&
+        XSECURELOCK_PASSWORD_PROMPT='asterisks' xsecurelock
     fi
-
-    sleep 30
 done

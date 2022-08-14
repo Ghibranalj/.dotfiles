@@ -2,7 +2,6 @@
 
 
 # Required packages
-# 1. blueman-applet
 # 2. nm-applet
 # 3. pasystray
 # 5. inputlug
@@ -25,9 +24,8 @@ function killstart(){
 }
 
 # disable-accel &
-killstart blueman-applet &
 killstart nm-applet &
-killstart pasystray &
+# killstart pasystray &
 killstart inputplug -0 --command $HOME/.bin/inputplug.sh &
 # killall -KILL emacs &
 # xscreensaver -no-splash &

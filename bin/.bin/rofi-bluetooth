@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+export YOFF=27px
+export HEIGHT=50%
+rofi -location 3 -show b -modi "b:$HOME/.config/rofi-scripts/bluetooth"

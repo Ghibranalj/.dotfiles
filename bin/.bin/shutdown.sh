@@ -24,9 +24,9 @@ $hibernate" | rofi -dmenu -i -p "Power" \
 )
 
 if [ "$selected_option" == "$lock" ]; then
-	xset dpms force off
+	XSECURELOCK_PASSWORD_PROMPT='asterisks' xsecurelock &
 	sleep 1
-	XSECURELOCK_PASSWORD_PROMPT='asterisks' xsecurelock
+	xset dpms force off
 elif [ "$selected_option" == "$logout" ]; then
 	$HOME/.bin/restartdwm
 elif [ "$selected_option" == "$shutdown" ]; then
