@@ -17,17 +17,20 @@ function clock() {
 }
 
 function vol() {
-    printf ' \x08%s\x02%s ' '🔉' "$(pamixer --get-volume-human)"
+    printf ' \x08%s\x02%s' '🔉' "$(pamixer --get-volume-human)"
 }
 
 function battery() {
 
-    local BATTERY_NAME="Battery 1"
-    BATTERY_STATUS=$(acpi | grep "$BATTERY_NAME")
+    BATTERY_STATUS=$(acpi | grep "Battery 0")
 
-    local CHARGING
-    [[ "$(awk -F[,:] '{ print $2 }' <<<"$BATTERY_STATUS")" == "Charging" ]] &&
-        CHARGING="⚡"
+    if [[ "$BATTERY_STATUS" == *"unavailable"* ]]; then
+      BATTERY_STATUS=$(acpi | grep "Battery 1")
+    fi
+
+    local CHARGING=$(acpi | awk '/Charging/ {print "⚡"}')
+    # [[ "$(awk -F[,:] '{ print $2 }' <<<"$BATTERY_STATUS")" == "Charging" ]] &&
+    #     CHARGING="⚡"
 
     local BAT_PERC=$(awk -F[,:] '{ print $3 }' <<<"$BATTERY_STATUS" | tr -d "%" | xargs)
 
@@ -72,7 +75,7 @@ function notif() {
 }
 
 function music() {
-    OUT="$($HOME/.bin/spotify-now -i "%artist %title" -e "EROR" -p "Paused")"
+    OUT="$($HOME/.bin/spotify-now -i "%artist - %title" -e "EROR" -p "Paused")"
     OUT=${OUT//\&/&amp;}
 
     if [[ $OUT == "EROR" ]]; then
@@ -88,25 +91,19 @@ function caffeine() {
     local CAFFEINE_STATUS
 
     if [[ -f $CAFFEINE_FILE ]]; then
-        CAFFEINE_STATUS="On "
-    else
-        CAFFEINE_STATUS="Off"
+        CAFFEINE_STATUS="background='orange'"
     fi
 
-    CAFFEINE_ICON="☕"
+    CAFFEINE="<span $CAFFEINE_STATUS >☕</span>"
 
-    printf ' \x06%s' "$CAFFEINE_ICON$CAFFEINE_STATUS"
+    printf ' \x06%s' "$CAFFEINE"
 }
 
 function bluetooth() {
     local NUM_DEVICES=$(bluetoothctl devices Connected | wc -l)
     [[ "$NUM_DEVICES" == "0" ]] && NUM_DEVICES=""
 
-    printf '\x07%s' "<span color='#5255ba' font_stretch='expanded' font_size='large' rise='-1pt'></span> $NUM_DEVICES"
-}
-
-function puluseaudio(){
-    printf '\x08%s' "<span font_size='x-large' rise='1pt'>☰</span> "
+    printf ' \x07%s' "<span color='#5255ba' font_size='115%' rise='-2pt' ></span> $NUM_DEVICES"
 }
 
 VOL=$(vol)

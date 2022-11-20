@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
 
-export YOFF=27px
-export HEIGHT=50%
+export YOFF=25px
 rofi -location 3 -show b -modi "b:$HOME/.config/rofi-scripts/pulseaudio"

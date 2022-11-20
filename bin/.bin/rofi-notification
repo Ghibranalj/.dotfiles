@@ -2,5 +2,5 @@
 # -*- mode: sh; -*-
 
 export YOFF=27px
-export HEIGHT=40%
+export HEIGHT=50%
 rofi -location 3 -show notif -modi "notif:$HOME/.config/rofi-scripts/notification"

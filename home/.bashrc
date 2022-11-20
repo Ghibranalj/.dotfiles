@@ -233,6 +233,7 @@ function man() {
 alias yas="yay -Slq | fzf -m --preview 'yay -Si {1}' | xargs -ro  yay -S"
 alias yar="yay -Qqe | fzf -m --preview 'yay -Si {1}' | xargs -ro  yay -Rns"
 alias yayu="yay -Qu | fzf -m --preview 'yay -Si {1}' | cut -d' ' -f1 | xargs -ro  yay -Syy"
+alias sman="apropos . | fzf -m --preview 'man {1}{2}' | awk '{printf(\"%s%s\",\$1,\$2)}' | xargs man"
 
 [ -d $HOME/.bin ] && export PATH=$PATH:$HOME/.bin
 [ -d $HOME/.emacs.d/bin ] && export PATH=$PATH:$HOME/.emacs.d/bin

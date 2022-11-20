@@ -11,15 +11,22 @@ treshhold_millis=$((IDLE_TRESHOLD * 60 * 1000))
 logout_millis=$((LOGOUT_TRESHOLD * 60 * 1000))
 
 IS_ASLEEP=false
-IS_LOCKED=false
 CAFFEINE_FILE=$HOME/.cache/caffeine
+LOCK_FILE=$HOME/.cache/screen.lock
 
+function lock_screen() {
+    touch $LOCK_FILE
+    XSECURELOCK_PASSWORD_PROMPT='asterisks' xsecurelock
+    rm $LOCK_FILE
+}
+
+rm $LOCK_FILE
 while true; do
     sleep 30
 
     if [[ -f $CAFFEINE_FILE ]]; then
         IS_ASLEEP=false
-        IS_LOCKED=false
+        rm $LOCK_FILE
         continue
     fi
 
@@ -30,7 +37,6 @@ while true; do
         SHOULD_BE_ASLEEP=true
     else
         IS_ASLEEP=false
-        IS_LOCKED=false
     fi
 
     if [[ "$SHOULD_BE_ASLEEP" == "true" && "$IS_ASLEEP" == "false" ]]; then
@@ -39,10 +45,8 @@ while true; do
         xset dpms force off
     fi
 
-    # TODO uncomment for logout
-    if [[ $IS_ASLEEP == "true" && $IDLE -gt $logout_millis && $IS_LOCKED == "false" ]]; then
+    if [[ $IS_ASLEEP == "true" && $IDLE -gt $logout_millis && ! -f $LOCK_FILE ]]; then
         echo "Going to logout"
-        IS_LOCKED=true
-        XSECURELOCK_PASSWORD_PROMPT='asterisks' xsecurelock
+        lock_screen &
     fi
 done
