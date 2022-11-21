@@ -187,8 +187,11 @@ function mkcpair() {
 }
 
 function check-network() {
+    echo -n "Password :"
+    read -rs PASS
+    echo
     echo -n Data Used:
-    netz-checker ghibranresearch@gmail.com X1KVF3CL
+    netz-checker ghibranresearch@gmail.com $PASS
 }
 
 function dd-iso() {
