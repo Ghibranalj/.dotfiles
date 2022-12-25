@@ -140,6 +140,7 @@
   (add-hook! 'eaf-mode-hook 'my-add-buffer-to-project)
   (add-hook! 'eaf-mode-hook 'hide-mode-line-mode)
 
+  (require 'evil)
   (evil-collection-define-key 'normal 'eaf-mode-map*
     "j" 'eaf-send-down-key
     "k" 'eaf-send-up-key
@@ -368,17 +369,16 @@ Shows terminal in seperate section. Also shows browsers."
 
 (add-hook! 'daemons-mode-hook 'my-add-buffer-to-project)
 (add-hook! 'daemons-output-mode-hook 'my-add-buffer-to-project)
-
-(evil-collection-define-key 'normal 'daemons-mode-map
-  "<ret>" 'daemons-status-at-point
-  "s" 'daemons-start-at-point
-  "S" 'daemons-stop-at-point
-  "r" 'daemons-reload-at-point
-  "R" 'daemons-restart-at-point
-  "e" 'daemons-enable-at-point
-  "d" 'daemons-disable-at-point
-  "t" 'daemons-systemd-toggle-user)
-
+(after! 'daemons
+  (evil-collection-define-key 'normal 'daemons-mode-map
+    "<ret>" 'daemons-status-at-point
+    "s" 'daemons-start-at-point
+    "S" 'daemons-stop-at-point
+    "r" 'daemons-reload-at-point
+    "R" 'daemons-restart-at-point
+    "e" 'daemons-enable-at-point
+    "d" 'daemons-disable-at-point
+    "t" 'daemons-systemd-toggle-user))
 
 (setq vterm-always-compile-module t)
 
@@ -494,10 +494,22 @@ RESPONSIVE and DISPLAY are ignored."
 (defun my-is-service-active-p (service &optional root)
   "Return t if SERVICE is active. use --user if ROOT is nil"
   (let ((active (s-trim
-          (shell-command-to-string
-           (format "systemctl is-active %s %s" (if root "" "--user") service)))))
+                 (shell-command-to-string
+                  (format "systemctl is-active %s %s" (if root "" "--user") service)))))
     (string= active "active")))
 
 (defun my-open-man (page)
-       (interactive `(,(completing-read "Man: " nil)))
-       (man page))
+  (interactive `(,(completing-read "Man: " nil)))
+  (man page))
+
+(use-package! lsp-tailwindcss
+  :init
+  (setq lsp-tailwindcss-add-on-mode t)
+  )
+
+(after! web-mode
+  (defun +web/indent-or-yas-or-emmet-expand ()
+    "Just run (+copilot/tab)"
+    (interactive)
+    (+copilot/tab)
+    ))

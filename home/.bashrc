@@ -241,7 +241,7 @@ alias sman="apropos . | fzf -m --preview 'man {1}{2}' | awk '{printf(\"%s%s\",\$
 [ -d $HOME/.bin ] && export PATH=$PATH:$HOME/.bin
 [ -d $HOME/.emacs.d/bin ] && export PATH=$PATH:$HOME/.emacs.d/bin
 [ -d $HOME/.local/bin ] && PATH=$PATH:$HOME/.local/bin
-
+[ -d /snap/bin ] && PATH=$PATH:/snap/bin
 if command -v lvim >/dev/null; then
     alias vim='lvim'
     alias nvim='lvim'
@@ -253,3 +253,9 @@ if command -v rmtrash >/dev/null; then
     alias rmdir='rmdirtrash'
     alias sudo='sudo '
 fi
+
+function see-docker() {
+    docker create --name="tmp_$$" $1
+    docker export tmp_$$ | tar tvph
+    docker rm tmp_$$
+}

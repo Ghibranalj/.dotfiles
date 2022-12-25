@@ -26,6 +26,7 @@
    :desc "Format buffer" "f" #'+format/buffer
    :desc "List all occurance" "l" #'helm-swoop
    :desc "list all matches in project" "m" #'sidekick-at-point
+   :desc "Emmet expand" "TAB" #'emmet-expand-line
    )
 
   (:prefix ("o" . "open")
@@ -48,7 +49,8 @@
    :desc "Evaluate buffer" "b" #'eval-buffer
    :desc "Evaluate region" "r" #'eval-region
    :desc "Evaluate line" "l" #'my-eval-line
-   :desc "Evaluate last sexpr" "e" #'eval-last-sexp)
+   :desc "Evaluate last sexpr" "e" #'eval-last-sexp
+   )
 
   (:prefix ("TAB" . "workspace")
    :desc "Save current worksppace to file" "S" #'my-save-current-workspace

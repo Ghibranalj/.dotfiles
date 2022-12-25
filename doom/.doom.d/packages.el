@@ -59,7 +59,7 @@
            :host github
            :repo "sebastiencs/company-box"
            :files ("*.el" )))
-(package! emmet-mode)
+;; (package! emmet-mode)
 (package! beacon
   :recipe (
            :host github
@@ -90,6 +90,7 @@
 (package! daemons)
 (package! dired-hide-dotfiles)
 
+(package! ejc-sql)
 
 (package! async-completing-read
   :recipe (
@@ -99,3 +100,15 @@
 
 (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
 (package! smudge)
+
+(package! pcap-mode
+  :recipe (
+           :host github :repo "orgcandman/pcap-mode"
+           :files ("*.el")))
+
+;; (package! tsi :recipe (:host github :repo "orzechowskid/tsi.el" :branch "main"))
+;; (package! coverlay)
+;; (package! origami)
+;; (package! tsx-mode :recipe (:host github :repo "orzechowskid/tsx-mode.el"))
+
+;; (package! rjsx-mode)
