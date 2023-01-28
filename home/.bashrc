@@ -227,21 +227,22 @@ function code() {
 alias emacs='code'
 alias vcode='/usr/bin/code'
 
-function man() {
-    emacst -s term -e "(man \"$*\")"
-}
+# function man() {
+#     emacst -s term -e "(man \"$*\")"
+# }
 
 [ -f /opt/asdf-vm/asdf.sh ] && source /opt/asdf-vm/asdf.sh
 
 alias yas="yay -Slq | fzf -m --preview 'yay -Si {1}' | xargs -ro  yay -S"
 alias yar="yay -Qqe | fzf -m --preview 'yay -Si {1}' | xargs -ro  yay -Rns"
 alias yayu="yay -Qu | fzf -m --preview 'yay -Si {1}' | cut -d' ' -f1 | xargs -ro  yay -Syy"
-alias sman="apropos . | fzf -m --preview 'man {1}{2}' | awk '{printf(\"%s%s\",\$1,\$2)}' | xargs man"
+alias sman="apropos . | fzf -m --preview 'man {1}{2}'  --bind ctrl-h:preview-up,ctrl-l:preview-down | awk '{printf(\"%s%s\",\$1,\$2)}' | xargs man"
 
 [ -d $HOME/.bin ] && export PATH=$PATH:$HOME/.bin
 [ -d $HOME/.emacs.d/bin ] && export PATH=$PATH:$HOME/.emacs.d/bin
 [ -d $HOME/.local/bin ] && PATH=$PATH:$HOME/.local/bin
 [ -d /snap/bin ] && PATH=$PATH:/snap/bin
+
 if command -v lvim >/dev/null; then
     alias vim='lvim'
     alias nvim='lvim'
@@ -252,10 +253,17 @@ if command -v rmtrash >/dev/null; then
     alias rm='rmtrash'
     alias rmdir='rmdirtrash'
     alias sudo='sudo '
+    function /rm () {
+        "/bin/rm" $*
+    }
 fi
+
+
 
 function see-docker() {
     docker create --name="tmp_$$" $1
     docker export tmp_$$ | tar tvph
     docker rm tmp_$$
 }
+
+alias unadb="adb shell pm list packages | fzf | awk -F':' '{print $2}' | xargs -ro adb shell pm uninstall -k --user 0"

@@ -452,7 +452,6 @@ RESPONSIVE and DISPLAY are ignored."
 
 (add-hook! 'xmodmap-mode-hook 'display-line-numbers-mode)
 (add-hook! 'c-mode-hook (lambda () (c-toggle-comment-style -1)))
-(use-package! lsp-tailwindcss)
 (add-hook! magit-post-refresh-hook 'forge-pull)
 
 (defun my-lookup-password (&rest keys)
@@ -502,10 +501,6 @@ RESPONSIVE and DISPLAY are ignored."
   (interactive `(,(completing-read "Man: " nil)))
   (man page))
 
-(use-package! lsp-tailwindcss
-  :init
-  (setq lsp-tailwindcss-add-on-mode t)
-  )
 
 (after! web-mode
   (defun +web/indent-or-yas-or-emmet-expand ()

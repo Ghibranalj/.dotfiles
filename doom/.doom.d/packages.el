@@ -98,7 +98,7 @@
            :files ("*.el")
            :branch "master"))
 
-(package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
+;; (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
 (package! smudge)
 
 (package! pcap-mode
