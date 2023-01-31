@@ -10,3 +10,4 @@ my_layout.xkm
 /lvim/.config/lvim/plugin/*.lua
 *.gdbm
 /doom/.doom.d/custom.el
+/home/.config/lvim/plugin/packer_compiled.lua
