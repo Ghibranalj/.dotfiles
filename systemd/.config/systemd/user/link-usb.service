@@ -1,0 +1,10 @@
+[Unit]
+Description=link-usb
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/bash -c "$HOME/.bin/link-usb.sh"
+Restart=always
+
+[Install]
+WantedBy=default.target

@@ -526,3 +526,8 @@ RESPONSIVE and DISPLAY are ignored."
           server-auth-key "1234"
           )
   )
+
+(defun my-chmod-this-file ( mode )
+  (interactive "sMode:")
+  (shell-command (format "chmod %s %s" mode (buffer-file-name)))
+      )

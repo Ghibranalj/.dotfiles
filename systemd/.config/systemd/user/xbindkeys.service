@@ -1,0 +1,11 @@
+[Unit]
+Description=xbindkeys
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/xbindkeys --nodaemon
+ExecStop=killall xbindkeys
+Restart=always
+
+[Install]
+WantedBy=default.target

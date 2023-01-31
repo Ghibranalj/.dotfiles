@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=my-startup
-GenericName=my-startup
-Comment=Startup script
-Exec='/home/gibi/.onStartup.sh'
-Terminal=false
-Type=Application
-X-GNOME-Autostart-enabled=true
