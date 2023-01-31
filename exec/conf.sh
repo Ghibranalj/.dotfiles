@@ -22,3 +22,5 @@ if command -v cinnamon-settings &>/dev/null; then
     echo 'Select your theme'
     cinnamon-settings &>/dev/null
 fi
+
+echo "DONE"

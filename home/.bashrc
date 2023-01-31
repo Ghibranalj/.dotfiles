@@ -14,23 +14,23 @@ fi
 
 ex() {
     if [[ ! -f $1 ]]; then
-        echo "'$1' is not a valid file"
+        echo "$1 is not a valid file"
         return 1
     fi
     case $1 in
-        *.tar.bz2) tar xjvf $1 ;;
-        *.tar.gz) tar xzvf $1 ;;
-        *.bz2) bunzip2 $1 ;;
-        *.rar) unrar ex $1 ;;
-        *.gz) gunzip $1 ;;
-        *.tar) tar xf $1 ;;
-        *.tbz2) tar xjf $1 ;;
-        *.tgz) tar xzf $1 ;;
-        *.zip) unzip $1 ;;
-        *.Z) uncompress $1 ;;
-        *.7z) 7z x $1 ;;
+        *.tar.bz2) tar xjvf "$1" ;;
+        *.tar.gz) tar xzvf "$1" ;;
+        *.bz2) bunzip2 "$1" ;;
+        *.rar) unrar x "$1" ;;
+        *.gz) gunzip "$1" ;;
+        *.tar) tar xf "$1" ;;
+        *.tbz2) tar xjf "$1" ;;
+        *.tgz) tar xzf "$1" ;;
+        *.zip) unzip "$1" ;;
+        *.Z) uncompress "$1" ;;
+        *.7z) 7z x "$1" ;;
         *)
-            echo "'$1' cannot be extracted via ex()"
+            echo "$1 cannot be extracted via ex()"
             return 1
             ;;
     esac
@@ -213,7 +213,7 @@ function file() {
 }
 
 alias dbg-emacs='emacs-server --debug-init --fg-daemon=debug'
-alias kill-emacs="emacsclient -e  '(kill-emacs)'"
+alias kill-emacs="emacsclient -e  '(kill-emacs) || killall emacs'"
 
 function code() {
     local e=$(emacsclient -n -e -s server "(> (length (frame-list)) 1)")
@@ -258,12 +258,12 @@ if command -v rmtrash >/dev/null; then
     }
 fi
 
-
-
 function see-docker() {
     docker create --name="tmp_$$" $1
     docker export tmp_$$ | tar tvph
     docker rm tmp_$$
 }
 
-alias unadb="adb shell pm list packages | fzf | awk -F':' '{print $2}' | xargs -ro adb shell pm uninstall -k --user 0"
+alias unadb="adb shell pm list packages || echo 'No phone' | fzf | awk -F':' '{print \$2}' | xargs -ro adb shell pm uninstall -k --user 0"
+
+# tmux attach -t main || tmux new -s main

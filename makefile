@@ -1,11 +1,12 @@
 .PHONY: all exec conf optimus udev keybind emacs gesture stow sync dconf-dump vim systemd spotifyd spotify dwm xorg
 
-all: stow exec conf emacs vim systemd
+all: stow dunst exec conf emacs vim systemd
 
 exec:
 	./exec/app-arch.sh
 	./exec/conf.sh
 	./exec/keybind.sh
+
 conf:
 	sudo rm /etc/bluetooth/main.conf
 	sudo cp configs/bluetooth/main.conf /etc/bluetooth/main.conf
@@ -14,6 +15,7 @@ stow:
 	stow --adopt home
 	stow --adopt alacritty
 	stow --adopt rofi
+	stow --adopt dunst
 
 optimus: 
 	./exec/gpu-nightmare.sh
@@ -56,7 +58,8 @@ spotifyd:
 spotify:
 	./exec/spicetify.sh
 
-dwm: xorg
+dwm:
+	./exec/dwm.sh
 	stow dwm
 
 xorg:

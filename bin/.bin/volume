@@ -3,6 +3,9 @@
 
 # Required packages:
 # 1. pamixer
+# 2. adwaita-icon-theme
+# 3. bc
+# 4. sox
 
 STEP=5
 if [[ "$1" == "up" ]]; then
@@ -43,5 +46,4 @@ ICON=/usr/share/icons/Adwaita41/scalable/apps/multimedia-volume-control-symbolic
 ID=379
 
 notify-send -i "$ICON" "Volume $NUMBER%" "<span color=\'$COL\'>$BAR</span>" -c "Volume" -r $ID
-
 play /usr/share/sounds/gnome/default/alerts/drip.ogg

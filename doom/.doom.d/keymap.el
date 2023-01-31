@@ -39,6 +39,7 @@
    :desc "Open ssh connection" "s" #'my-connect-remote-ssh
    :desc "open dired" "/" #'dired-jump
    :desc "Open init daemon" "i" #'daemons
+   :desc "Open selected link in browser" "l" #'my-open-selected-link
    )
 
   (:prefix ("t" . "toggle")

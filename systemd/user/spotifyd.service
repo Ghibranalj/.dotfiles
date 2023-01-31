@@ -1,0 +1,11 @@
+[Unit]
+Description=Spotifyd
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/spotifyd --no-daemon
+ExecStop=killall spotifyd
+Restart=always
+
+[Install]
+WantedBy=default.target

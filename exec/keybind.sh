@@ -18,5 +18,5 @@ xmodmap ./exec/Xmodmap
 xkbcomp $DISPLAY $PWD/my_layout.xkbd
 ./exec/toLayout.py > us.tmp
 sudo cp us.tmp /usr/share/X11/xkb/symbols/us
-
-dconf load / < data/dconf-keys
+echo "done"
+exit 0

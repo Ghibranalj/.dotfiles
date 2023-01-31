@@ -163,6 +163,13 @@
 
 (setq browse-url-browser-function 'my-open-browser)
 
+(defun my-open-selected-link ()
+  "Open URL with ARGS on eaf-browser when not terminal, chrome when terminal."
+  (interactive)
+  (if (region-active-p)
+      (let ((url (buffer-substring-no-properties (region-beginning) (region-end))))
+        (my-open-browser url))
+    (message "No region selected")))
 
 (defun my-google-search ()
   "Search Google inside eaf-browser."
@@ -508,3 +515,14 @@ RESPONSIVE and DISPLAY are ignored."
     (interactive)
     (+copilot/tab)
     ))
+
+
+(defun my-setup-tcp-server ()
+  (interactive)
+  (setq   server-use-tcp t
+          server-host "127.0.0.1"
+          server-port 6666
+          server-auth-dir "~/.emacs.d/server"
+          server-auth-key "1234"
+          )
+  )

@@ -4,3 +4,4 @@
 
 tabbed -c -d -n 'Terminal' -- alacritty --embed
 # emacsclient -c -e -s term '(+vterm/here nil)'
+

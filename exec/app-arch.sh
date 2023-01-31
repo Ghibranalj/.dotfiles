@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 #GNU stow
 sudo pacman -S stow
 
@@ -20,12 +21,18 @@ yay -Sy neovim advcpmv exa xclip xbindkeys blueman bluetooth-autoconnect \
 	most noisetorch alacritty tabbed rofi rofi-emoji rofi-calc rmtrash
 
 # other apps
-yay -Sy google-chrome spotify discord whatsapp-for-linux albert
+yay -Sy google-chrome spotify discord whatsapp-for-linux
 
 # timehshift
 yay -Sy timehshift
 
-albert &>/dev/null &
+# for dwm
+yay -Sy tabbed-git feh dwm
+
+# for dwm status bar
+yay -Sy ponymix dunst fd gdbmtool gdbm pactl xprintidle xsecurelock pamixer \
+	acpi pamixer adwaita-icon-theme-41 brightnessctl bc sox
+
 sudo systemctl enable bluetooth-autoconnect
 systemctl --user enable pulseaudio-bluetooth-autoconnect
 
@@ -37,4 +44,6 @@ link whatsapp-for-linux whatsapp
 link google-chrome-stable chrome
 
 # fonts
-yay -S nerd-fonts-complete
+# yay -Sy nerd-fonts-complete
+
+echo "Done!!"

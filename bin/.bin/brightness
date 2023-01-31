@@ -3,6 +3,7 @@
 
 # Required packages
 # 1. brightnessctl
+# 2. adwaita-icon-theme-41
 
 PERC=$(awk -F',' '{print $4}' <<<"$(brightnessctl -d amdgpu_bl0 -m)" | tr -d '%')
 case $1 in
