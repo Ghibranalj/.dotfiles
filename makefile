@@ -12,17 +12,9 @@ conf:
 	sudo cp configs/bluetooth/main.conf /etc/bluetooth/main.conf
 
 stow:
-	rm -r ~/.bashrc ~/.gitconfig
 	stow --adopt home
-	stow --adopt alacritty
-	stow --adopt rofi
-	stow --adopt dunst
-	stow --adopt spotifyd
-	stow --adopt dwm
-	stow --adopt bin
-	stow --adopt lvim
-	stow --adopt doom
 	stow --no-folding systemd
+
 
 optimus: 
 	./exec/gpu-nightmare.sh
