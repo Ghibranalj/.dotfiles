@@ -33,6 +33,9 @@ yay -Sy tabbed-git feh dwm
 yay -Sy ponymix dunst fd gdbmtool gdbm pactl xprintidle xsecurelock pamixer \
 	acpi pamixer adwaita-icon-theme-41 brightnessctl bc sox
 
+# for utility
+yay -Sy udiksie spotifyd
+
 sudo systemctl enable bluetooth-autoconnect
 systemctl --user enable pulseaudio-bluetooth-autoconnect
 

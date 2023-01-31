@@ -1,6 +1,7 @@
 [Unit]
-Description=Spotifyd
+Description=noisetorch
 After=pipewire.service
+After=pipewire-pulse.service
 
 [Service]
 Type=forking

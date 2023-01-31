@@ -1,11 +1,10 @@
 [Unit]
-Description=xbindkeys
+Description=XBindKeys key grabber
+After=environment.target
 
 [Service]
-Type=forking
-ExecStart=/usr/bin/xbindkeys --nodaemon
-ExecStop=killall xbindkeys
-Restart=always
+ExecStart=/usr/bin/xbindkeys -n
+KillMode=process
 
 [Install]
 WantedBy=default.target

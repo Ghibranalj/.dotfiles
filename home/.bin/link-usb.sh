@@ -21,4 +21,4 @@ function link-usb() {
 while true; do
 	link-usb
 	sleep 10
-done &
+done

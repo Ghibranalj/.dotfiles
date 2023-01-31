@@ -1,10 +1,11 @@
 [Unit]
 Description=link-usb
+After=udiskie.service
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/bash -c "$HOME/.bin/link-usb.sh"
-Restart=always
+ExecStart=/usr/bin/bash $HOME/.bin/link-usb.sh
+Restart=on-failure
 
 [Install]
 WantedBy=default.target
