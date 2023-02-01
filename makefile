@@ -1,4 +1,4 @@
-.PHONY: all exec conf optimus udev keybind emacs gesture stow sync dconf-dump vim systemd spotifyd spotify dwm xorg
+.PHONY: all exec conf optimus udev keybind emacs stow vim dwm systemd
 
 all: stow exec conf emacs vim systemd
 
@@ -13,7 +13,7 @@ conf:
 
 stow:
 	stow --adopt home
-	stow --no-folding systemd
+	stow --no-folding --adopt systemd
 
 
 optimus: 
@@ -31,9 +31,9 @@ emacs:
 vim:
 	./exec/vim.sh
 
-SERVICES = $(shell ls systemd/.config/systemd/user | sed 's/\.service//g')
+SERVICES = $(shell ls systemd/.config/systemd/user)
 systemd:
-	stow --no-folding systemd
+	stow --no-folding --adopt systemd
 	systemctl --user daemon-reload
 	systemctl --user enable $(SERVICES)
 

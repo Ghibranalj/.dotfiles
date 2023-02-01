@@ -5,7 +5,7 @@
 # 1. brightnessctl
 # 2. adwaita-icon-theme-41
 
-PERC=$(awk -F',' '{print $4}' <<<"$(brightnessctl -d amdgpu_bl0 -m)" | tr -d '%')
+PERC=$(awk -F',' '{print $4}' <<<"$(brightnessctl -m)" | tr -d '%')
 case $1 in
     get)
         echo $PERC%
@@ -25,7 +25,7 @@ case $1 in
         ;;
 esac
 
-NUMBER=$(awk -F',' '{print $4}' <<<"$(brightnessctl -d amdgpu_bl0 -m)" | tr -d '%')
+NUMBER=$(awk -F',' '{print $4}' <<<"$(brightnessctl -m)" | tr -d '%')
 N=$(($PERC / 5 - 2))
 
 N=$(bc <<< "($NUMBER / 3.33)")
