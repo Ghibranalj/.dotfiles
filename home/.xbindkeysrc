@@ -145,6 +145,10 @@ keystate_capslock = enable
     m:0x0 + c:122
     XF86AudioLowerVolume
 
+"$HOME/.bin/toggle-touchpad.sh"
+    m:0xc + c:45
+    Control+Alt + k
+
 "$HOME/.bin/volume mute"
     m:0x0 + c:121
     XF86AudioMute

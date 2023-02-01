@@ -14,7 +14,10 @@ IS_ASLEEP=false
 CAFFEINE_FILE=$HOME/.cache/caffeine
 LOCK_FILE=$HOME/.cache/screen.lock
 
+LID_FILE=/proc/acpi/button/lid/LID0/state
+
 function lock_screen() {
+    [[ -f $LOCK_FILE ]] && return 1
     touch $LOCK_FILE
     XSECURELOCK_PASSWORD_PROMPT='asterisks' xsecurelock
     rm $LOCK_FILE
@@ -22,7 +25,15 @@ function lock_screen() {
 
 rm $LOCK_FILE
 while true; do
-    sleep 30
+    sleep 10
+    LID_STATE=$(cat $LID_FILE | awk '{print $2}')
+
+    if [[ "$LID_STATE" == "closed" ]];then
+       lock_screen &
+       sleep 1
+       [[ -f $CAFFEINE_FILE ]] || systemctl suspend
+       continue
+    fi
 
     if [[ -f $CAFFEINE_FILE ]]; then
         IS_ASLEEP=false
