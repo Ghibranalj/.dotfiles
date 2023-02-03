@@ -101,7 +101,7 @@ keystate_capslock = enable
     m:0xc + c:19
     Control+Alt + 0
 
-"$HOME/.bin/player pause"
+"$HOME/.bin/player toggle"
     m:0xc + c:22
     Control+Alt + BackSpace
 

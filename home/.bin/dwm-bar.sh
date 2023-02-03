@@ -74,9 +74,20 @@ function notif() {
     fi
 }
 
+MUSIC_CACHE="$HOME/.cache/music.cache"
 function music() {
-         MUSIC=$(spt pb -sf " %s %t - %a")
-         printf ' \x05%s' "$MUSIC"
+    [[ -f "$HOME/.config/spotify-tui/client.yml" ]] || return 0
+
+    touch $MUSIC_CACHE
+    if [[ $((`date +%s` % 3)) -ne 0  ]]
+    then
+        MUSIC=$(cat $MUSIC_CACHE)
+    else
+        MUSIC=$(spt pb -sf " %s %t - %a")
+        echo $MUSIC > $MUSIC_CACHE
+    fi
+
+    printf ' \x05%s' "$MUSIC"
 }
 
 function caffeine() {

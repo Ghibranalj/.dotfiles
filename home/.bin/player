@@ -6,6 +6,9 @@
 playing="▶"
 
 case $1 in
+    toggle)
+        spt pb -t
+        ;;
     play)
         if [[ $(spt pb -sf %s ) == *$playing* ]]
         then
@@ -49,7 +52,7 @@ case $1 in
         fi
         ;;
     *)
-        echo "Usage: $0 {play|stop|restart|pause|next|prev}"
+        echo "Usage: $0 {play|stop|restart|pause|next|prev|toggle}"
         exit 1
         ;;
 esac
