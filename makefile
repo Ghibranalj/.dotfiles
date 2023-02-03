@@ -31,7 +31,7 @@ emacs:
 vim:
 	./exec/vim.sh
 
-SERVICES = $(shell ls systemd/.config/systemd/user)
+SERVICES = $(shell ls systemd/.config/systemd/user | grep \.service)
 systemd:
 	stow --no-folding --adopt systemd
 	systemctl --user daemon-reload

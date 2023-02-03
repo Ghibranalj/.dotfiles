@@ -1,31 +1,52 @@
 #!/usr/bin/env bash
 # -*- mode:sh -*-
 # Required apps:
-# 1. playerctl
+# 1. spotify-tui
+
+playing="▶"
 
 case $1 in
     play)
-        echo "Starting..."
-        playerctl --player=spotify,spotifyd,%any play
+        if [[ $(spt pb -sf %s ) == *$playing* ]]
+        then
+            echo is playing
+            exit 0
+        fi
+        spt pb -t
         ;;
     stop)
-        playerctl --player=spotify,spotifyd,%any stop
-        echo "Stopping..."
+        if [[ $(spt pb -sf %s ) == *$playing* ]]
+        then
+            echo is playing
+            spt pb -t
+        fi
         ;;
     pause)
-        playerctl --player=spotify,spotifyd,%any play-pause
+        if [[ $(spt pb -sf %s ) == *$playing* ]]
+        then
+            echo is playing
+            spt pb -t
+        fi
         ;;
     next)
-        playerctl --player=spotify,spotifyd,%any next
+        spt pb -n
         ;;
     prev)
-        playerctl --player=spotify,spotifyd,%any previous
+        spt pb -p
         ;;
     up)
-        playerctl --player=spotify,spotifyd,%any volume +0.05
+        vol=$(spt vol -sf %v)
+        if [[ $vol -lt 100 ]]
+        then
+            spt pb -v $((vol+5))
+        fi
         ;;
     down)
-        playerctl --player=spotify,spotifyd,%any volume -0.05-
+        vol=$(spt vol -sf %v)
+        if [[ $vol -gt 0 ]]
+        then
+            spt pb -v $((vol-5))
+        fi
         ;;
     *)
         echo "Usage: $0 {play|stop|restart|pause|next|prev}"

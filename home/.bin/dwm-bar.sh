@@ -75,15 +75,9 @@ function notif() {
 }
 
 function music() {
-    OUT="$($HOME/.bin/spotify-now -i "%artist - %title" -e "EROR" -p "Paused")"
-    OUT=${OUT//\&/&amp;}
-
-    if [[ $OUT == "EROR" ]]; then
-        echo -n ""
-    else
-        printf ' \x05🎶 %s' "$OUT"
-    fi
+         spt pb -sf "%s %t-%a(%d)[%v%]"
 }
+
 function caffeine() {
 
     CAFFEINE_FILE=$HOME/.cache/caffeine
