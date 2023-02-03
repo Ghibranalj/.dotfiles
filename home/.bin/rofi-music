@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+
+STATUS=`spt pb -sf "%s %t - %a|%d|%v%"`
+MUSIC=$(echo $STATUS | awk -F "|" '{print $1}')
+DEVICE=$(echo $STATUS | awk -F "|" '{print $2}')
+VOLUME=$(echo $STATUS | awk -F "|" '{print $3}')
+NEXT="Next Track"
+PREV="Previous Track"
+SEEK_FORWARD="Seek Forward"
+SEEK_BACKWARD="Seek Backward"
+
+export YOFF=27px
+export HEIGHT=55%
+
+selected=$(
+echo "$MUSIC
+Playing on: $DEVICE
+Volume: $VOLUME
+-----
+$NEXT
+$PREV
+$SEEK_FORWARD
+$SEEK_BACKWARD" | rofi -location 3 -dmenu -i -p "Music")
+
+
+if [[ $selected == $NEXT ]]; then
+    spt pb -n
+elif [[ $selected == $PREV ]]; then
+    spt pb -p
+elif [[ $selected == $SEEK_FORWARD ]]; then
+    spt pb --seek +10
+elif [[ $selected == $SEEK_BACKWARD ]]; then
+    spt pb --seek -10
+fi

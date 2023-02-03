@@ -75,7 +75,8 @@ function notif() {
 }
 
 function music() {
-         spt pb -sf "%s %t-%a(%d)[%v%]"
+         MUSIC=$(spt pb -sf " %s %t - %a")
+         printf ' \x05%s' "$MUSIC"
 }
 
 function caffeine() {
