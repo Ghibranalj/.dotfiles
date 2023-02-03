@@ -46,9 +46,10 @@ getIcon() {
 if [[ $IGNORE == *"$1"* ]]; then
     exit 0
 fi
+
 ICON=$(getIcon "$1")
 if [[ "$ICON" == "-" ]]; then
-    TITLE="<big>$1</big> "
+    TITLE="($1)"
 fi
 NOTIF="$TITLE$2 : <small>$3</small> <sub>$(date '+%H:%M %d/%m/%y')</sub>;;;;$ICON;;;;$5"
 NOTIF=${NOTIF//\&/&amp;}

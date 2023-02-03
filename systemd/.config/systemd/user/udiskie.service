@@ -3,7 +3,7 @@ Description=Handle automounting of usb devices
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/udiskie
+ExecStart=/usr/bin/udiskie -s
 
 [Install]
 WantedBy=default.target
