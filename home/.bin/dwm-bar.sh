@@ -76,7 +76,11 @@ function notif() {
 
 MUSIC_CACHE="$HOME/.cache/music.cache"
 function music() {
-    [[ -f "$HOME/.config/spotify-tui/client.yml" ]] || return 0
+    if [[ ! -f "$HOME/.config/spotify-tui/client.yml" ]]
+    then
+        echo -n "[spotify-tui not installed]"
+        return
+    fi
 
     touch $MUSIC_CACHE
     if [[ $((`date +%s` % 3)) -ne 0  ]]
@@ -87,7 +91,7 @@ function music() {
         echo $MUSIC > $MUSIC_CACHE
     fi
 
-    printf ' \x05%s' "$MUSIC"
+    printf '\x05%s' "$MUSIC"
 }
 
 function caffeine() {
