@@ -4,7 +4,7 @@ After=pipewire.service
 After=pipewire-pulse.service
 
 [Service]
-Type=forking
+Type=simple
 ExecStart=noisetorch -s alsa_input.usb-Generalplus_Usb_Audio_Device-00.mono-fallback -i
 RemainAfterExit=true
 Type=oneshot

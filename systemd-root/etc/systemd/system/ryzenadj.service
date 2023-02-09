@@ -1,0 +1,9 @@
+[Unit]
+Description=ryzenadj Service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/ryzenadj --power-saving
+
+[Install]
+WantedBy=multi-user.target
