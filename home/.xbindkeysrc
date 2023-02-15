@@ -113,7 +113,7 @@ keystate_capslock = enable
     m:0xc + c:34
     Control+Alt + bracketleft
 
-"$HOME/.bin/player stop"
+"$HOME/.bin/player toggle"
     m:0xc + c:51
     Control+Alt + backslash
 

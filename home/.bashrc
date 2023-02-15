@@ -105,6 +105,7 @@ function ind() {
     $1 &>>~/.app.log &
     disown
 }
+complete -cf ind
 
 function rename-homework() {
     declare -i i=1

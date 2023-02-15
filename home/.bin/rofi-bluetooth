@@ -2,4 +2,5 @@
 
 export YOFF=27px
 export HEIGHT=50%
+export INPUT=false
 rofi -location 3 -show b -modi "b:$HOME/.config/rofi-scripts/bluetooth"

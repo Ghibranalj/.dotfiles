@@ -6,6 +6,6 @@ export YOFF=27px
 export WIDTH=520px
 export COL=3
 export LINES=1
+export INPUT=false
 rofi -location 3 -hover-select -me-select-entry '3' -me-accept-entry MousePrimary\
     -show notif -modi "notif:$HOME/.bin/modi/rofi-volume.sh"\
-    -theme-str 'inputbar {enabled: false;}'

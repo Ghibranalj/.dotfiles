@@ -1,10 +1,9 @@
 [Unit]
 Description=link-usb
-After=udiskie.service
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/bash $HOME/.bin/link-usb.sh
+ExecStart=/usr/bin/env bash $HOME/.bin/link-usb.sh
 Restart=on-failure
 
 [Install]

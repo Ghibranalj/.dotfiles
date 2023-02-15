@@ -152,6 +152,7 @@ inputbar {
   padding: 1px;
   children: [ prompt, textbox-prompt-colon, entry, case-indicator ];
   padding: 8;
+  enabled: env(INPUT, true);
 }
 case-indicator {
   spacing: 0;
