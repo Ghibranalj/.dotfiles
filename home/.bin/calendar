@@ -1,0 +1,2 @@
+#!/bin/env bash
+date | INPUT=false LINES=1 YOFF=27px rofi -location 3 -dmenu

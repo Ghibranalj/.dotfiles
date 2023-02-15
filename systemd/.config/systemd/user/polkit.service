@@ -1,0 +1,11 @@
+[Unit]
+Description=gnome-polkit
+After=udiskie.service
+
+[Service]
+Type=simple
+ExecStart=/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
