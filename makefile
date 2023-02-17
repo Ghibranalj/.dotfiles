@@ -38,7 +38,7 @@ systemd:
 
 ROOT_SERVICES = $(shell ls systemd-root/etc/systemd/system | grep \.service)
 systemdroot:
-	sudo stow --no-folding --adopt systemd-root -t /
+	sudo cp -f systemd-root/etc/systemd/system/* /etc/systemd/system/
 	sudo systemctl daemon-reload
 	sudo systemctl enable --now $(ROOT_SERVICES)
 
