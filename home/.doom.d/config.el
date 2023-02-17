@@ -530,4 +530,26 @@ RESPONSIVE and DISPLAY are ignored."
 (defun my-chmod-this-file ( mode )
   (interactive "sMode:")
   (shell-command (format "chmod %s %s" mode (buffer-file-name)))
-      )
+  )
+
+
+(add-hook! 'lsp-mode-hook '(lambda ()
+                             (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\tmp\\'")
+                             ))
+
+(add-hook! 'projectile-mode-hook '(lambda ()
+                                    (add-to-list 'projectile-globally-ignored-directories "tmp")
+                                    (add-to-list 'projectile-globally-ignored-directories "vendor")
+                                    (add-to-list 'projectile-globally-ignored-directories "CMakeFiles")
+                                    ))
+
+
+(defun my-dap-debug-last()
+  (interactive)
+  (call-interactively '+make/run-last)
+  (call-interactively 'dap-debug-last))
+
+(defun my-dap-debug ()
+  (interactive)
+  (call-interactively '+make/run-last)
+  (call-interactively 'dap-debug))
