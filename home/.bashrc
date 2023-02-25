@@ -96,7 +96,7 @@ function delete() {
 function make-homework() {
     if [ $# -eq 0 ]; then
         echo "err: No arguments"
-        return -1
+        return 254
     fi
     touch vclj2729_B$1_A{1..4}.tex
 }
@@ -254,9 +254,6 @@ if command -v rmtrash >/dev/null; then
     alias rm='rmtrash'
     alias rmdir='rmdirtrash'
     alias sudo='sudo '
-    function /rm () {
-        "/bin/rm" $*
-    }
 fi
 
 function see-docker() {
@@ -268,3 +265,9 @@ function see-docker() {
 alias unadb="adb shell pm list packages || echo 'No phone' | fzf | awk -F':' '{print \$2}' | xargs -ro adb shell pm uninstall -k --user 0"
 
 # tmux attach -t main || tmux new -s main
+
+if [ -f /usr/share/doc/find-the-command/ftc.bash ]; then
+    source /usr/share/doc/find-the-command/ftc.bash
+fi
+
+alias make='make --no-print-directory '

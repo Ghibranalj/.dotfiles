@@ -102,5 +102,6 @@
   :desc "Step out" "o" #'dap-step-out
   :desc "Toggle breakpoint" "b" #'dap-breakpoint-toggle
   :desc "Quit" "q" #'dap-disconnect
+  :desc "Restart" "r" #'dap-hydra
   )
  )

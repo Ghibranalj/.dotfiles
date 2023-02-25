@@ -87,8 +87,9 @@ function music() {
     then
         MUSIC=$(cat $MUSIC_CACHE)
     else
-        MUSIC=$(spt pb -sf " %s %t - %a")
-        echo $MUSIC > $MUSIC_CACHE
+        # MUSIC=$(spt pb -sf " %s %t - %a")
+        MUSIC=""
+        # echo $MUSIC > $MUSIC_CACHE
     fi
 
     printf '\x05%s' "$MUSIC"

@@ -1,0 +1,14 @@
+[Unit]
+Description=Picom compositor
+PartOf=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/picom
+KillMode=process
+Restart=always
+
+[Install]
+WantedBy=xsession.target
+
+[Install]
+WantedBy=graphical-session.target

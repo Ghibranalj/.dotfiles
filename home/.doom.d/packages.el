@@ -100,11 +100,12 @@
 
 ;; (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
 (package! smudge)
-
 (package! pcap-mode
   :recipe (
            :host github :repo "orgcandman/pcap-mode"
            :files ("*.el")))
+
+(package! sly)
 
 ;; (package! tsi :recipe (:host github :repo "orzechowskid/tsi.el" :branch "main"))
 ;; (package! coverlay)

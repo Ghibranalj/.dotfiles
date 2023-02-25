@@ -116,6 +116,7 @@
 (add-hook! 'lsp-mode-hook #'lsp-ui-sideline-mode)
 (add-hook! 'lsp-mode-hook #'lsp-headerline-breadcrumb-mode)
 (setq lsp-headerline-breadcrumb-enable t)
+(add-hook! 'prog-mode-hook #'lsp-headerline-breadcrumb-mode)
 
 (setq magit-clone-default-directory "~/Workspace/")
 
@@ -333,12 +334,13 @@ Shows terminal in seperate section. Also shows browsers."
   (interactive)
   (+workspace/save (+workspace-current-name)))
 
+(put 'dired-find-alternate-file 'disabled nil)
 (use-package! dired
   :hook (dired-mode . dired-hide-dotfiles-mode)
   :config
   (setq dired-listing-switches "-agho --group-directories-first"
         dired-dwim-target t
-        delete-by-moving-to-trash nil
+        delete-by-moving-to-trash t
         dired-mouse-drag-files t)
   (evil-collection-define-key 'normal 'dired-mode-map
     "h" '(lambda () (interactive) (find-alternate-file ".."))
@@ -532,7 +534,6 @@ RESPONSIVE and DISPLAY are ignored."
   (shell-command (format "chmod %s %s" mode (buffer-file-name)))
   )
 
-
 (add-hook! 'lsp-mode-hook '(lambda ()
                              (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\tmp\\'")
                              ))
@@ -541,15 +542,36 @@ RESPONSIVE and DISPLAY are ignored."
                                     (add-to-list 'projectile-globally-ignored-directories "tmp")
                                     (add-to-list 'projectile-globally-ignored-directories "vendor")
                                     (add-to-list 'projectile-globally-ignored-directories "CMakeFiles")
+                                    (add-to-list 'projectile-globally-ignored-directories "build")
                                     ))
-
 
 (defun my-dap-debug-last()
   (interactive)
   (call-interactively '+make/run-last)
-  (call-interactively 'dap-debug-last))
+  (call-interactively 'dap-debug-last)
+  (call-interactively 'dap-hydra)
+  )
 
 (defun my-dap-debug ()
   (interactive)
-  (call-interactively '+make/run-last)
-  (call-interactively 'dap-debug))
+  (call-interactively '+make/run)
+  (call-interactively 'dap-debug)
+  (call-interactively 'dap-hydra)
+  )
+
+(use-package! dap-mode
+  :custom
+  ;; (sessions locals breakpoints expressions controls tooltip)
+  (dap-auto-configure-features '(locals controls tooltip))
+  )
+
+(with-eval-after-load 'lsp-mode
+  (add-to-list 'lsp-language-id-configuration
+               '(glsl-mode . "glsl"))
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection '("glslls" "--stdin"))
+                    :activation-fn (lsp-activate-on "glsl")
+                    :server-id 'glslls)))
+
+
+
