@@ -63,7 +63,9 @@
   :desc "find file in current directory" "f" #'my-find-file-in-directory)
 
  (:prefix-map ("g" . "git")
-  :desc "Forge pull" "p" #'forge-pull)
+  :desc "Forge pull" "p" #'forge-pull
+  :desc "Git Blame" "b" #'blamer-show-posframe-commit-info
+  )
 
  (:prefix-map ("v" . "Verb")
   :desc "Send request at point" "v" #'verb-send-request-on-point

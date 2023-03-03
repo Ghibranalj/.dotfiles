@@ -3,8 +3,7 @@ Description=link-usb
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/env bash $HOME/.bin/link-usb.sh
-Restart=on-failure
+ExecStart=%h/.bin/link-usb.sh
 
 [Install]
 WantedBy=default.target

@@ -9,6 +9,3 @@ Restart=always
 
 [Install]
 WantedBy=xsession.target
-
-[Install]
-WantedBy=graphical-session.target

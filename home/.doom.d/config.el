@@ -573,5 +573,17 @@ RESPONSIVE and DISPLAY are ignored."
                     :activation-fn (lsp-activate-on "glsl")
                     :server-id 'glslls)))
 
-
-
+(use-package blamer
+  :bind (("s-i" . blamer-show-commit-info))
+  :defer 20
+  :custom
+  (blamer-idle-time 0.3)
+  (blamer-min-offset 70)
+  (setq blamer-idle-time 1)
+  :custom-face
+  (blamer-face ((t :foreground "#805d96"
+                   :background nil
+                   :height 115
+                   :italic t)))
+  :config
+  (global-blamer-mode 1))

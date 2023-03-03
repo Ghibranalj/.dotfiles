@@ -113,3 +113,4 @@
 ;; (package! tsx-mode :recipe (:host github :repo "orzechowskid/tsx-mode.el"))
 
 ;; (package! rjsx-mode)
+(package! blamer)
