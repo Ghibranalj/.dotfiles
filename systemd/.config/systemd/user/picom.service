@@ -8,4 +8,4 @@ KillMode=process
 Restart=always
 
 [Install]
-WantedBy=xsession.target
+WantedBy=default.target

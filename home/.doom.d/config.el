@@ -19,7 +19,6 @@
 
 (setq doom-bin "doom")
 
-
 ;; Auto save
 (setq auto-save-default t
       make-backup-files t)
@@ -28,6 +27,7 @@
 (add-hook! 'prog-mode-hook 'evil-megasave-mode)
 (add-hook! 'git-commit-mode-hook 'evil-megasave-mode)
 (add-hook! 'conf-mode-hook 'evil-megasave-mode)
+(add-hook! 'yaml-mode-hook 'evil-megasave-mode)
 
 (defvar my-new-frame-hook nil
   "Hook run after a any new frame is created.")
@@ -196,8 +196,6 @@
       (+vc/browse-at-remote-homepage)
     (my-open-browser "github.com")))
 
-
-
 ;; TODO diferenciate between video player and browser maybe?
 (defvar my-consult--eaf-source
   (list :name     "Browser"
@@ -214,8 +212,9 @@
                    (lambda (x)
                      (eq (buffer-local-value 'major-mode x) 'eaf-mode))
                    (persp-buffer-list))))))
+
 (defvar my-consult--terminal-source
-  (list :name     "Terminal"
+  (list :name     "Dired & Terminal"
         :category 'buffer
         :narrow   ?o
         :face     'consult-buffer
@@ -227,11 +226,13 @@
           (mapcar #'buffer-name
                   (seq-filter
                    (lambda (x)
-                     (eq (buffer-local-value 'major-mode x) 'vterm-mode))
+                     (or
+                      (eq (buffer-local-value 'major-mode x) 'dired-mode)
+                      (eq (buffer-local-value 'major-mode x) 'vterm-mode)))
                    (persp-buffer-list))))))
 
 (defvar my-consult--workspace-source
-  (list :name    "Workspace Buffer"
+  (list :name    "Workspace Buffers"
         :category 'buffer
         :narrow   ?o
         :face     'consult-buffer
@@ -246,6 +247,7 @@
                      (and
                       (not (eq (buffer-local-value 'major-mode x) 'vterm-mode))
                       (not (eq (buffer-local-value 'major-mode x) 'eaf-mode))
+                      (not (eq (buffer-local-value 'major-mode x) 'dired-mode))
                       (or (not (boundp 'minimap-buffer-name))
                           (not (string= (buffer-name x) minimap-buffer-name)))))
                    (persp-buffer-list))))))
@@ -253,7 +255,8 @@
 (after! consult
   (add-to-list 'consult-buffer-sources 'my-consult--eaf-source 'append)
   (add-to-list 'consult-buffer-sources 'my-consult--terminal-source 'append)
-  (add-to-list 'consult-buffer-sources 'my-consult--workspace-source 'append))
+  (add-to-list 'consult-buffer-sources 'my-consult--workspace-source 'append)
+  )
 
 (require 'consult)
 (defun my-consult-browser ()
@@ -279,11 +282,6 @@ Shows terminal in seperate section. Also shows browsers."
    :history 'consult--buffer-history
    :sort nil))
 
-(after! vertico-posframe
-  (setq vertico-posframe-parameters
-        '((left-fringe . 8)
-          (right-fringe . 8)))
-  (setq vertico-posframe-poshandler 'posframe-poshandler-frame-top-center))
 
 (add-hook! 'my-new-gui-frame-hook 'vertico-posframe-mode)
 
@@ -494,7 +492,11 @@ RESPONSIVE and DISPLAY are ignored."
   (shell-command "systemctl reload-or-restart --user spotifyd"))
 
 (defun my-smudge-set-volume (volume)
-  (interactive "nVolume%%: ")
+  (interactive `(,(read-string "Volume: " nil)))
+
+  (if (stringp volume)
+      (setq volume (string-to-number volume)))
+
   (when (and  smudge-selected-device-id (<= volume 100) (>= volume 0) )
     (smudge-api-set-volume smudge-selected-device-id volume))
   )
@@ -507,7 +509,7 @@ RESPONSIVE and DISPLAY are ignored."
     (string= active "active")))
 
 (defun my-open-man (page)
-  (interactive `(,(completing-read "Man: " nil)))
+  (interactive `(,(read-string "Man: " nil)))
   (man page))
 
 
@@ -530,7 +532,7 @@ RESPONSIVE and DISPLAY are ignored."
   )
 
 (defun my-chmod-this-file ( mode )
-  (interactive "sMode:")
+  (interactive `(,(read-string "File Mode: " nil)))
   (shell-command (format "chmod %s %s" mode (buffer-file-name)))
   )
 
@@ -587,3 +589,26 @@ RESPONSIVE and DISPLAY are ignored."
                    :italic t)))
   :config
   (global-blamer-mode 1))
+
+;; (read-from-minibuffer PROMPT &optional INITIAL-CONTENTS KEYMAP READ HIST
+;;                       DEFAULT-VALUE INHERIT-INPUT-METHOD)
+(add-hook! 'minibuffer-exit-hook (setq vertico-posframe-height nil))
+(defun read-string ( PROMPT &optional INITIAL-INPUT HISTORY DEFAULT-VALUE INHERIT-INPUT-METHOD)
+  (setq vertico-posframe-height 1)
+  (completing-read PROMPT nil nil nil INITIAL-INPUT HISTORY DEFAULT-VALUE INHERIT-INPUT-METHOD)
+  )
+
+(defun my-poshandler (info)
+  ;; (cons x y)
+  (cons
+   (/ (- (plist-get info :parent-frame-width) (plist-get info :posframe-width)) 2) ;x
+   25 ; y
+   )
+  )
+
+(after! vertico-posframe
+  (setq vertico-posframe-parameters
+        '((left-fringe . 8)
+          (right-fringe . 8)))
+  (setq vertico-posframe-poshandler 'my-poshandler)
+  )

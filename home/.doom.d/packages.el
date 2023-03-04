@@ -114,3 +114,5 @@
 
 ;; (package! rjsx-mode)
 (package! blamer)
+
+(package! dired-posframe)

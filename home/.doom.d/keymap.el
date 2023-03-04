@@ -1,5 +1,4 @@
 ;;; ../.dotfiles/doom/.doom.d/keymap.el -*- lexical-binding: t; -*-
-
 (map!
  :nv  "M-k" #'drag-stuff-up
  :nv "M-j" #'drag-stuff-down
@@ -10,6 +9,11 @@
  :n "<f12>" #'evil-window-right
  "C-/" #'my-comment-or-uncomment
 
+ :n "C-h" #'evil-window-left
+ :n "C-j" #'evil-window-down
+ :n "C-k" #'evil-window-up
+ :n "C-l" #'evil-window-right
+ ;; split window
  :leader
  :desc "Switch buffer in workspace" "," #'my-consult-workspace
  :desc "Yank from kill ring" "y" #'yank-from-kill-ring
@@ -60,7 +64,9 @@
   )
 
  (:prefix-map ("s" . "search")
-  :desc "find file in current directory" "f" #'my-find-file-in-directory)
+  :desc "find file in current directory" "f" #'my-find-file-in-directory
+  :desc "Search and replace in project" "r" #'projectile-replace-regexp
+  )
 
  (:prefix-map ("g" . "git")
   :desc "Forge pull" "p" #'forge-pull
