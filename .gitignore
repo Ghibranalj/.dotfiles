@@ -11,3 +11,5 @@ my_layout.xkm
 *.gdbm
 /doom/.doom.d/custom.el
 /home/.config/lvim/plugin/packer_compiled.lua
+
+**/*flycheck*.el

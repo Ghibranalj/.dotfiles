@@ -119,5 +119,4 @@
 
 (package! dired-posframe)
 (package! which-key-posframe)
-(package! evil-owl)
-(evil-ex)
+;; (package! evil-owl)

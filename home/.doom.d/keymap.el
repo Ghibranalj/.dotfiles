@@ -7,7 +7,7 @@
 
  :n "<f11>" #'evil-window-left
  :n "<f12>" #'evil-window-right
- :n ":" #'my-evil-ex
+ ;; :nv ":" #'my-evil-ex
  "C-/" #'my-comment-or-uncomment
 
  :n "C-h" #'evil-window-left

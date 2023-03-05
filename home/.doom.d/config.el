@@ -41,7 +41,6 @@
   (if window-system
       (run-hooks 'my-new-gui-frame-hook)))
 
-
 ;; Running on daemon startup
 (if (daemonp)
     (add-hook 'after-make-frame-functions (lambda (frame)
@@ -342,6 +341,9 @@ Shows terminal in seperate section. Also shows browsers."
     (progn
       (+workspace-switch conn-str t)
       (dired (format "/scp:%s:" conn-str))
+      ;; save
+      (persist-save my-ssh-user-history)
+      (persist-save my-ssh-host-history)
       )))
 
 (setq projectile-indexing-method 'hybrid)
@@ -405,6 +407,8 @@ Shows terminal in seperate section. Also shows browsers."
 
   (let ((histlen (+ (length (symbol-value hist)) 1)))
     (setq vertico-posframe-height histlen))
+
+  (setq vertico-count-format  (cons "%-0s" ""))
 
   (let ((result
          (completing-read prompt (symbol-value hist) nil nil nil hist)))
@@ -635,12 +639,6 @@ RESPONSIVE and DISPLAY are ignored."
   :config
   (global-blamer-mode 1))
 
-(add-hook! 'minibuffer-exit-hook (setq vertico-posframe-height nil))
-
-(defun read-string ( PROMPT &optional INITIAL-INPUT HISTORY DEFAULT-VALUE INHERIT-INPUT-METHOD)
-  (setq vertico-posframe-height 1)
-  (completing-read PROMPT nil nil nil INITIAL-INPUT HISTORY DEFAULT-VALUE INHERIT-INPUT-METHOD)
-  )
 
 (defun my-poshandler (info)
   ;; (cons x y)
@@ -654,9 +652,8 @@ RESPONSIVE and DISPLAY are ignored."
   :after vertico
   :config
   (setq vertico-posframe-parameters
-        '((left-fringe . 25)
-          (right-fringe . 25)
-          (top-fringe . 30)
+        '((left-fringe . 10)
+          (right-fringe . 10)
           ))
   (setq vertico-posframe-width 110)
   (setq vertico-posframe-poshandler 'my-poshandler)
@@ -672,51 +669,8 @@ RESPONSIVE and DISPLAY are ignored."
 
 (add-hook! 'my-new-gui-frame-hook 'which-key-posframe-mode)
 
-(use-package! evil-owl
-  :config
-  (setq evil-owl-max-string-length 500)
-  (add-to-list 'display-buffer-alist
-               '("*evil-owl*"
-                 (display-buffer-in-side-window)
-                 (side . bottom)
-                 (window-height . 0.3)))
-  (evil-owl-mode))
+(defun my-load-read-string()
+  (load! "read-string.el" doom-user-dir)
+  )
 
-(evil-define-command my-evil-ex (&optional initial-input)
-  :keep-visual t
-  :repeat abort
-  (interactive
-   (let ((s (concat
-             (cond
-              ((and (evil-visual-state-p)
-                    evil-ex-visual-char-range
-                    (memq (evil-visual-type) '(inclusive exclusive)))
-               "`<,`>")
-              ((evil-visual-state-p) "'<,'>")
-              (current-prefix-arg
-               (let ((arg (prefix-numeric-value current-prefix-arg)))
-                 (cond ((< arg 0) (setq arg (1+ arg)))
-                       ((> arg 0) (setq arg (1- arg))))
-                 (if (= arg 0) "."
-                   (format ".,.%+d" arg)))))
-             evil-ex-initial-input)))
-     (list (when (> (length s) 0) s))))
-  (let ((evil-ex-current-buffer (current-buffer))
-        (evil-ex-previous-command (unless initial-input
-                                    (car evil-ex-history)))
-        evil-ex-argument-handler result)
-    (minibuffer-with-setup-hook
-        (lambda ()
-          (evil-ex-setup)
-          (when initial-input (evil-ex-update)))
-      (setq result
-            (read-string
-             ":" ;; prompt
-             (or initial-input
-                 (and evil-ex-previous-command
-                      evil-want-empty-ex-last-command
-                      (propertize evil-ex-previous-command 'face 'shadow))) ;; initial-input
-             'evil-ex-history ;; hist
-             (when evil-want-empty-ex-last-command evil-ex-previous-command) ;; def
-             t ))) ;; inherit-input-method
-    (evil-ex-execute result)))
+(add-hook! 'my-new-gui-frame-hook 'my-load-read-string)
