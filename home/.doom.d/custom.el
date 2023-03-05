@@ -3,7 +3,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages '(dired-posframe sly rjsx-mode))
+ '(package-selected-packages '(mini-frame evil-owl dired-posframe sly rjsx-mode))
  '(warning-suppress-log-types '((emacs) (defvaralias))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

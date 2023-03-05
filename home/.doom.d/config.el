@@ -180,7 +180,7 @@
     "https://www.google.com/search?q="
     (url-hexify-string (if mark-active
                            (buffer-substring (region-beginning) (region-end))
-                         (my-read-string "Search Google: " 'my-google-search-history))))))
+                         (my-read-string-hist "Search Google: " 'my-google-search-history))))))
 
 (defun my-clear-google-search-history ()
   "Clear google search history."
@@ -214,7 +214,7 @@
                    (persp-buffer-list))))))
 
 (defvar my-consult--terminal-source
-  (list :name     "Dired & Terminal"
+  (list :name     "Terminal"
         :category 'buffer
         :narrow   ?o
         :face     'consult-buffer
@@ -227,8 +227,24 @@
                   (seq-filter
                    (lambda (x)
                      (or
-                      (eq (buffer-local-value 'major-mode x) 'dired-mode)
                       (eq (buffer-local-value 'major-mode x) 'vterm-mode)))
+                   (persp-buffer-list))))))
+
+(defvar my-consult--dired-source
+  (list :name     "Dired"
+        :category 'buffer
+        :narrow   ?o
+        :face     'consult-buffer
+        :history  'buffer-name-history
+        :state    #'consult--buffer-state
+        :require-match t
+        :items
+        (lambda ()
+          (mapcar #'buffer-name
+                  (seq-filter
+                   (lambda (x)
+                     (or
+                      (eq (buffer-local-value 'major-mode x) 'dired-mode)))
                    (persp-buffer-list))))))
 
 (defvar my-consult--workspace-source
@@ -256,6 +272,7 @@
   (add-to-list 'consult-buffer-sources 'my-consult--eaf-source 'append)
   (add-to-list 'consult-buffer-sources 'my-consult--terminal-source 'append)
   (add-to-list 'consult-buffer-sources 'my-consult--workspace-source 'append)
+  (add-to-list 'consult-buffer-sources 'my-consult--dired-source 'append)
   )
 
 (require 'consult)
@@ -274,7 +291,7 @@
 Shows terminal in seperate section. Also shows browsers."
   (interactive)
   (consult--multi
-   '(my-consult--workspace-source my-consult--terminal-source my-consult--eaf-source)
+   '(my-consult--dired-source my-consult--terminal-source my-consult--workspace-source my-consult--eaf-source )
    :require-match
    (confirm-nonexistent-file-or-buffer)
    :prompt (format "Switch to buffer (%s): "
@@ -282,8 +299,6 @@ Shows terminal in seperate section. Also shows browsers."
    :history 'consult--buffer-history
    :sort nil))
 
-
-(add-hook! 'my-new-gui-frame-hook 'vertico-posframe-mode)
 
 (use-package! sidekick
   :hook (sidekick-mode . (lambda () (require 'sidekick-evil)))
@@ -319,12 +334,17 @@ Shows terminal in seperate section. Also shows browsers."
 (add-hook! 'after-delete-frame-functions '(lambda (frame) (persist--save-all)))
 
 (defun my-connect-remote-ssh()
+  "Connect to remote ssh in a new workspace."
   (interactive)
-  (dired (format "/scp:%s@%s:"
-                 (my-read-string "User (ssh): " 'my-ssh-user-history)
-                 (my-read-string "Host (ssh): " 'my-ssh-host-history))))
+  (let (( conn-str (format "%s@%s"
+                           (my-read-string-hist "User (ssh): " 'my-ssh-user-history)
+                           (my-read-string-hist "Host (ssh): " 'my-ssh-host-history))))
+    (progn
+      (+workspace-switch conn-str t)
+      (dired (format "/scp:%s:" conn-str))
+      )))
 
-(setq projectile-indexing-method 'native)
+(setq projectile-indexing-method 'hybrid)
 ;; (setq projectile-enable-caching t)
 
 (defun my-save-current-workspace ()
@@ -334,7 +354,9 @@ Shows terminal in seperate section. Also shows browsers."
 
 (put 'dired-find-alternate-file 'disabled nil)
 (use-package! dired
-  :hook (dired-mode . dired-hide-dotfiles-mode)
+  :hook
+  (dired-mode . dired-hide-dotfiles-mode)
+  (dired-mode . lsp-dired-mode)
   :config
   (setq dired-listing-switches "-agho --group-directories-first"
         dired-dwim-target t
@@ -344,6 +366,24 @@ Shows terminal in seperate section. Also shows browsers."
     "h" '(lambda () (interactive) (find-alternate-file ".."))
     "l" 'dired-find-alternate-file
     "." 'dired-hide-dotfiles-mode))
+
+(defun dired-count-files-total ()
+  (goto-char (point-min))
+  (search-forward-regexp dired-move-to-filename-regexp nil t)
+  (- (count-lines (line-beginning-position) (point-max)) 2)
+  )
+
+(defun my-disable-dotfiles-hide-when-empty ()
+  (interactive)
+  (let ((dired-files (dired-count-files-total)))
+    (if (eq dired-files 0)
+        (progn
+          (dired-hide-dotfiles-mode -1)
+          (message "Showing all dotfiles.")
+          )))
+  )
+
+(add-hook 'dired-after-readin-hook 'my-disable-dotfiles-hide-when-empty)
 
 (defun my-setup-ivy ()
   (require 'ivy)
@@ -360,8 +400,12 @@ Shows terminal in seperate section. Also shows browsers."
 
 (add-hook! 'my-new-gui-frame-hook 'my-setup-ivy)
 
-(defun my-read-string (prompt &optional hist)
+(defun my-read-string-hist (prompt &optional hist)
   "Read a string from the minibuffer with PROMPT. History is stored in HIST."
+
+  (let ((histlen (+ (length (symbol-value hist)) 1)))
+    (setq vertico-posframe-height histlen))
+
   (let ((result
          (completing-read prompt (symbol-value hist) nil nil nil hist)))
     (if (string= result "")
@@ -551,14 +595,14 @@ RESPONSIVE and DISPLAY are ignored."
   (interactive)
   (call-interactively '+make/run-last)
   (call-interactively 'dap-debug-last)
-  (call-interactively 'dap-hydra)
+  ;; (call-interactively 'dap-hydra)
   )
 
 (defun my-dap-debug ()
   (interactive)
   (call-interactively '+make/run)
   (call-interactively 'dap-debug)
-  (call-interactively 'dap-hydra)
+  ;; (call-interactively 'dap-hydra)
   )
 
 (use-package! dap-mode
@@ -579,9 +623,10 @@ RESPONSIVE and DISPLAY are ignored."
   :bind (("s-i" . blamer-show-commit-info))
   :defer 20
   :custom
-  (blamer-idle-time 0.3)
-  (blamer-min-offset 70)
-  (setq blamer-idle-time 1)
+  (blamer-idle-time 1)
+  (blamer-min-offset 80)
+  (blamer-author-formatter "  ✎ %s ")
+  (blamer-datetime-formatter "[%s] ")
   :custom-face
   (blamer-face ((t :foreground "#805d96"
                    :background nil
@@ -590,9 +635,8 @@ RESPONSIVE and DISPLAY are ignored."
   :config
   (global-blamer-mode 1))
 
-;; (read-from-minibuffer PROMPT &optional INITIAL-CONTENTS KEYMAP READ HIST
-;;                       DEFAULT-VALUE INHERIT-INPUT-METHOD)
 (add-hook! 'minibuffer-exit-hook (setq vertico-posframe-height nil))
+
 (defun read-string ( PROMPT &optional INITIAL-INPUT HISTORY DEFAULT-VALUE INHERIT-INPUT-METHOD)
   (setq vertico-posframe-height 1)
   (completing-read PROMPT nil nil nil INITIAL-INPUT HISTORY DEFAULT-VALUE INHERIT-INPUT-METHOD)
@@ -606,9 +650,73 @@ RESPONSIVE and DISPLAY are ignored."
    )
   )
 
-(after! vertico-posframe
+(use-package! vertico-posframe
+  :after vertico
+  :config
   (setq vertico-posframe-parameters
-        '((left-fringe . 8)
-          (right-fringe . 8)))
+        '((left-fringe . 25)
+          (right-fringe . 25)
+          (top-fringe . 30)
+          ))
+  (setq vertico-posframe-width 110)
   (setq vertico-posframe-poshandler 'my-poshandler)
   )
+(add-hook! 'my-new-gui-frame-hook 'vertico-posframe-mode)
+
+(use-package! which-key-posframe
+  :config
+  (setq which-key-posframe-poshandler 'my-poshandler)
+  (setq which-key-posframe-parameters
+        '((left-fringe . 20)
+          (right-fringe . 20))))
+
+(add-hook! 'my-new-gui-frame-hook 'which-key-posframe-mode)
+
+(use-package! evil-owl
+  :config
+  (setq evil-owl-max-string-length 500)
+  (add-to-list 'display-buffer-alist
+               '("*evil-owl*"
+                 (display-buffer-in-side-window)
+                 (side . bottom)
+                 (window-height . 0.3)))
+  (evil-owl-mode))
+
+(evil-define-command my-evil-ex (&optional initial-input)
+  :keep-visual t
+  :repeat abort
+  (interactive
+   (let ((s (concat
+             (cond
+              ((and (evil-visual-state-p)
+                    evil-ex-visual-char-range
+                    (memq (evil-visual-type) '(inclusive exclusive)))
+               "`<,`>")
+              ((evil-visual-state-p) "'<,'>")
+              (current-prefix-arg
+               (let ((arg (prefix-numeric-value current-prefix-arg)))
+                 (cond ((< arg 0) (setq arg (1+ arg)))
+                       ((> arg 0) (setq arg (1- arg))))
+                 (if (= arg 0) "."
+                   (format ".,.%+d" arg)))))
+             evil-ex-initial-input)))
+     (list (when (> (length s) 0) s))))
+  (let ((evil-ex-current-buffer (current-buffer))
+        (evil-ex-previous-command (unless initial-input
+                                    (car evil-ex-history)))
+        evil-ex-argument-handler result)
+    (minibuffer-with-setup-hook
+        (lambda ()
+          (evil-ex-setup)
+          (when initial-input (evil-ex-update)))
+      (setq result
+            (read-string
+             ":" ;; prompt
+             (or initial-input
+                 (and evil-ex-previous-command
+                      evil-want-empty-ex-last-command
+                      (propertize evil-ex-previous-command 'face 'shadow))) ;; initial-input
+             'evil-ex-history ;; hist
+             (when evil-want-empty-ex-last-command evil-ex-previous-command) ;; def
+             t ))) ;; inherit-input-method
+    (evil-ex-execute result)))

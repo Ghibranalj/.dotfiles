@@ -83,6 +83,8 @@
 (package! helm-swoop)
 (package! systemd)
 (package! lsp-ui)
+
+(package! lsp-mode  :pin "3939ff59227186c6574d1f0b1b8153dae3299d51")
 (package! vertico-posframe)
 (package! ivy)
 (package! ivy-posframe)
@@ -116,3 +118,6 @@
 (package! blamer)
 
 (package! dired-posframe)
+(package! which-key-posframe)
+(package! evil-owl)
+(evil-ex)
