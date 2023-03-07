@@ -119,4 +119,5 @@
 
 (package! dired-posframe)
 (package! which-key-posframe)
+(package! mini-frame)
 ;; (package! evil-owl)

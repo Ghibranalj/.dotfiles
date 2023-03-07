@@ -367,7 +367,12 @@ Shows terminal in seperate section. Also shows browsers."
   (evil-collection-define-key 'normal 'dired-mode-map
     "h" '(lambda () (interactive) (find-alternate-file ".."))
     "l" 'dired-find-alternate-file
-    "." 'dired-hide-dotfiles-mode))
+    ;; "l" 'my-dired-navigate-into
+    "." 'dired-hide-dotfiles-mode
+    "," 'dired-posframe-show
+    "s" 'my-dired-posframe-scroll-down
+    "w" 'my-dired-posframe-scroll-up
+    ))
 
 (defun dired-count-files-total ()
   (goto-char (point-min))
@@ -378,7 +383,7 @@ Shows terminal in seperate section. Also shows browsers."
 (defun my-disable-dotfiles-hide-when-empty ()
   (interactive)
   (let ((dired-files (dired-count-files-total)))
-    (if (eq dired-files 0)
+    (if (and (eq dired-files 0)  dired-hide-dotfiles-mode)
         (progn
           (dired-hide-dotfiles-mode -1)
           (message "Showing all dotfiles.")
@@ -674,3 +679,89 @@ RESPONSIVE and DISPLAY are ignored."
   )
 
 (add-hook! 'my-new-gui-frame-hook 'my-load-read-string)
+
+(defun my-find-major-mode-for-file (filename)
+  "Find the major mode associated with the given file name."
+  (let ((alist auto-mode-alist)
+        (mode nil))
+    (while (and alist (not mode))
+      (if (string-match (caar alist) filename)
+          (setq mode (cdar alist))
+        (setq alist (cdr alist))))
+    mode))
+
+(defun my-dired-posframe-highlight()
+  (let* ((file (dired-get-filename nil t))
+         (themode (my-find-major-mode-for-file (file-name-nondirectory file)))
+         )
+    (if (file-directory-p file)
+        (setq themode 'dired-mode))
+    (with-current-buffer (get-buffer  dired-posframe-buffer)
+      (if (not (eq themode nil))
+          (progn
+            (funcall themode)
+            ( goto-char (point-min))
+            (read-only-mode -1)
+            (insert (format "%s %s %s\n" comment-start (file-name-nondirectory file) comment-end))
+            )
+        )
+      )
+    )
+  )
+
+(after! dired-posframe
+  :config
+  (setq dired-posframe-width 65)
+  (setq dired-posframe-height 25)
+  (setq dired-posframe-min-height nil)
+  (setq dired-posframe-min-width nil)
+  (setq dired-posframe-parameters
+        '((left-fringe . 10)
+          (right-fringe . 10)
+          ))
+  (advice-add 'dired-posframe--show :after 'my-dired-posframe-highlight)
+  (advice-add 'keyboard-quit :before 'posframe-delete-all)
+  (fset 'dired-posframe--hide 'ignore)
+  )
+
+(defun my-dired-posframe-scroll-down()
+  (interactive)
+  (with-current-buffer (get-buffer  dired-posframe-buffer)
+    (read-only-mode -1)
+    (goto-char (point-min))
+    ;; copy first line
+    (let ((line (buffer-substring-no-properties (point) (line-end-position))))
+      (delete-region (point) (line-end-position))
+      (delete-char 1)
+      (goto-char (point-max))
+      (insert (format "%s\n" line))
+      )
+    )
+  )
+
+(defun my-dired-posframe-scroll-up()
+  (interactive)
+  (with-current-buffer (get-buffer  dired-posframe-buffer)
+    (read-only-mode -1)
+    (goto-char (point-max))
+    ;; copy last line
+    (let ((line (buffer-substring-no-properties (line-beginning-position) (point))))
+      (delete-region (line-beginning-position) (point))
+      (delete-char -1)
+      (goto-char (point-min))
+      (insert (format "%s\n" line))
+      )
+    )
+  )
+
+(defun my-dired-navigate-into ()
+  "Open directory in same dired buffer. Open file in new buffer"
+  (interactive)
+  (let (
+        (file (dired-get-filename nil t)))
+    (if (file-directory-p file)
+        (dired-find-alternate-file)
+      (dired-find-file)
+      )
+    )
+  )
