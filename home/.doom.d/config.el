@@ -366,8 +366,8 @@ Shows terminal in seperate section. Also shows browsers."
         dired-mouse-drag-files t)
   (evil-collection-define-key 'normal 'dired-mode-map
     "h" '(lambda () (interactive) (find-alternate-file ".."))
-    "l" 'dired-find-alternate-file
-    ;; "l" 'my-dired-navigate-into
+    ;; "l" 'dired-find-alternate-file
+    "l" 'my-dired-navigate-into
     "." 'dired-hide-dotfiles-mode
     "," 'dired-posframe-show
     "s" 'my-dired-posframe-scroll-down
@@ -633,13 +633,13 @@ RESPONSIVE and DISPLAY are ignored."
   :defer 20
   :custom
   (blamer-idle-time 1)
-  (blamer-min-offset 80)
+  (blamer-min-offset 40)
   (blamer-author-formatter "  ✎ %s ")
   (blamer-datetime-formatter "[%s] ")
   :custom-face
   (blamer-face ((t :foreground "#805d96"
                    :background nil
-                   :height 115
+                   :height 80
                    :italic t)))
   :config
   (global-blamer-mode 1))
@@ -765,3 +765,5 @@ RESPONSIVE and DISPLAY are ignored."
       )
     )
   )
+
+(evil-ex-define-cmd  "chmod" 'my-chmod-this-file)
