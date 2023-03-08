@@ -586,7 +586,10 @@ RESPONSIVE and DISPLAY are ignored."
 
 (defun my-chmod-this-file ( mode )
   (interactive `(,(read-string "File Mode: " nil)))
-  (shell-command (format "chmod %s %s" mode (buffer-file-name)))
+  (if (and (buffer-file-name) (file-exists-p (buffer-file-name)))
+      (shell-command (format "chmod %s %s" mode (buffer-file-name)))
+    (message "Buffer has no file.")
+    )
   )
 
 (add-hook! 'lsp-mode-hook '(lambda ()
@@ -766,4 +769,10 @@ RESPONSIVE and DISPLAY are ignored."
     )
   )
 
-(evil-ex-define-cmd  "chmod" 'my-chmod-this-file)
+(evil-define-command my-evil-chmod (mode)
+  (interactive "<a>")
+  (my-chmod-this-file mode)
+  )
+
+(evil-ex-define-cmd "chmod" 'my-evil-chmod)
+(evil-ex-define-cmd "sr" 'projectile-replace-regexp)

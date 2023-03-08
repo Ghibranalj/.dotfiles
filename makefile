@@ -15,6 +15,9 @@ stow:
 	stow --adopt home
 	stow --no-folding --adopt systemd
 
+rootstow:
+	sudo stow --adopt root -t /
+
 optimus:
 	./exec/gpu-nightmare.sh
 
