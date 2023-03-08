@@ -4,16 +4,31 @@
 ;; DEFAULT-VALUE INHERIT-INPUT-METHOD)
 
 (defun my-revert-vertico-posframe()
+  (setq vertico-posframe-width 100)
   (setq vertico-posframe-height nil)
   (setq vertico-count-format (cons "%-6s " "%s/%s"))
+  (setq vertico-posframe-poshandler 'my-poshandler)
+  (advice-remove 'vertico-insert 'my-vertico-insert-tab)
+  )
+
+(defun my-vertico-insert-tab ()
+  (if vertico-posframe-height
+      (progn
+        (setq vertico-posframe-height 10)
+        )
+    )
   )
 
 (add-hook! 'minibuffer-exit-hook  'my-revert-vertico-posframe)
 
-(defun read-string ( PROMPT &optional INITIAL-INPUT HISTORY DEFAULT-VALUE INHERIT-INPUT-METHOD)
+(defun read-string ( PROMPT &optional INITIAL-INPUT HISTORY DEFAULT-VALUE INHERIT-INPUT-METHOD KEYMAP)
+
+
   (setq vertico-posframe-height 1)
   (setq vertico-count-format  (cons "%-0s" ""))
-  (completing-read PROMPT nil nil nil INITIAL-INPUT HISTORY DEFAULT-VALUE INHERIT-INPUT-METHOD)
+
+  (advice-add 'vertico-insert :before 'my-vertico-insert-tab)
+  (completing-read PROMPT (symbol-value HISTORY) nil nil INITIAL-INPUT HISTORY DEFAULT-VALUE INHERIT-INPUT-METHOD)
   )
 
 (evil-define-command evil-ex (&optional initial-input)
@@ -53,7 +68,9 @@
                       (propertize evil-ex-previous-command 'face 'shadow))) ;; initial-input
              'evil-ex-history ;; hist
              (when evil-want-empty-ex-last-command evil-ex-previous-command) ;; def
-             t ))) ;; inherit-input-method
+             t
+             evil-ex-completion-map
+             ))) ;; inherit-input-method
     (evil-ex-execute result)))
 
 (defun magit-read-string (prompt &optional initial-input history default-value
@@ -68,7 +85,7 @@
                (magit-prompt-with-default (concat prompt ": ") default-value) ;; prompt
                initial-input ;; initial
                history ;; history
-               default-value ;; default 
+               default-value ;; default
                inherit-input-method ;; inherit-input-method
                ))
          (trim (lambda (regexp string)
