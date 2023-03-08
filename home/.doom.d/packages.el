@@ -53,18 +53,18 @@
   :recipe (:host github :repo "TommyX12/company-tabnine"))
 
 (package! copilot
-  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
+  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist/*")))
 (package! company-box
   :recipe (
            :host github
            :repo "sebastiencs/company-box"
-           :files ("*.el" )))
+           :files ("*.el" "images" )))
 ;; (package! emmet-mode)
 (package! beacon
   :recipe (
-           :host github
-           :repo "Malabarba/beacon"
+           :host github :repo "Malabarba/beacon"
            :files ("*.el")))
+
 (package! yascroll
   :recipe (
            :host github
