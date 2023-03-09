@@ -113,9 +113,25 @@ keystate_capslock = enable
     m:0xc + c:34
     Control+Alt + bracketleft
 
+"$HOME/.bin/player next"
+    m:0x0 + c:171
+    XF86AudioNext
+
+"$HOME/.bin/player prev"
+    m:0x0 + c:173
+    XF86AudioPrev
+
 "$HOME/.bin/player toggle"
     m:0xc + c:51
     Control+Alt + backslash
+
+"$HOME/.bin/player toggle"
+    m:0x0 + c:209
+    XF86AudioPause
+
+"$HOME/.bin/player toggle"
+    m:0x0 + c:208
+    XF86AudioPlay
 
 "$HOME/.bin/brightness up"
     m:0x0 + c:233

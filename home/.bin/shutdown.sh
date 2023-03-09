@@ -6,7 +6,7 @@ logout="    Logout"
 shutdown="    Poweroff"
 reboot="    Reboot"
 sleep="   Sleep"
-hibernate="💤   Turn off Screen"
+hibernate="💤  Hibernate"
 
 # Get answer from user via rofi
 export COL=3
@@ -40,7 +40,7 @@ elif [ "$selected_option" == "$sleep" ]; then
 elif [ "$selected_option" == "$hibernate" ]; then
 	XSECURELOCK_PASSWORD_PROMPT='asterisks' xsecurelock &
 	sleep 2
-	# systemctl hibernate
+	systemctl hibernate
 	xset -display ':0.0' dpms force off
 else
 	echo "No match"
