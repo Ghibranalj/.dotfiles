@@ -1,6 +1,7 @@
 [Unit]
 Description=Emacs text editor (terminal)
 Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
+After=emacs.service
 
 [Service]
 Type=forking

@@ -53,7 +53,8 @@
   :recipe (:host github :repo "TommyX12/company-tabnine"))
 
 (package! copilot
-  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist/*")))
+  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
+
 (package! company-box
   :recipe (
            :host github
@@ -121,3 +122,6 @@
 (package! which-key-posframe)
 (package! mini-frame)
 ;; (package! evil-owl)
+(package! man-posframe
+  :recipe ( :type git :host github :repo "Ghibranalj/man-posframe.el"
+                  :files ("*.el") :branch "master"))

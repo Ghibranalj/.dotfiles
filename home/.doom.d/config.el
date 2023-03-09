@@ -774,5 +774,25 @@ RESPONSIVE and DISPLAY are ignored."
   (my-chmod-this-file mode)
   )
 
+(evil-define-command my-evil-man (arg)
+  (interactive "<a>")
+  (if arg
+      (my-open-man arg)
+    (call-interactively 'my-open-man)
+    )
+  )
+
+(evil-ex-define-cmd "man" 'my-evil-man)
 (evil-ex-define-cmd "chmod" 'my-evil-chmod)
 (evil-ex-define-cmd "sr" 'projectile-replace-regexp)
+(evil-ex-define-cmd "dired" 'dired-jump)
+(evil-ex-define-cmd "systemd" 'daemons)
+
+(use-package! man-posframe
+  :custom
+  (man-posframe-width  100)
+  (man-posframe-height  30)
+  )
+
+
+(setq copilot-log-max nil)
