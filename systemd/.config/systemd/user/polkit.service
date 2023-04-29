@@ -1,6 +1,5 @@
 [Unit]
 Description=gnome-polkit
-After=udiskie.service
 
 [Service]
 Type=simple

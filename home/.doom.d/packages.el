@@ -85,7 +85,7 @@
 (package! systemd)
 (package! lsp-ui)
 
-(package! lsp-mode  :pin "3939ff59227186c6574d1f0b1b8153dae3299d51")
+(unpin! lsp-mode)
 (package! vertico-posframe)
 (package! ivy)
 (package! ivy-posframe)
@@ -114,6 +114,7 @@
 ;; (package! coverlay)
 ;; (package! origami)
 ;; (package! tsx-mode :recipe (:host github :repo "orzechowskid/tsx-mode.el"))
+
 
 ;; (package! rjsx-mode)
 (package! blamer)

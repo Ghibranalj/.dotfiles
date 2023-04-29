@@ -3,7 +3,7 @@ Description=ryzenadj Service
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/ryzenadj --power-saving
+ExecStart=/bin/bash -c 'while true; do /usr/bin/ryzenadj --power-saving; sleep 10; done'
 
 [Install]
 WantedBy=multi-user.target

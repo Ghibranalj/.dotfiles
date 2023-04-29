@@ -358,7 +358,7 @@ Shows terminal in seperate section. Also shows browsers."
 (use-package! dired
   :hook
   (dired-mode . dired-hide-dotfiles-mode)
-  (dired-mode . lsp-dired-mode)
+  ;; (dired-mode . lsp-dired-mode)
   :config
   (setq dired-listing-switches "-agho --group-directories-first"
         dired-dwim-target t
@@ -601,6 +601,7 @@ RESPONSIVE and DISPLAY are ignored."
                                     (add-to-list 'projectile-globally-ignored-directories "vendor")
                                     (add-to-list 'projectile-globally-ignored-directories "CMakeFiles")
                                     (add-to-list 'projectile-globally-ignored-directories "build")
+                                    (add-to-list 'projectile-globally-ignored-directories "^.*vendor.*$")
                                     ))
 
 (defun my-dap-debug-last()
@@ -793,6 +794,5 @@ RESPONSIVE and DISPLAY are ignored."
   (man-posframe-width  100)
   (man-posframe-height  30)
   )
-
 
 (setq copilot-log-max nil)

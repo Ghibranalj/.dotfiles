@@ -262,7 +262,7 @@ function see-docker() {
     docker rm tmp_$$
 }
 
-alias unadb="adb shell pm list packages || echo 'No phone' | fzf | awk -F':' '{print \$2}' | xargs -ro adb shell pm uninstall -k --user 0"
+alias unadb="adb shell pm list packages  | fzf | awk -F':' '{print \$2}' | xargs -ro adb shell pm uninstall -k --user 0"
 
 # tmux attach -t main || tmux new -s main
 
@@ -271,3 +271,11 @@ if [ -f /usr/share/doc/find-the-command/ftc.bash ]; then
 fi
 
 alias make='make --no-print-directory '
+
+if command -v scc &>/dev/null; then
+    alias cloc='scc'
+fi
+
+if command -v trash-restore &>/dev/null; then
+    alias restore='trash-restore'
+fi
