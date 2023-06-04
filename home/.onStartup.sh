@@ -4,7 +4,7 @@ function start() {
 	disown
 }
 
-start activate-linux
+# start activate-linux
 start spotify
 start syndaemon -i 0.5 -t -k -R
 

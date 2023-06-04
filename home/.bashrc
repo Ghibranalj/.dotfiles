@@ -264,11 +264,9 @@ function see-docker() {
 
 alias unadb="adb shell pm list packages  | fzf | awk -F':' '{print \$2}' | xargs -ro adb shell pm uninstall -k --user 0"
 
-# tmux attach -t main || tmux new -s main
-
-if [ -f /usr/share/doc/find-the-command/ftc.bash ]; then
-    source /usr/share/doc/find-the-command/ftc.bash
-fi
+# if [ -f /usr/share/doc/find-the-command/ftc.bash ]; then
+#     source /usr/share/doc/find-the-command/ftc.bash
+# fi
 
 alias make='make --no-print-directory '
 

@@ -11,6 +11,7 @@ hibernate="💤  Hibernate"
 # Get answer from user via rofi
 export COL=3
 export LINES=2
+export INPUT=false
 selected_option=$(
 	echo "$lock
 $logout

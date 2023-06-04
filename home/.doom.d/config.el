@@ -794,5 +794,3 @@ RESPONSIVE and DISPLAY are ignored."
   (man-posframe-width  100)
   (man-posframe-height  30)
   )
-
-(setq copilot-log-max nil)

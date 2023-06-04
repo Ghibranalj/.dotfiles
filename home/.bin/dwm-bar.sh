@@ -117,6 +117,10 @@ function bluetooth() {
     printf ' \x07%s' "<span color='#5255ba' font_size='115%' rise='-2pt' ></span> $NUM_DEVICES"
 }
 
+function power(){
+   printf ' \x09%s' " <span font_size='115%' rise='-1pt'></span>"
+}
+
 VOL=$(vol)
 BAT=$(battery)
 TIME=$(clock)
@@ -124,7 +128,8 @@ NOTIF=$(notif)
 MUSIC=$(music)
 CAFF=$(caffeine)
 BLU=$(bluetooth)
+POWER=$(power)
 # PULSE=$(puluseaudio)
 
-echo -e "$MUSIC$TIME$VOL$BAT$CAFF$BLUE$BLU$NOTIF"
-xsetroot -name "$MUSIC$TIME$VOL$PULSE$BAT$CAFF$BLUE$BLU$NOTIF"
+echo -e "$MUSIC$TIME$VOL$BAT$CAFF$BLUE$BLU$NOTIF$POWER"
+xsetroot -name "$MUSIC$TIME$VOL$PULSE$BAT$CAFF$BLUE$BLU$NOTIF$POWER"
