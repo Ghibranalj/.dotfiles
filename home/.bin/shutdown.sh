@@ -1,5 +1,7 @@
 #!/bin/env bash
 
+PARENT=`cat /proc/$PPID/comm`
+
 # Options for powermenu
 lock="    Lock"
 logout="    Logout"
@@ -8,17 +10,26 @@ reboot="    Reboot"
 sleep="   Sleep"
 hibernate="💤  Hibernate"
 
+ROFI_CMD="rofi"
 # Get answer from user via rofi
 export COL=3
 export LINES=2
 export INPUT=false
+
+if [[ $PARENT == "dwm" ]]; then
+	ROFI_CMD="rofi -location 3 -no-fixed-num-lines"
+	export COL=1
+	unset LINES
+	export YOFF=27px
+fi
+
 selected_option=$(
 	echo "$lock
 $logout
 $sleep
 $reboot
 $shutdown
-$hibernate" | rofi -dmenu -i -p "Power" \
+$hibernate" | $ROFI_CMD -dmenu -i -p "Power" \
 		-font "Symbols Nerd Font 12" \
 		-width "15" \
 		-lines 4 -line-margin 3 -line-padding 10 -scrollbar-width "0"
