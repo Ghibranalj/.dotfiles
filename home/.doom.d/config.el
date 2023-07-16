@@ -783,11 +783,17 @@ RESPONSIVE and DISPLAY are ignored."
     )
   )
 
+(evil-define-command my-evil-mkdir (arg)
+  (interactive "<a>")
+  (mkdir arg default-directory)
+  )
+
 (evil-ex-define-cmd "man" 'my-evil-man)
 (evil-ex-define-cmd "chmod" 'my-evil-chmod)
 (evil-ex-define-cmd "sr" 'projectile-replace-regexp)
 (evil-ex-define-cmd "dired" 'dired-jump)
 (evil-ex-define-cmd "systemd" 'daemons)
+(evil-ex-define-cmd "mkdir" 'my-evil-mkdir)
 
 (use-package! man-posframe
   :custom

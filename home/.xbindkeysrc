@@ -35,7 +35,7 @@
 # Uncomment the lines above if you want to pay attention to them.
 
 #keystate_numlock = enable
-keystate_capslock = enable
+# keystate_capslock = enable
 #keystate_scrolllock= enable
 
 #"echo `whoami` > $HOME/test"
@@ -140,10 +140,6 @@ keystate_capslock = enable
 "$HOME/.bin/brightness down"
     m:0x0 + c:232
     XF86MonBrightnessDown
-
-"$HOME/.bin/brightness up"
-    m:0xc + c:11
-    Control+Alt + Insert
 
 "$HOME/.bin/brightness up"
     m:0xc + c:33
