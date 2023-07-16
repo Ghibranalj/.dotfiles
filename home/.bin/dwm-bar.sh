@@ -22,6 +22,11 @@ function vol() {
 
 function battery() {
 
+    if [[ `cat /etc/hostname` == "CreeprPC" ]]; then
+        printf ""
+        return 0
+    fi
+
     BATTERY_STATUS=$(acpi | grep "Battery 0")
 
     if [[ "$BATTERY_STATUS" == *"unavailable"* ]]; then
