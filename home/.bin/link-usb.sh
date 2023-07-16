@@ -4,6 +4,7 @@ function link-usb() {
 	if [[ $(ls /run/media/$USER/) == "" ]]; then
 		echo "No USB devices found"
 		unlink "$HOME"/USB/*
+		rm -d "$HOME"/USB/*
 		rm -d "$HOME"/USB
 		return
 	fi

@@ -18,7 +18,7 @@ fi
 
 # needed by dotfiles
 yay -Sy neovim advcpmv exa xclip xbindkeys blueman bluetooth-autoconnect \
-	most noisetorch alacritty tabbed rofi rofi-emoji rofi-calc rmtrash blugon
+	most noisetorch alacritty tabbed rofi rofi-emoji rofi-calc rmtrash blugon udiskie
 
 # other apps
 yay -Sy google-chrome spotify discord whatsapp-for-linux
