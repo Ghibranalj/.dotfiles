@@ -1,12 +1,4 @@
 #!/usr/bin/env bash
 
 # This runs my terminal
-
-hostname=$(cat /etc/hostname)
-
-# tabbed can crash dwm on CreeprDell
-if [[ $hostname == "CreeprDell" ]]; then
-    alacritty &
-else
-    tabbed -c -d -n 'Terminal' -- alacritty --embed
-fi
+alacritty &
