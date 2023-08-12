@@ -8,7 +8,7 @@ logout="    Logout"
 shutdown="    Poweroff"
 reboot="    Reboot"
 sleep="   Sleep"
-hibernate="💤  Hibernate"
+hibernate="⚙  UEFI setup"
 
 ROFI_CMD="rofi"
 # Get answer from user via rofi
@@ -50,10 +50,7 @@ elif [ "$selected_option" == "$sleep" ]; then
 	sleep 1
 	systemctl suspend
 elif [ "$selected_option" == "$hibernate" ]; then
-	XSECURELOCK_PASSWORD_PROMPT='asterisks' xsecurelock &
-	sleep 2
-	systemctl hibernate
-	xset -display ':0.0' dpms force off
+	systemctl reboot --firmware-setup
 else
 	echo "No match"
 fi
