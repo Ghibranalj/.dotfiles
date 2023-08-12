@@ -23,7 +23,9 @@ function lock_screen() {
     rm $LOCK_FILE
 }
 
+# xset s off -dpms
 rm $LOCK_FILE
+
 while true; do
     sleep 10
     LID_STATE=$(cat $LID_FILE | awk '{print $2}')
