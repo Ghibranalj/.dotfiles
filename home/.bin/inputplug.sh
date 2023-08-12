@@ -6,7 +6,9 @@ TYPE=$3
 ID=$2
 
 if [ "$TYPE" == "XISlavePointer" ]; then
-    echo "Mouse Added"
-    xinput --set-prop "$ID" 'libinput Accel Profile Enabled' 0, 1
+    echo "Mouse Added Disabling Acceleration"
+    xinput --set-prop "$ID" "libinput Accel Speed" 0 && \
+        echo "Mouse Acceleration Disabled" || \
+        echo "Failed to disable mouse acceleration"
 fi
 # disables mouse acceleration

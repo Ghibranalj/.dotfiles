@@ -19,7 +19,6 @@ export DISPLAY=":0"
 
 unclutter --timeout 60 --jitter 3 &
 killstart nm-applet &
-killstart inputplug -0 --command $HOME/.bin/inputplug.sh &
 
 $HOME/.bin/screensaverd &
 $HOME/.onStartup.sh &
