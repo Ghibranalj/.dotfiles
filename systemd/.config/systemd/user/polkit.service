@@ -4,7 +4,8 @@ Description=gnome-polkit
 [Service]
 Type=simple
 ExecStart=/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-Restart=on-failure
+Restart=always
+RestartSec=3
 
 [Install]
 WantedBy=default.target
