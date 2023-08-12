@@ -25,3 +25,5 @@ $HOME/.bin/screensaverd &
 $HOME/.onStartup.sh &
 sleep 1
 feh "$HOME/.local/share/dwm/background.png" --bg-scale &
+sleep 1
+killall emacs
