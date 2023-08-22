@@ -1,0 +1,2 @@
+KERNEL=="event[0-9]|event[0-9][0-9]", SUBSYSTEM=="input", ATTRS{name}=="AJAZZ K680T Keyboard", ACTION=="add", SYMLINK+="input/btkeyboard"
+KERNEL=="event[0-9]|event[0-9][0-9]", SUBSYSTEM=="input", ATTRS{name}=="AJAZZ K680T Keyboard", ACTION=="remove", SYMLINK-="input/btkeyboard"

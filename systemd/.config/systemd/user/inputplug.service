@@ -1,0 +1,11 @@
+[Unit]
+Description=Inputplug to disable mouse acceleration
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/inputplug -0 -v --command %h/.bin/inputplug.sh
+ExecStop=/usr/bin/killall inputplug
+Restart=always
+
+[Install]
+WantedBy=xsession.target
