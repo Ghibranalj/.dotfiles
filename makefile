@@ -1,4 +1,4 @@
-.PHONY: all exec conf optimus udev keybind emacs stow vim dwm systemd systemdroot
+.PHONY: all exec conf optimus udev keybind emacs stow vim dwm systemd systemdroot fonts
 
 all: stow rootstow exec conf emacs vim systemd
 
@@ -46,3 +46,6 @@ systemdroot:
 
 dwm:
 	./exec/dwm.sh
+
+fonts:
+	./exec/install_fonts.sh

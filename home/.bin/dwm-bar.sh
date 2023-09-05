@@ -17,7 +17,8 @@ function clock() {
 }
 
 function vol() {
-    printf ' \x08%s\x02%s' '🔉' "$(pamixer --get-volume-human)"
+    ICON="<span>🔊</span>"
+    printf ' \x08%s \x02%s' $ICON "$(pamixer --get-volume-human)"
 }
 
 function battery() {
@@ -110,7 +111,7 @@ function caffeine() {
         CAFFEINE_STATUS="background='orange'"
     fi
 
-    CAFFEINE="<span $CAFFEINE_STATUS >☕</span>"
+    CAFFEINE="<span font_size='110%' $CAFFEINE_STATUS >☕</span>"
 
     printf ' \x06%s' "$CAFFEINE"
 }
