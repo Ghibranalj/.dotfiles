@@ -9,7 +9,7 @@ After=network-online.target
 [Service]
 ExecStart=/usr/bin/spotifyd --no-daemon --autoplay
 Restart=always
-RestartSec=12
+RestartSec=5
 
 
 [Install]

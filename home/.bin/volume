@@ -21,6 +21,8 @@ elif [[ "$1" == "get" ]]; then
     VOL=$(pamixer --get-volume)
     [[ $(pamixer --get-mute) == "true" ]] && VOL="0"
     echo $VOL #to show volume status
+elif [[ "$1" == "set" ]]; then
+    pamixer --set-volume "$2"
 fi
 
 [[ "$2" == "--no-prompt" ]] && exit 0
@@ -45,5 +47,5 @@ fi
 ICON=/usr/share/icons/Adwaita41/scalable/apps/multimedia-volume-control-symbolic.svg
 ID=379
 
-notify-send -i "$ICON" "Volume $NUMBER%" "<span color=\'$COL\'>$BAR</span>" -c "Volume" -r $ID
+notify-send -i "$ICON" "Volume $NUMBER%" "<span color=\'$COL\'>$BAR</span>" -c "Volume" -r $ID &
 play /usr/share/sounds/gnome/default/alerts/drip.ogg

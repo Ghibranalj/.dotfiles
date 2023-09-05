@@ -126,3 +126,6 @@
 (package! man-posframe
   :recipe ( :type git :host github :repo "Ghibranalj/man-posframe.el"
                   :files ("*.el") :branch "master"))
+
+(package! prisma-mode
+  :recipe (:host github :repo "pimeys/emacs-prisma-mode" :branch "main"))

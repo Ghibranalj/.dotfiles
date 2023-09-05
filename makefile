@@ -1,6 +1,6 @@
 .PHONY: all exec conf optimus udev keybind emacs stow vim dwm systemd systemdroot
 
-all: stow exec conf emacs vim systemd
+all: stow rootstow exec conf emacs vim systemd
 
 exec:
 	./exec/app-arch.sh
@@ -8,8 +8,7 @@ exec:
 	./exec/keybind.sh
 
 conf:
-	sudo rm /etc/bluetooth/main.conf
-	sudo cp configs/bluetooth/main.conf /etc/bluetooth/main.conf
+	sudo cp --force configs/bluetooth/* /etc/bluetooth/
 
 stow:
 	stow --adopt home

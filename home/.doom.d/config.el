@@ -157,7 +157,7 @@
 (defun my-open-browser(url &optional args)
   "Open URL with ARGS on eaf-browser when not terminal, chrome when terminal."
   (if window-system
-      (eaf-open-browser url args)
+      ;; (eaf-open-browser url args)
     (browse-url-chrome url args)))
 
 
@@ -783,9 +783,19 @@ RESPONSIVE and DISPLAY are ignored."
     )
   )
 
+(defun my-create-directory (directory)
+  "Create a directory recursively using mkdir -p."
+  (interactive "sCreate directory: ")
+  (let ((full-directory (if (file-name-absolute-p directory)
+                            directory
+                          (expand-file-name directory default-directory))))
+    (shell-command (concat "mkdir -p " (shell-quote-argument full-directory)))
+    (message (concat "Created directory: " full-directory))))
+
 (evil-define-command my-evil-mkdir (arg)
   (interactive "<a>")
-  (mkdir arg default-directory)
+  ;; (mkdir arg default-directory)
+  (my-create-directory arg)
   )
 
 (evil-ex-define-cmd "man" 'my-evil-man)
@@ -800,3 +810,5 @@ RESPONSIVE and DISPLAY are ignored."
   (man-posframe-width  100)
   (man-posframe-height  30)
   )
+(setq input-string "Hello world! This is a test.")
+(setq split-list (split-string input-string " "))

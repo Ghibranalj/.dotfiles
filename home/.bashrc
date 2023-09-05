@@ -277,3 +277,20 @@ fi
 if command -v trash-restore &>/dev/null; then
     alias restore='trash-restore'
 fi
+
+# alias genmac='openssl rand -hex 6 | sed "s/\(..\)/\1:/g; s/.$//"'
+# generate non-broadcasting mac address
+alias genmac='openssl rand -hex 6 | sed "s/\(..\)/\1:/g; s/.$//" | sed "s/ff/fe/"'
+
+# alias npm="pnpm"
+# alias npx="pnpx"
+
+# pnpm
+export PNPM_HOME="/home/gibi/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+alias update-system="yay -Syy archlinux-keyring && yay"

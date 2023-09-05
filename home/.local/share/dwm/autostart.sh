@@ -11,11 +11,11 @@ function killstart(){
 
 export DISPLAY=":0"
 
-[[ `cat /etc/hostname` == *"CreeprTUF"* ]]
+[[ `cat /etc/hostname` == *"CreeprTUF"* ]] &&
     $HOME/.bin/screen.sh &
 
 [[ `cat /etc/hostname` == *"CreeprDell"* ]] &&
-    $HOME/.bin/1080p.sh
+    $HOME/.bin/1080p.sh &
 
 unclutter --timeout 60 --jitter 3 &
 killstart nm-applet &
@@ -24,5 +24,3 @@ $HOME/.bin/screensaverd &
 $HOME/.onStartup.sh &
 sleep 1
 feh "$HOME/.local/share/dwm/background.png" --bg-scale &
-sleep 1
-killall emacs
