@@ -60,11 +60,11 @@
            :host github
            :repo "sebastiencs/company-box"
            :files ("*.el" "images" )))
-;; (package! emmet-mode)
-(package! beacon
-  :recipe (
-           :host github :repo "Malabarba/beacon"
-           :files ("*.el")))
+(package! emmet-mode)
+;; (package! beacon
+;;   :recipe (
+;;            :host github :repo "Malabarba/beacon"
+;;            :files ("*.el")))
 
 (package! yascroll
   :recipe (

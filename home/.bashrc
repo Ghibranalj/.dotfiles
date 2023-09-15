@@ -62,7 +62,6 @@ alias c=clear
 alias windows10='vbox-ctl -S Windows10'
 
 alias pickcolor="colorpicker --short --one-shot 2> /dev/null | xclip -sel c "
-
 function nav() {
     dir='.'
     flags=$@
@@ -294,3 +293,5 @@ esac
 # pnpm end
 
 alias update-system="yay -Syy archlinux-keyring && yay"
+
+alias nano='nvim'

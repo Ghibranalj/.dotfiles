@@ -20,7 +20,6 @@
  :desc "Yank from kill ring" "y" #'yank-from-kill-ring
  (:prefix ("b" . "buffer")
   :desc "Format buffer" "f" #'+format/buffer
-  :desc "Switch to browser" "w" #'my-consult-browser
   :desc "Switch to terminal in workspace" "t" #'my-consult-terminal
   ;; :desc "Search current buffer" "s" #'+default/search-buffer
   )
@@ -37,18 +36,13 @@
  (:prefix ("o" . "open")
   :desc "Open manpage" "M" #'man
   :desc "Open manpage" "m" #'my-open-man
-  :desc "Open browser" "w" #'eaf-open-browser-with-history
-  :desc "Open browser bookmark" "W" #'eaf-open-bookmark
-  :desc "Open google" "g" #'my-google-search
-  :desc "Open github" "G" #'my-open-github
   :desc "Open ssh connection" "s" #'my-connect-remote-ssh
   :desc "open dired" "/" #'dired-jump
   :desc "Open init daemon" "i" #'daemons
-  :desc "Open selected link in browser" "l" #'my-open-selected-link
   )
 
  (:prefix ("t" . "toggle")
-  :desc "Toggle minimap" "m" #'minimap-mode
+  :desc "Toggle minimap" "m" #'minimap-switch-mode
   :desc "Toggle zen-mode" "z" #'+zen/toggle)
 
  (:prefix ("e" . "eval")
@@ -84,7 +78,7 @@
  (:prefix-map ("m" . "Music")
   :desc "Start music" "m" #'my-start-smudge
   :desc "Search music" "s" #'smudge-track-search
-  :desc "Toggle music" "T" #'my-pause-music-start-again
+  :desc "Toggle music and retoggle" "T" #'my-pause-music-start-again
   :desc "Toggle music" "t" #'smudge-controller-toggle-play
   :desc "Select device" "d" #'smudge-select-device
   :desc "Volume up" "=" #'smudge-controller-volume-up

@@ -1,5 +1,4 @@
 ;;; $DOOM_DIR/config.el -*- lexical-binding: t; -*-
-
 (load! "keymap.el")
 (setq display-line-numbers-type 'relative)
 (setq org-directory "~/org/")
@@ -48,21 +47,10 @@
                                               (on-new-frame))))
   (on-new-frame))
 
-;; Scroll bar
-(global-yascroll-bar-mode 1)
-
-;; Tabs
-(after! centaur-tabs
-  (setq centaur-tabs-set-bar 'under
-        centaur-tabs-set-close-button nil
-        centaur-tabs-height 42))
-
-
 ;; tremacs colors
 (custom-set-faces!
   '(treemacs-root-face :foreground "#F78C6C")
   '(doom-themes-treemacs-root-face :foreground "#F78C6C"))
-
 
 ;; Coplilot
 (defun +copilot/tab ()
@@ -84,9 +72,6 @@
 
 ;; man pages
 (setq Man-notify-method 'pushy)
-;; (add-hook! 'Man-mode-hook 'writeroom-mode)
-;; (remove-hook! 'writeroom-mode-hook '+zen-enable-text-scaling-mode-h)
-;; (remove-hook! 'writeroom-mode-hook '+zen-enable-mixed-pitch-mode-h)
 
 (defun my-comment-or-uncomment()
   "Comment or uncomment the current line or region."
@@ -95,7 +80,6 @@
       (comment-or-uncomment-region (region-beginning) (region-end))
     (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
 
-(beacon-mode 1)
 (setq scroll-margin 16
       scroll-conservatively 101
       scroll-up-aggressively 0.01
@@ -123,94 +107,6 @@
   "Evaluate the current line."
   (interactive)
   (eval-region (line-beginning-position) (line-end-position)))
-
-
-;; eaf and browser
-(defun my-setup-browser ()
-  "Setup eaf and browser."
-  (message "Browser is being setup")
-  (add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
-  (require 'eaf)
-  (require 'eaf-browser)
-  (require 'eaf-video-player)
-  (require 'eaf-pdf-viewer)
-  ;; (setq eaf-browser-enable-bookmark t)
-  (setq eaf-browser-enable-adblocker t)
-  (defvar eaf-browser-default-search-engine "google")
-  (add-hook! 'eaf-mode-hook 'my-add-buffer-to-project)
-  (add-hook! 'eaf-mode-hook 'hide-mode-line-mode)
-
-  (require 'evil)
-  (evil-collection-define-key 'normal 'eaf-mode-map*
-    "j" 'eaf-send-down-key
-    "k" 'eaf-send-up-key
-    "h" 'eaf-send-left-key
-    "l" 'eaf-send-right-key
-    "Q" 'kill-current-buffer
-    "R" 'eaf-restart-process
-    "B" '(lambda () (interactive) (eaf-execute-app-cmd 'eaf-py-proxy-insert_or_save_as_bookmark))
-    )
-  )
-
-(add-hook! 'my-new-gui-frame-hook 'my-setup-browser)
-
-(defun my-open-browser(url &optional args)
-  "Open URL with ARGS on eaf-browser when not terminal, chrome when terminal."
-  (if window-system
-      ;; (eaf-open-browser url args)
-    (browse-url-chrome url args)))
-
-
-(setq browse-url-browser-function 'my-open-browser)
-
-(defun my-open-selected-link ()
-  "Open URL with ARGS on eaf-browser when not terminal, chrome when terminal."
-  (interactive)
-  (if (region-active-p)
-      (let ((url (buffer-substring-no-properties (region-beginning) (region-end))))
-        (my-open-browser url))
-    (message "No region selected")))
-
-(defun my-google-search ()
-  "Search Google inside eaf-browser."
-  (interactive)
-  (my-open-browser
-   (concat
-    "https://www.google.com/search?q="
-    (url-hexify-string (if mark-active
-                           (buffer-substring (region-beginning) (region-end))
-                         (my-read-string-hist "Search Google: " 'my-google-search-history))))))
-
-(defun my-clear-google-search-history ()
-  "Clear google search history."
-  (interactive)
-  (persist-reset 'my-google-search-history)
-  (setq my-google-search-history nil))
-
-(defun my-open-github ()
-  "Open github in eaf-browser."
-  (interactive)
-  (require 'browse-at-remote)
-  (if (car (browse-at-remote--get-remotes))
-      (+vc/browse-at-remote-homepage)
-    (my-open-browser "github.com")))
-
-;; TODO diferenciate between video player and browser maybe?
-(defvar my-consult--eaf-source
-  (list :name     "Browser"
-        :category 'buffer
-        :narrow   ?o
-        :face     'consult-buffer
-        :history  'buffer-name-history
-        :state    #'consult--buffer-state
-        :require-match t
-        :items
-        (lambda ()
-          (mapcar #'buffer-name
-                  (seq-filter
-                   (lambda (x)
-                     (eq (buffer-local-value 'major-mode x) 'eaf-mode))
-                   (persp-buffer-list))))))
 
 (defvar my-consult--terminal-source
   (list :name     "Terminal"
@@ -261,25 +157,18 @@
                    (lambda (x)
                      (and
                       (not (eq (buffer-local-value 'major-mode x) 'vterm-mode))
-                      (not (eq (buffer-local-value 'major-mode x) 'eaf-mode))
                       (not (eq (buffer-local-value 'major-mode x) 'dired-mode))
                       (or (not (boundp 'minimap-buffer-name))
                           (not (string= (buffer-name x) minimap-buffer-name)))))
                    (persp-buffer-list))))))
 
 (after! consult
-  (add-to-list 'consult-buffer-sources 'my-consult--eaf-source 'append)
   (add-to-list 'consult-buffer-sources 'my-consult--terminal-source 'append)
   (add-to-list 'consult-buffer-sources 'my-consult--workspace-source 'append)
   (add-to-list 'consult-buffer-sources 'my-consult--dired-source 'append)
   )
 
 (require 'consult)
-(defun my-consult-browser ()
-  "Open eaf-browser."
-  (interactive)
-  (consult-buffer '(my-consult--eaf-source)))
-
 (defun my-consult-terminal ()
   "Open terminal."
   (interactive)
@@ -290,20 +179,13 @@
 Shows terminal in seperate section. Also shows browsers."
   (interactive)
   (consult--multi
-   '(my-consult--dired-source my-consult--terminal-source my-consult--workspace-source my-consult--eaf-source )
+   '(my-consult--dired-source my-consult--terminal-source my-consult--workspace-source)
    :require-match
    (confirm-nonexistent-file-or-buffer)
    :prompt (format "Switch to buffer (%s): "
                    (+workspace-current-name))
    :history 'consult--buffer-history
    :sort nil))
-
-
-(use-package! sidekick
-  :hook (sidekick-mode . (lambda () (require 'sidekick-evil)))
-  :config
-  (setq sidekick-window-hide-footer t)
-  (setq sidekick-window-take-focus t))
 
 (add-hook! 'Man-mode-hook 'my-add-buffer-to-project)
 
@@ -323,8 +205,6 @@ Shows terminal in seperate section. Also shows browsers."
 (persist-defvar my-ssh-host-history nil
                 "History for ssh host.")
 
-(persist-defvar my-google-search-history nil
-                "History for google search.")
 (add-hook! 'my-new-frame-hook
            '(lambda ()
               (dolist (x persist--symbols)
@@ -372,6 +252,7 @@ Shows terminal in seperate section. Also shows browsers."
     "," 'dired-posframe-show
     "s" 'my-dired-posframe-scroll-down
     "w" 'my-dired-posframe-scroll-up
+    "e" 'lsp-dired-mode
     ))
 
 (defun dired-count-files-total ()
@@ -425,7 +306,6 @@ Shows terminal in seperate section. Also shows browsers."
   "Add current buffer to current project."
   (interactive)
   (persp-add-buffer (current-buffer)))
-
 
 (add-hook! 'daemons-mode-hook 'my-add-buffer-to-project)
 (add-hook! 'daemons-output-mode-hook 'my-add-buffer-to-project)
@@ -565,24 +445,12 @@ RESPONSIVE and DISPLAY are ignored."
   (interactive `(,(read-string "Man: " nil)))
   (man page))
 
-
 (after! web-mode
   (defun +web/indent-or-yas-or-emmet-expand ()
     "Just run (+copilot/tab)"
     (interactive)
     (+copilot/tab)
     ))
-
-
-(defun my-setup-tcp-server ()
-  (interactive)
-  (setq   server-use-tcp t
-          server-host "127.0.0.1"
-          server-port 6666
-          server-auth-dir "~/.emacs.d/server"
-          server-auth-key "1234"
-          )
-  )
 
 (defun my-chmod-this-file ( mode )
   (interactive `(,(read-string "File Mode: " nil)))
@@ -810,5 +678,14 @@ RESPONSIVE and DISPLAY are ignored."
   (man-posframe-width  100)
   (man-posframe-height  30)
   )
-(setq input-string "Hello world! This is a test.")
-(setq split-list (split-string input-string " "))
+
+(add-hook 'post-command-hook (lambda ()(setq evil-ex-history nil)))
+
+
+(setq minimap-width-fraction  0.03)
+;; (setq minimap-always-recenter nil)
+(setq minimap-minimum-width 10)
+(setq minimap-update-delay 0.2)
+(load! "my-packages/minimap-switch-mode.el")
+(add-hook! 'my-new-gui-frame-hook
+           (minimap-switch-mode 1))
