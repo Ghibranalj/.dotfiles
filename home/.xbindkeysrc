@@ -164,3 +164,11 @@
 "$HOME/.bin/volume mute"
     m:0x0 + c:121
     XF86AudioMute
+
+"missioncenter"
+    m:0x5 + c:9
+    Control+Shift + Escape
+
+"nautilus"
+    m:0x40 + c:26
+    Mod4 + e

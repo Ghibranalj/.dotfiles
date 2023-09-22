@@ -78,7 +78,7 @@ function nav() {
             git branch | grep '^\*' | cut -d' ' -f2
         ))"
 
-        d="$(echo $dirlist | tr ' ' '\n' | fzf --no-sort --preview="exa -g --icons --group-directories-first $dir/{}" --prompt="Search $branch: " --no-info)"
+        d="$(echo $dirlist | tr ' ' '\n' | fzf --no-sort --preview="exa -G --color=always --icons --group-directories-first $dir/{}" --prompt="Search $branch: " --no-info)"
         extc=$?
         dir=$dir/$d
         unset dirlist list header flist branch
@@ -141,7 +141,7 @@ function mkcdir() {
 }
 
 if command -v exa &>/dev/null; then
-    alias ls='exa -g --icons'
+    alias ls='exa -g --icons --color=always'
     alias ll='ls -alhF --git'
 else
     alias ls='ls --color=auto'
@@ -198,9 +198,9 @@ function dd-iso() {
     sudo dd bs=4M if=$1 of=$2 conv=fsync oflag=direct status=progress
 }
 
-function gitp() {
-    git push origin $(git branch --show-current)
-}
+alias gitpush='git push origin $(git branch --show-current)'
+alias gitc='git commit -m'
+alias gitpull='git pull origin $(git branch --show-current)'
 
 # Emacs aliases
 alias emacst='emacsclient -c -t -s term'
