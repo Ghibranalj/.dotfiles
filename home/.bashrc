@@ -295,3 +295,8 @@ esac
 alias update-system="yay -Syy archlinux-keyring && yay"
 
 alias nano='nvim'
+
+function genpass() {
+    digit=$1
+    openssl rand -base64 $digit | tr -d '\n'
+}
