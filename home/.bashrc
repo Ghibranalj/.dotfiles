@@ -216,17 +216,12 @@ alias dbg-emacs='emacs-server --debug-init --fg-daemon=debug'
 alias kill-emacs="emacsclient -e  '(kill-emacs) || killall emacs'"
 
 function code() {
-    s="server"
-    # user term if ssh
-    if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-        s="term"
-    fi
 
     local e=$(emacsclient -n -e -s server "(> (length (frame-list)) 1)")
     if [ "$e" = "t" ]; then
-        emacsclient -n -s $s -a "" "$@"
+        emacsclient -n -s server -a "" "$@"
     else
-        emacsclient -c -s $s -n -a "" "$@"
+        emacsclient -c -s server -n -a "" "$@"
     fi
 }
 
