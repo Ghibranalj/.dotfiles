@@ -6,7 +6,7 @@
 (setq doom-theme 'doom-material-dark)
 (setq doom-font (font-spec
                  :family "Source Code Pro"
-                 :size 15))
+                 :size 18))
 
 (setq doom-variable-pitch-font (font-spec
                                 :family "Source Code Pro"
@@ -688,4 +688,5 @@ RESPONSIVE and DISPLAY are ignored."
 (setq minimap-update-delay 0.2)
 (load! "my-packages/minimap-switch-mode.el")
 (add-hook! 'my-new-gui-frame-hook
-           (minimap-switch-mode 1))
+           (unless (string= (system-name) "CreeprDell")
+             (minimap-switch-mode 1)))
