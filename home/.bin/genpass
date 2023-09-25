@@ -1,0 +1,94 @@
+#!/bin/bash
+
+# Default values for character sets
+lowercase="abcdefghijklmnopqrstuvwxyz"
+uppercase="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+numbers="0123456789"
+symbols='!@#$%^&*()_-+=<>?/[]{}|'
+
+# Function to generate a random character from a given character set
+random_char() {
+  local characters="$1"
+  local length=${#characters}
+  local index=$((RANDOM % length))
+  echo -n "${characters:index:1}"
+}
+
+# Function to generate a random string of a specified length
+generate_random_string() {
+  local length="$1"
+  local result=""
+
+  # Combine character sets
+  all_chars=""
+
+  if [ "$include_lowercase" -eq 1 ]; then
+    all_chars="${all_chars}${lowercase}"
+  fi
+
+  if [ "$include_uppercase" -eq 1 ]; then
+    all_chars="${all_chars}${uppercase}"
+  fi
+
+  if [ "$include_numbers" -eq 1 ]; then
+    all_chars="${all_chars}${numbers}"
+  fi
+
+  if [ "$include_symbols" -eq 1 ]; then
+    all_chars="${all_chars}${symbols}"
+  fi
+
+  if [ -z "$all_chars" ]; then
+    echo "Error: No character sets selected. Use at least one of -l, -u, -n, or -s."
+    exit 1
+  fi
+
+  # Generate random string
+  for ((i = 0; i < length; i++)); do
+    result="${result}$(random_char "$all_chars")"
+  done
+
+  echo "$result"
+}
+
+# Initialize flags
+include_lowercase=1
+include_uppercase=1
+include_numbers=1
+include_symbols=1
+
+# Parse command-line options
+while getopts "luns" opt; do
+  case "$opt" in
+    l) include_lowercase=0 ;;
+    u) include_uppercase=0 ;;
+    n) include_numbers=0 ;;
+    s) include_symbols=0 ;;
+    \?) echo "Usage: $0 [-l] [-u] [-n] [-s] <length>"
+        echo "  -l: Exclude lowercase letters"
+        echo "  -u: Exclude uppercase letters"
+        echo "  -n: Exclude numbers"
+        echo "  -s: Exclude symbols"
+        exit 1
+        ;;
+  esac
+done
+
+# Shift to process the remaining arguments (length)
+shift "$((OPTIND-1))"
+
+# Check if an argument is provided
+if [ $# -eq 1 ]; then
+  length="$1"
+  if [[ $length =~ ^[0-9]+$ ]]; then
+    random_string=$(generate_random_string "$length")
+    echo "$random_string"
+  else
+    echo "Error: Argument must be a positive integer."
+    exit 1
+  fi
+else
+  echo "Usage: $0 [-l] [-u] [-n] [-s] <length>"
+  echo "Generate a random string with specified character sets and length."
+  exit 1
+fi
