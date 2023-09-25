@@ -9,7 +9,6 @@ exec:
 
 conf:
 	sudo cp --force configs/bluetooth/* /etc/bluetooth/
-
 	sudo cp --force configs/faillock/* /etc/security/
 
 stow:

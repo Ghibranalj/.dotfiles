@@ -6,7 +6,7 @@
 (setq doom-theme 'doom-material-dark)
 (setq doom-font (font-spec
                  :family "Source Code Pro"
-                 :size 18))
+                 :size 15))
 
 (setq doom-variable-pitch-font (font-spec
                                 :family "Source Code Pro"
