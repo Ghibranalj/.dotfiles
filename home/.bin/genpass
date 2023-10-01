@@ -10,10 +10,17 @@ symbols='!@#$%^&*()_-+=<>?/[]{}|'
 random_char() {
   local characters="$1"
   local length=${#characters}
-  local index=$((RANDOM % length))
+  local random_byte
+  local index
+
+  # Generate a random byte from /dev/urandom
+  random_byte=$(od -An -N5 -i /dev/urandom | awk '{print $1}')
+
+  # Map the random byte to the desired character set
+  index=$((random_byte % length))
+
   echo -n "${characters:index:1}"
 }
-
 # Function to generate a random string of a specified length
 generate_random_string() {
   local length="$1"

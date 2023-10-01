@@ -169,6 +169,6 @@
     m:0x5 + c:9
     Control+Shift + Escape
 
-"nautilus"
+"nautilus -w"
     m:0x40 + c:26
     Mod4 + e

@@ -101,7 +101,7 @@
            :files ("*.el")
            :branch "master"))
 
-;; (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
+(package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
 (package! smudge)
 (package! pcap-mode
   :recipe (
@@ -113,9 +113,6 @@
 ;; (package! tsi :recipe (:host github :repo "orzechowskid/tsi.el" :branch "main"))
 ;; (package! coverlay)
 ;; (package! origami)
-;; (package! tsx-mode :recipe (:host github :repo "orzechowskid/tsx-mode.el"))
-
-
 ;; (package! rjsx-mode)
 (package! blamer)
 
@@ -129,3 +126,5 @@
 
 (package! prisma-mode
   :recipe (:host github :repo "pimeys/emacs-prisma-mode" :branch "main"))
+
+(package! pnpm-mode)

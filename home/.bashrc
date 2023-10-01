@@ -282,8 +282,10 @@ fi
 # generate non-broadcasting mac address
 alias genmac='openssl rand -hex 6 | sed "s/\(..\)/\1:/g; s/.$//" | sed "s/ff/fe/"'
 
-# alias npm="pnpm"
-# alias npx="pnpx"
+if command -v pnpm &>/dev/null; then
+    alias npm='pnpm'
+    alias npx='pnpx'
+fi
 
 # pnpm
 export PNPM_HOME="/home/gibi/.local/share/pnpm"
