@@ -470,6 +470,7 @@ RESPONSIVE and DISPLAY are ignored."
                                     (add-to-list 'projectile-globally-ignored-directories "CMakeFiles")
                                     (add-to-list 'projectile-globally-ignored-directories "build")
                                     (add-to-list 'projectile-globally-ignored-directories "^.*vendor.*$")
+                                    (add-to-list 'projectile-globally-ignored-directories "web-legacy")
                                     ))
 
 (defun my-dap-debug-last()
@@ -688,5 +689,18 @@ RESPONSIVE and DISPLAY are ignored."
 (setq minimap-update-delay 0.2)
 (load! "my-packages/minimap-switch-mode.el")
 (add-hook! 'my-new-gui-frame-hook
-           (unless (string= (system-name) "CreeprDell")
-             (minimap-switch-mode 1)))
+  (unless (string= (system-name) "CreeprDell")
+    (minimap-switch-mode 1)))
+
+;; FIX for C and C++ window navigation
+(defun ccls-navigate (DIRECTION)
+  (cond
+   ((string= DIRECTION "D")
+    (evil-window-right 1))
+   ((string= DIRECTION "L")
+    (evil-window-down 1))
+   ((string= DIRECTION "R")
+    (evil-window-up 1))
+   ((string= DIRECTION "U")
+    (evil-window-left 1))
+   ))          

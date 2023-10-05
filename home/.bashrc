@@ -295,7 +295,7 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-alias update-system="yay -Syy archlinux-keyring && yay"
+alias update-system="yay -Syy archlinux-keyring && yay --sudoloop"
 
 alias nano='nvim'
 
