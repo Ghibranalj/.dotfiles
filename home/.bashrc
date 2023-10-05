@@ -121,7 +121,7 @@ function fix-keybind() {
 }
 
 function clip() {
-    xclip -sel c <$1
+    echo $1 | xclip -sel c
 }
 
 function generate-ssh-github() {
@@ -299,3 +299,11 @@ alias update-system="yay -Syy archlinux-keyring && yay --sudoloop"
 
 alias nano='nvim'
 
+function genpass() {
+    local cmd
+    [[ -f '/usr/bin/genpass' ]] && cmd='/usr/bin/genpass' || cmd="$HOME/.bin/genpass"
+    local val
+    val=$($cmd $@)
+    clip "$val"
+    echo "$val"
+}
