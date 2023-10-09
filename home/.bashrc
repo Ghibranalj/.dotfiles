@@ -307,3 +307,8 @@ function genpass() {
     clip "$val"
     echo "$val"
 }
+
+if command -v qmv &>/dev/null; then
+    alias qmv='qmv -f do '.mk
+fi
+
