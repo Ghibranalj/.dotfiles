@@ -312,3 +312,16 @@ if command -v qmv &>/dev/null; then
     alias qmv='qmv -f do '.mk
 fi
 
+
+export PROJECT_DIR="$HOME/Workspace"
+function makeproject(){
+
+    if [ $# -eq 0 ]; then
+        echo "err: No arguments"
+        return 254
+    fi
+
+    mkdir -p $PROJECT_DIR/$1
+    cd $PROJECT_DIR/$1
+    git init .
+}
