@@ -14,6 +14,11 @@
  :n "C-j" #'evil-window-down
  :n "C-k" #'evil-window-up
  :n "C-l" #'evil-window-right
+
+ :n "C-<up>" #'evil-window-increase-height
+ :n "C-<down>" #'evil-window-decrease-height
+ :n "C-<left>" #'evil-window-decrease-width
+ :n "C-<right>" #'evil-window-increase-width
  ;; split window
  :leader
  :desc "Switch buffer in workspace" "," #'my-consult-workspace

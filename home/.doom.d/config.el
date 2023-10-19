@@ -687,10 +687,10 @@ RESPONSIVE and DISPLAY are ignored."
 ;; (setq minimap-always-recenter nil)
 (setq minimap-minimum-width 10)
 (setq minimap-update-delay 0.2)
-(load! "my-packages/minimap-switch-mode.el")
-(add-hook! 'my-new-gui-frame-hook
-  (unless (string= (system-name) "CreeprDell")
-    (minimap-switch-mode 1)))
+;; (load! "my-packages/minimap-switch-mode.el")
+;; (add-hook! 'my-new-gui-frame-hook
+;;   (unless (string= (system-name) "CreeprDell")
+;;     (minimap-switch-mode 1)))
 
 ;; FIX for C and C++ window navigation
 (defun ccls-navigate (DIRECTION)
