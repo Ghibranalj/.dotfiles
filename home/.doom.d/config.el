@@ -56,8 +56,11 @@
 (defun +copilot/tab ()
   "Copilot completion."
   (interactive)
-  (or (copilot-accept-completion)
-      (indent-relative)))
+  (or
+   (copilot-accept-completion)
+   (if (emmet-mode)
+       (emmet-expand-line nil))
+   (indent-relative)))
 
 (use-package! copilot
   :hook (prog-mode . copilot-mode)
@@ -683,15 +686,6 @@ RESPONSIVE and DISPLAY are ignored."
 
 (add-hook 'post-command-hook (lambda ()(setq evil-ex-history nil)))
 
-;; (setq minimap-width-fraction  0.03)
-;; ;; (setq minimap-always-recenter nil)
-;; (setq minimap-minimum-width 10)
-;; (setq minimap-update-delay 0.2)
-;; (load! "my-packages/minimap-switch-mode.el")
-;; (add-hook! 'my-new-gui-frame-hook
-;;   (unless (string= (system-name) "CreeprDell")
-;;     (minimap-switch-mode 1)))
-
 ;; FIX for C and C++ window navigation
 (defun ccls-navigate (DIRECTION)
   (cond
@@ -703,4 +697,6 @@ RESPONSIVE and DISPLAY are ignored."
     (evil-window-down 1))
    ((string= DIRECTION "U")
     (evil-window-left 1))
-   ))          
+   ))
+
+(setq enable-local-variables :safe)
