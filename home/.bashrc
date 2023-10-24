@@ -309,9 +309,14 @@ function genpass() {
 }
 
 if command -v qmv &>/dev/null; then
-    alias qmv='qmv -f do '.mk
+    alias qmv='qmv -f do '
 fi
 
+function addprj(){
+    local d=$1
+    [ -z "$d" ] && d=$(pwd)
+    emacsclient -e "(projectile-add-known-project \"$d\" )" &>/dev/null
+}
 
 export PROJECT_DIR="$HOME/Workspace"
 function makeproject(){
@@ -324,4 +329,23 @@ function makeproject(){
     mkdir -p $PROJECT_DIR/$1
     cd $PROJECT_DIR/$1
     git init .
+    cd -
+    addprj "$PROJECT_DIR/$1"
 }
+
+shell() {
+    CMD="$@"
+    while read -p "${CMD}> " -re cmd; do
+        case "$cmd" in
+            "") continue ;;
+            exit) break ;;
+            quit) break ;;
+            *)
+                echo "+ ${CMD} ${cmd}"
+                ${CMD} ${cmd}
+                ;;
+        esac
+    done
+}
+
+alias serveweb='python3 -m http.server 8000'
