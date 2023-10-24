@@ -449,8 +449,8 @@ RESPONSIVE and DISPLAY are ignored."
   (defun +web/indent-or-yas-or-emmet-expand ()
     "decide if copilot, yas or emmet should expand."
     (interactive)
-    (or (copilot-accept-completion)
-        (emmet-expand-line nil)
+    (or (emmet-expand-line nil)
+        (copilot-accept-completion)
         (indent-relative))))
 
 (defun my-chmod-this-file ( mode )
