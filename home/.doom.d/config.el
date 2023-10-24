@@ -58,7 +58,7 @@
   (interactive)
   (or
    (copilot-accept-completion)
-   (if (emmet-mode)
+   (if (bound-and-true-p emmet-mode)
        (emmet-expand-line nil))
    (indent-relative)))
 
