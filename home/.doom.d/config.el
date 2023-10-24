@@ -6,15 +6,15 @@
 (setq doom-theme 'doom-material-dark)
 (setq doom-font (font-spec
                  :family "Source Code Pro"
-                 :size 15))
+                 :size 14))
 
 (setq doom-variable-pitch-font (font-spec
                                 :family "Source Code Pro"
-                                :size 15))
+                                :size 14))
 
 (setq doom-big-font (font-spec
                      :family "Source Code Pro"
-                     :size 22))
+                     :size 20))
 
 (setq doom-bin "doom")
 
@@ -683,10 +683,10 @@ RESPONSIVE and DISPLAY are ignored."
 (add-hook 'post-command-hook (lambda ()(setq evil-ex-history nil)))
 
 
-(setq minimap-width-fraction  0.03)
-;; (setq minimap-always-recenter nil)
-(setq minimap-minimum-width 10)
-(setq minimap-update-delay 0.2)
+;; (setq minimap-width-fraction  0.03)
+;; ;; (setq minimap-always-recenter nil)
+;; (setq minimap-minimum-width 10)
+;; (setq minimap-update-delay 0.2)
 ;; (load! "my-packages/minimap-switch-mode.el")
 ;; (add-hook! 'my-new-gui-frame-hook
 ;;   (unless (string= (system-name) "CreeprDell")
