@@ -57,9 +57,9 @@
   "Copilot completion."
   (interactive)
   (or
-   (copilot-accept-completion)
    (if (bound-and-true-p emmet-mode)
        (emmet-expand-line nil))
+   (copilot-accept-completion)
    (indent-relative)))
 
 (use-package! copilot
