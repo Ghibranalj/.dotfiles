@@ -654,7 +654,7 @@ RESPONSIVE and DISPLAY are ignored."
 
 (defun my-create-directory (directory)
   "Create a directory recursively using mkdir -p."
-  (interactive "sCreate directory: ")
+  (interactive (list (read-string "Create directory: ")))
   (let ((full-directory (if (file-name-absolute-p directory)
                             directory
                           (expand-file-name directory default-directory))))
@@ -681,7 +681,6 @@ RESPONSIVE and DISPLAY are ignored."
   )
 
 (add-hook 'post-command-hook (lambda ()(setq evil-ex-history nil)))
-
 
 ;; (setq minimap-width-fraction  0.03)
 ;; ;; (setq minimap-always-recenter nil)
