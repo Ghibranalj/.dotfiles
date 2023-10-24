@@ -447,10 +447,11 @@ RESPONSIVE and DISPLAY are ignored."
 
 (after! web-mode
   (defun +web/indent-or-yas-or-emmet-expand ()
-    "Just run (+copilot/tab)"
+    "decide if copilot, yas or emmet should expand."
     (interactive)
-    (+copilot/tab)
-    ))
+    (or (copilot-accept-completion)
+        (emmet-expand-line nil)
+        (indent-relative))))
 
 (defun my-chmod-this-file ( mode )
   (interactive `(,(read-string "File Mode: " nil)))
