@@ -541,7 +541,7 @@ RESPONSIVE and DISPLAY are ignored."
         '((left-fringe . 20)
           (right-fringe . 20)
           ))
-  (setq vertico-posframe-width 90)
+  (setq vertico-posframe-width 100)
   (setq vertico-posframe-poshandler 'my-poshandler)
   )
 (add-hook! 'my-new-gui-frame-hook 'vertico-posframe-mode)

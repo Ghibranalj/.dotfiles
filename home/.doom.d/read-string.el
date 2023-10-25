@@ -29,6 +29,9 @@
   (completing-read PROMPT (symbol-value HISTORY) nil nil INITIAL-INPUT HISTORY DEFAULT-VALUE INHERIT-INPUT-METHOD)
   )
 
+(defun my-read-from-minibuffer (prompt &optional initial keymap read history default inherit-input-method)
+       (read-string prompt initial history default inherit-input-method keymap))
+
 (evil-define-command evil-ex (&optional initial-input)
   :keep-visual t
   :repeat abort
@@ -44,48 +47,42 @@
                (let ((arg (prefix-numeric-value current-prefix-arg)))
                  (cond ((< arg 0) (setq arg (1+ arg)))
                        ((> arg 0) (setq arg (1- arg))))
-                 (if (= arg 0) "."
-                   (format ".,.%+d" arg)))))
+                 (if (= arg 0) "." (format ".,.%+d" arg)))))
              evil-ex-initial-input)))
-     (list (when (> (length s) 0) s))))
-
-  (let ((evil-ex-current-buffer (current-buffer))
-        (evil-ex-previous-command (unless initial-input
-                                    (car evil-ex-history)))
-        evil-ex-argument-handler result)
+     (list (unless (string= s "") s))))
+  (let ((buffer (current-buffer))
+        (previous-command (when evil-want-empty-ex-last-command
+                            (car evil-ex-history)))
+        s evil--ex-expression evil--ex-cmd evil--ex-argument-handler)
     (minibuffer-with-setup-hook
         (lambda ()
+          (setq-local evil-ex-original-buffer buffer)
           (evil-ex-setup)
-          (when initial-input (evil-ex-update)))
-      (setq result
-            (read-string
-             ":" ;; prompt
-             (or initial-input
-                 (and evil-ex-previous-command
-                      evil-want-empty-ex-last-command
-                      (propertize evil-ex-previous-command 'face 'shadow))) ;; initial-input
-             'evil-ex-history ;; hist
-             (when evil-want-empty-ex-last-command evil-ex-previous-command) ;; def
-             t
-             evil-ex-completion-map
-             ))) ;; inherit-input-method
-    (evil-ex-execute result)))
+          (if initial-input (evil--ex-update)
+            (when previous-command
+              (add-hook 'pre-command-hook #'evil-ex-remove-default nil t))))
+      (setq s (my-read-from-minibuffer
+               ":"
+               (or initial-input
+                   (and previous-command (propertize previous-command 'face 'shadow)))
+               evil-ex-completion-map nil 'evil-ex-history nil t)))
+    (if evil--ex-expression
+        (eval evil--ex-expression t)
+      (when (string= s "") (setq s previous-command))
+      (unless (= (length s) 0) (evil-ex-execute s)))))
 
-(defun magit-read-string (prompt &optional initial-input history default-value
-                                 inherit-input-method no-whitespace)
+(defun magit-read-string ( prompt &optional initial-input history default-value
+                           inherit-input-method no-whitespace)
   (when default-value
     (when (consp default-value)
       (setq default-value (car default-value)))
     (unless (stringp default-value)
       (setq default-value nil)))
   (let* ((minibuffer-completion-table nil)
-         (val (read-string
-               (magit-prompt-with-default (concat prompt ": ") default-value) ;; prompt
-               initial-input ;; initial
-               history ;; history
-               default-value ;; default
-               inherit-input-method ;; inherit-input-method
-               ))
+         (val (my-read-from-minibuffer
+               (magit-prompt-with-default (concat prompt ": ") default-value)
+               initial-input (and no-whitespace magit-minibuffer-local-ns-map)
+               nil history default-value inherit-input-method))
          (trim (lambda (regexp string)
                  (save-match-data
                    (if (string-match regexp string)
