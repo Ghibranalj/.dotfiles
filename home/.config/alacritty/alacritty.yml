@@ -46,7 +46,7 @@ font:
 
     italic: { family: Source Code Pro, style: Italic },
 
-    size: 10,
+g    size: 7,
 
     offset: { x: 0, y: 1 },
   }

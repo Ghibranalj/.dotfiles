@@ -280,6 +280,7 @@ Shows terminal in seperate section. Also shows browsers."
   (require 'ivy)
   (require 'ivy-posframe)
   (setq ivy-posframe-border-width 2)
+  (setq ivy-posframe-width 10)
   (set-face-attribute 'ivy-posframe-border nil :background "#585858")
   (set-face-attribute 'ivy-posframe nil :background "#212121" :foreground "#EEFFFF")
   (define-key ivy-minibuffer-map (kbd "<escape>") 'minibuffer-keyboard-quit)
@@ -446,6 +447,10 @@ RESPONSIVE and DISPLAY are ignored."
 
 (defun my-open-man (page)
   (interactive `(,(read-string "Man: " nil)))
+  (man-posframe-show page))
+
+(defun my-open-man-here (page)
+  (interactive `(,(read-string "Man: " nil)))
   (man page))
 
 (after! web-mode
@@ -526,18 +531,17 @@ RESPONSIVE and DISPLAY are ignored."
   ;; (cons x y)
   (cons
    (/ (- (plist-get info :parent-frame-width) (plist-get info :posframe-width)) 2) ;x
-   25 ; y
+   150
    )
   )
-
 (use-package! vertico-posframe
   :after vertico
   :config
   (setq vertico-posframe-parameters
-        '((left-fringe . 10)
-          (right-fringe . 10)
+        '((left-fringe . 20)
+          (right-fringe . 20)
           ))
-  (setq vertico-posframe-width 110)
+  (setq vertico-posframe-width 90)
   (setq vertico-posframe-poshandler 'my-poshandler)
   )
 (add-hook! 'my-new-gui-frame-hook 'vertico-posframe-mode)
@@ -679,10 +683,12 @@ RESPONSIVE and DISPLAY are ignored."
 (evil-ex-define-cmd "mkdir" 'my-evil-mkdir)
 
 (use-package! man-posframe
+  :ensure t
   :custom
   (man-posframe-width  100)
-  (man-posframe-height  30)
+  (man-posframe-height  50)
   )
+(man-posframe-show)
 
 (add-hook 'post-command-hook (lambda ()(setq evil-ex-history nil)))
 

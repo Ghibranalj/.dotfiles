@@ -1,9 +1,11 @@
 ;;; evil-megasave-mode.el -*- lexical-binding: t; -*-
+(require 'evil)
+
 (defun evil-megasave--save-when-has-file ()
   (when (buffer-file-name)
     (save-buffer)))
 
-(defun evil-megasave--save-unless-insert (&rest args)
+(defun evil-megasave--save-unless-insert (&rest _)
   (unless (or (evil-insert-state-p) (evil-replace-state-p) (evil-emacs-state-p))
     (evil-megasave--save-when-has-file)))
 
@@ -38,16 +40,17 @@ Also saves when you exit evil-insert-state or evil-replace-state."
         (add-hook 'evil-insert-state-exit-hook 'evil-megasave--save-when-has-file nil t)
         (add-hook 'evil-emacs-state-exit-hook 'evil-megasave--save-when-has-file nil t)
         (dolist (func evil-megasave--functions-to-hook)
-          (advice-add func :after 'evil-megasave--save-unless-insert))
-
-        )
+          (advice-add func :after 'evil-megasave--save-unless-insert)))
     (progn
       (remove-hook 'evil-insert-state-exit-hook 'evil-megasave--save-when-has-file t)
       (remove-hook 'evil-emacs-state-exit-hook 'evil-megasave--save-when-has-file t)
       (dolist (func evil-megasave--functions-to-hook)
-        (advice-remove func 'evil-megasave--save-unless-insert))
-      ))
-  )
+        (advice-remove func 'evil-megasave--save-unless-insert)))))
+
+(defun evil-megasave-add-function-to-hook (func)
+  (add-to-list 'evil-megasave--functions-to-hook func)
+  (if evil-megasave-mode
+    (advice-add func :after 'evil-megasave--save-unless-insert)))
 
 (provide 'evil-megasave-mode)
 ;;; evil-megasave-mode.el ends here

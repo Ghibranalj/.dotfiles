@@ -290,8 +290,8 @@ fi
 # pnpm
 export PNPM_HOME="/home/gibi/.local/share/pnpm"
 case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
+    *":$PNPM_HOME:"*) ;;
+    *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
 
@@ -312,14 +312,14 @@ if command -v qmv &>/dev/null; then
     alias qmv='qmv -f do '
 fi
 
-function addprj(){
+function addprj() {
     local d=$1
     [ -z "$d" ] && d=$(pwd)
     emacsclient -e "(projectile-add-known-project \"$d\" )" &>/dev/null
 }
 
 export PROJECT_DIR="$HOME/Workspace"
-function makeproject(){
+function makeproject() {
 
     if [ $# -eq 0 ]; then
         echo "err: No arguments"

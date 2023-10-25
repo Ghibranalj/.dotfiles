@@ -22,11 +22,9 @@
 (add-hook! 'minibuffer-exit-hook  'my-revert-vertico-posframe)
 
 (defun read-string ( PROMPT &optional INITIAL-INPUT HISTORY DEFAULT-VALUE INHERIT-INPUT-METHOD KEYMAP)
-
-
   (setq vertico-posframe-height 1)
+  (setq vertico-posframe-width 40)
   (setq vertico-count-format  (cons "%-0s" ""))
-
   (advice-add 'vertico-insert :before 'my-vertico-insert-tab)
   (completing-read PROMPT (symbol-value HISTORY) nil nil INITIAL-INPUT HISTORY DEFAULT-VALUE INHERIT-INPUT-METHOD)
   )
