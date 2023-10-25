@@ -555,9 +555,9 @@ RESPONSIVE and DISPLAY are ignored."
 
 (add-hook! 'my-new-gui-frame-hook 'which-key-posframe-mode)
 
+(load! "my-packages/read-string-posframe.el" doom-user-dir)
 (defun my-load-read-string()
-  (load! "read-string.el" doom-user-dir)
-  )
+  (read-string-posframe-mode 1))
 
 (add-hook! 'my-new-gui-frame-hook 'my-load-read-string)
 
