@@ -1,3 +1,9 @@
+;:; -*- lexical-binding: t; -*-
+
+(require 'vertico-posframe)
+(require 'evil)
+(require 'magit)
+
 (defgroup read-string-posframe nil
   "show readstring, evil ex and magit read string in posframe."
   :group 'convenience)
@@ -51,3 +57,4 @@
         (advice-remove 'read-string #'+my-read-string))))
 
 (provide 'read-string-posframe-mode)
+;;; read-string-posframe-mode.el ends here
