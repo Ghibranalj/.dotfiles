@@ -528,12 +528,12 @@ RESPONSIVE and DISPLAY are ignored."
 
 
 (defun my-poshandler (info)
-  ;; (cons x y)
   (cons
    (/ (- (plist-get info :parent-frame-width) (plist-get info :posframe-width)) 2) ;x
-   150
+   (/ (plist-get info :parent-frame-height) 5) ;y
    )
   )
+
 (use-package! vertico-posframe
   :after vertico
   :config
@@ -687,10 +687,11 @@ RESPONSIVE and DISPLAY are ignored."
   :custom
   (man-posframe-width  100)
   (man-posframe-height  50)
+  (man-posframe-parameters
+   '((left-fringe . 10)
+     (right-fringe . 10)
+     ))
   )
-(man-posframe-show)
-
-(add-hook 'post-command-hook (lambda ()(setq evil-ex-history nil)))
 
 ;; FIX for C and C++ window navigation
 (defun ccls-navigate (DIRECTION)

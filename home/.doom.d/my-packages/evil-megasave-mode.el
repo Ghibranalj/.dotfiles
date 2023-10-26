@@ -38,6 +38,10 @@
   "Functions to hook when `evil-megasave-mode' is enabled."
   :type '(repeat function)
   :group 'evil-megasave
+  :set (lambda (symbol value)
+         (set-default symbol value)
+         (dolist (func value)
+           (evil-megasave-add-function-to-hook func)))
   )
 
 ;;;###autoload
