@@ -36,7 +36,11 @@
     (progn
       (dolist (fun minimap-switch--functions-to-advise)
         (advice-remove fun #'minimap-switch--swap))
-      (minimap-mode 0)
-      )))
+      (minimap-mode -1)
+      (delete-window (get-buffer-window (get-buffer minimap-buffer-name)))
+      (kill-buffer (get-buffer minimap-buffer-name)))))
+
+
+
 
 (provide 'minimap-switch-mode)
