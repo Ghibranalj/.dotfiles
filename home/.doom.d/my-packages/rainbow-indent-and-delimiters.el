@@ -39,7 +39,6 @@
 (defun rainbow-indent-and-delimiters--highlight-function (level responsive display)
   "Highlight the current line with a face according to LEVEL.
 RESPONSIVE and DISPLAY are ignored."
-  (message "highlighting")
   (let* ((lvl (% level 6)))
     (cond
      ((eq lvl 0) 'rainbow-indent-and-delimeters-face1)

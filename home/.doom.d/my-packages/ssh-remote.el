@@ -13,13 +13,10 @@
   "Read a string from the minibuffer with PROMPT. History is stored in HIST."
   (let* ((height (+ (length hist) 1))
          (prev-height vertico-posframe-height)
-         (prev (if (car hist)
-                   (car hist)
-                 ""))
          (result (unwind-protect
                      (progn
                        (setq vertico-posframe-height height)
-                       (completing-read prompt hist nil nil (propertize prev 'face 'shadow )))
+                       (completing-read prompt hist nil nil))
                    (setq vertico-posframe-height prev-height))))
     result))
 

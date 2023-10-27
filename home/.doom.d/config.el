@@ -306,10 +306,6 @@ Shows terminal in seperate section. Also shows browsers."
       (+workspace/delete workspace))))
 
 
-(use-package 'rainbow-indent-and-delimeters
-  :config
-  (rainbow-indent-and-delimiters-mode 1))
-
 (define-generic-mode 'xmodmap-mode
   '(?!)
   '("add" "clear" "keycode" "keysym" "pointer" "remove")
@@ -460,3 +456,5 @@ Shows terminal in seperate section. Also shows browsers."
 (use-package! read-string-posframe
   :hook
   (my-new-gui-frame . read-string-posframe-mode))
+
+(rainbow-indent-and-delimiters-mode 1)
