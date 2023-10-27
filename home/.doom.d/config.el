@@ -457,4 +457,11 @@ Shows terminal in seperate section. Also shows browsers."
   :hook
   (my-new-gui-frame . read-string-posframe-mode))
 
+(use-package! which-key-posframe
+  :custom
+  (which-key-posframe-poshandler 'my-poshandler)
+  (which-key)
+  :hook
+  (my-new-gui-frame . which-key-posframe-mode))
+
 (rainbow-indent-and-delimiters-mode 1)

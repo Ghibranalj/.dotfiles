@@ -65,7 +65,6 @@
   )
 
  (:prefix-map ("s" . "search")
-  :desc "find file in current directory" "f" #'my-find-file-in-directory
   :desc "Search and replace in project" "r" #'projectile-replace-regexp
   )
 
