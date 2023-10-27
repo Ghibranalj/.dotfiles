@@ -317,10 +317,8 @@ Shows terminal in seperate section. Also shows browsers."
 
 (use-package! cc-mode
   :hook
-  (c-mode . (lambda ()(c-toggle-comment-style -1)))
-  :config
-  ;; fix CCLS window navigation
-  (defun ccls-navigate (DIRECTION)
+  (c-mode . (lambda ()(c-toggle-comment-style -1))))
+(defun ccls-navigate (DIRECTION)
     (cond
      ((string= DIRECTION "D")
       (evil-window-right 1))
@@ -329,7 +327,7 @@ Shows terminal in seperate section. Also shows browsers."
      ((string= DIRECTION "R")
       (evil-window-down 1))
      ((string= DIRECTION "U")
-      (evil-window-left 1)))))
+      (evil-window-left 1))))
 
 (defun my-lookup-password (&rest keys)
   (auth-source-forget-all-cached)
@@ -340,7 +338,7 @@ Shows terminal in seperate section. Also shows browsers."
 
 (defun my-open-man (page)
   (interactive `(,(read-string "Man: " nil)))
-  (man-posframe-show page))
+  (man-posframe-show page ))
 
 (defun my-open-man-here (page)
   (interactive `(,(read-string "Man: " nil)))
@@ -460,8 +458,12 @@ Shows terminal in seperate section. Also shows browsers."
 (use-package! which-key-posframe
   :custom
   (which-key-posframe-poshandler 'my-poshandler)
-  (which-key)
   :hook
   (my-new-gui-frame . which-key-posframe-mode))
+
+(use-package! man-posframe
+  :custom
+  (man-posframe-width  100)
+  (man-posframe-height  30))
 
 (rainbow-indent-and-delimiters-mode 1)
