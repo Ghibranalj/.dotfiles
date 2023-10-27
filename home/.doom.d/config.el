@@ -127,7 +127,7 @@
 (use-package! magit
   :custom
   (magit-clone-default-directory "~/Workspace/")
-  :hook
+  ;; :hook
   ;; (magit-post-refresh . forge-pull)
   )
 
