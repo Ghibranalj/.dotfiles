@@ -48,24 +48,16 @@
                                         ;(unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
                                         ;(unpin! t)
-
 (package! company-tabnine
   :recipe (:host github :repo "TommyX12/company-tabnine"))
-
 (package! copilot
   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
-
 (package! company-box
   :recipe (
            :host github
            :repo "sebastiencs/company-box"
            :files ("*.el" "images" )))
 (package! emmet-mode)
-;; (package! beacon
-;;   :recipe (
-;;            :host github :repo "Malabarba/beacon"
-;;            :files ("*.el")))
-
 (package! yascroll
   :recipe (
            :host github
@@ -77,53 +69,40 @@
   :recipe (
            :type git :host github :repo "VernonGrant/sidekick.el"
            :files ("*.el")
-           :branch "main"
-           ))
+           :branch "main"))
 (package! verb)
 (package! all-the-icons-completion)
 (package! helm-swoop)
 (package! systemd)
 (package! lsp-ui)
-
-(unpin! lsp-mode)
 (package! vertico-posframe)
 (package! ivy)
 (package! ivy-posframe)
 (package! persist)
 (package! daemons)
 (package! dired-hide-dotfiles)
-
 (package! ejc-sql)
-
 (package! async-completing-read
   :recipe (
            :type git :host github :repo "oantolin/async-completing-read"
            :files ("*.el")
            :branch "master"))
-
 (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
 (package! smudge)
 (package! pcap-mode
   :recipe (
            :host github :repo "orgcandman/pcap-mode"
            :files ("*.el")))
-
 (package! sly)
-
 ;; (package! tsi :recipe (:host github :repo "orzechowskid/tsi.el" :branch "main"))
 ;; (package! coverlay)
 ;; (package! origami)
 ;; (package! rjsx-mode)
 (package! blamer)
-
 (package! dired-posframe)
 (package! which-key-posframe)
 (package! mini-frame)
 ;; (package! evil-owl)
-(package! man-posframe
-  :recipe ( :type git :host github :repo "Ghibranalj/man-posframe.el"
-                  :files ("*.el") :branch "master"))
-
 (package! prisma-mode
   :recipe (:host github :repo "pimeys/emacs-prisma-mode" :branch "main"))
 

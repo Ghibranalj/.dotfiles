@@ -1,18 +1,24 @@
 ;;; $DOOM_DIR/config.el -*- lexical-binding: t; -*-
 (load! "keymap.el" doom-user-dir)
+;; find file subdirectory my-packages
+;; and eval every single one
+(let ((d (expand-file-name "my-packages" doom-user-dir)))
+  (dolist (file (directory-files d t "\\.el$"))
+    (load! file)))
+
 (defvar my-new-frame-hook nil
   "Hook run after a any new frame is created.")
-
 (defvar my-new-gui-frame-hook nil
   "Hook run after a any new gui frame is created.")
-
+(defvar my-gui-already-started nil
+  "Flag to check if gui has already been started.")
 (defun on-new-frame ()
   "This is executed when a new frame is created."
-  (run-hooks 'my-new-frame-hook)
   (if window-system
-      (run-hooks 'my-new-gui-frame-hook))
-  )
-
+      (progn
+        (unless my-gui-already-started
+          (setq my-gui-already-started t)
+          (run-hooks 'my-new-gui-frame-hook)))))
 ;; Running on daemon startup
 (if (daemonp)
     (add-hook 'after-make-frame-functions (lambda (frame)
@@ -35,10 +41,7 @@
  ;; Auto save
  auto-save-default t
  make-backup-files t
- )
-
-;; Doom Variables
-(setq
+ ;; Doom Variables
  doom-theme 'doom-material-dark
  doom-font (font-spec
             :family "Source Code Pro"
@@ -53,16 +56,12 @@
  )
 
 ;; man pages
-(setq Man-notify-method 'pushy)
-(add-hook! 'Man-mode-hook 'my-add-buffer-to-project)
-
 (use-package! man
   :custom
   (Man-notify-method 'pushy)
   :hook
   (Man-mode 'my-add-buffer-to-project))
 
-(load! "my-packages/evil-megasave.el")
 (use-package! evil-megasave
   :hook
   (prog-mode . evil-megasave-mode)
@@ -71,21 +70,23 @@
   (yaml-mode . evil-megasave-mode))
 
 ;; tremacs colors
-(custom-set-faces!
-  '(treemacs-root-face :foreground "#F78C6C")
-  '(doom-themes-treemacs-root-face :foreground "#F78C6C"))
+(use-package treemacs
+  :config
+  (custom-set-faces!
+    '(treemacs-root-face :foreground "#F78C6C")
+    '(doom-themes-treemacs-root-face :foreground "#F78C6C")))
 
 ;; Coplilot
-(defun +copilot/tab ()
-  "Copilot completion."
-  (interactive)
-  (or
-   (if (bound-and-true-p emmet-mode)
-       (emmet-expand-line nil))
-   (copilot-accept-completion)
-   (indent-relative)))
-
 (use-package! copilot
+  :config
+  (defun +copilot/tab ()
+    "Copilot completion."
+    (interactive)
+    (or
+     (if (bound-and-true-p emmet-mode)
+         (emmet-expand-line nil))
+     (copilot-accept-completion)
+     (indent-relative)))
   :hook (prog-mode . copilot-mode)
   :bind (("<backtab>" . 'copilot-accept-completion-by-word)
          ("<backtab>" . 'copilot-accept-completion-by-word)
@@ -95,7 +96,6 @@
          :map company-mode-map
          ("<tab>" . '+copilot/tab)
          ("TAB" . '+copilot/tab)))
-
 
 (defun my-comment-or-uncomment()
   "Comment or uncomment the current line or region."
@@ -122,7 +122,18 @@
   :custom
   (lsp-headerline-breadcrumb-mode t)
   :hook
-  (prog-mode . lsp-headerline-breadcrumb-mode))
+  (prog-mode . lsp-headerline-breadcrumb-mode)
+  (lsp-mode . (lambda ()
+                (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\tmp\\'")))
+
+  :config
+  ;; GLSL language support
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection '("glslls" "--stdin"))
+                    :activation-fn (lsp-activate-on "glsl")
+                    :server-id 'glslls))
+  (add-to-list 'lsp-language-id-configuration
+               '(glsl-mode . "glsl")))
 
 (use-package! magit
   :custom
@@ -192,8 +203,7 @@
 
   (add-to-list 'consult-buffer-sources 'my-consult--terminal-source 'append)
   (add-to-list 'consult-buffer-sources 'my-consult--workspace-source 'append)
-  (add-to-list 'consult-buffer-sources 'my-consult--dired-source 'append)
-  )
+  (add-to-list 'consult-buffer-sources 'my-consult--dired-source 'append))
 
 (defun my-consult-terminal ()
   "Open terminal."
@@ -259,6 +269,15 @@ Shows terminal in seperate section. Also shows browsers."
   (delete-by-moving-to-trash t)
   (dired-mouse-drag-files t)
   :config
+  (defun my-dired-navigate-into ()
+    "Open directory in same dired buffer. Open file in new buffer"
+    (interactive)
+    (let (
+          (file (dired-get-filename nil t)))
+      (if (file-directory-p file)
+          (dired-find-alternate-file)
+        (dired-find-file))))
+
   (evil-collection-define-key 'normal 'dired-mode-map
     "h" '(lambda () (interactive) (find-alternate-file ".."))
     ;; "l" 'dired-find-alternate-file
@@ -267,8 +286,7 @@ Shows terminal in seperate section. Also shows browsers."
     "," 'dired-posframe-show
     "s" 'my-dired-posframe-scroll-down
     "w" 'my-dired-posframe-scroll-up
-    "e" 'lsp-dired-mode
-    )
+    "e" 'lsp-dired-mode)
   (put 'dired-find-alternate-file 'disabled nil))
 
 (use-package! ivy-posframe
@@ -324,35 +342,7 @@ Shows terminal in seperate section. Also shows browsers."
     (unless (eq workspace (+workspace-current-name))
       (+workspace/delete workspace))))
 
-(load! "my-packages/rainbow-indent-and-delimiters.el" doom-user-dir)
 (rainbow-indent-and-delimiters-mode 1)
-
-;; TODO Refactor after this
-(require 'async-completing-read)
-(setq acr-refresh-completion-ui 'consult-vertico--refresh)
-(defun my-find-file-in-directory (directory)
-  "Finds file in DIRECTORY recursively"
-  (interactive `(,default-directory))
-  (let*(
-        (shell "bash")
-        (find (if (executable-find "fd")
-                  "fd -tf -tl -c never -H -E .git -I --prune -L"
-                "find -type f -printf '%P\n'"))
-        (tramp-p (string-match-p "\/scp:" directory))
-        (command (if tramp-p
-                     find
-                   (format "cd %s; %s" directory find)))
-        (display-directory (if (and (not tramp-p) (string-match-p (getenv "HOME") directory))
-                               (replace-regexp-in-string "/\./$" ""
-                                                         (format "~/%s" (file-relative-name directory (getenv "HOME"))))
-                             directory))
-        (file
-         (async-completing-read (format "Find file (%s): " display-directory ) (acr-lines-from-process shell "-c" command)
-                                (lambda (x) (not (string-match-p  "\*async-completing-read\*" x))))))
-    (when file
-      (if tramp-p
-          (find-file (expand-file-name file directory))
-        (find-file (expand-file-name file))))))
 
 (define-generic-mode 'xmodmap-mode
   '(?!)
@@ -363,7 +353,21 @@ Shows terminal in seperate section. Also shows browsers."
   "Simple mode for xmodmap files.")
 (add-hook! 'xmodmap-mode-hook 'display-line-numbers-mode)
 
-(add-hook! 'c-mode-hook (lambda () (c-toggle-comment-style -1)))
+(use-package! cc-mode
+  :hook
+  (c-mode . (lambda ()(c-toggle-comment-style -1)))
+  :config
+  ;; fix CCLS window navigation
+  (defun ccls-navigate (DIRECTION)
+    (cond
+     ((string= DIRECTION "D")
+      (evil-window-right 1))
+     ((string= DIRECTION "L")
+      (evil-window-up 1))
+     ((string= DIRECTION "R")
+      (evil-window-down 1))
+     ((string= DIRECTION "U")
+      (evil-window-left 1)))))
 
 (defun my-lookup-password (&rest keys)
   (auth-source-forget-all-cached)
@@ -371,61 +375,6 @@ Shows terminal in seperate section. Also shows browsers."
     (if result
         (funcall (plist-get (car result) :secret))
       result)))
-
-(setq smudge-oauth2-callback-port "3725")
-(defun my-start-smudge ()
-  (interactive)
-  (require 'smudge)
-  (unless (my-is-service-active-p "spotifyd")
-    (my-reload-spotifyd))
-  (setq smudge-oauth2-client-secret (my-lookup-password :host "api.spotify.com"))
-  (setq smudge-oauth2-client-id (my-lookup-password :host "id.spotify.com"))
-  (global-smudge-remote-mode)
-  )
-
-(defun my-pause-music-start-again (time)
-  (interactive '("2 min"))
-  (unless (featurep 'smudge)
-    (my-start-smudge))
-  (smudge-api-pause)
-  (run-at-time time nil #'smudge-api-play)
-  )
-
-(defun my-reload-spotifyd ()
-  (interactive)
-  (shell-command "systemctl reload-or-restart --user spotifyd"))
-
-(defun my-smudge-set-volume (volume)
-  (interactive `(,(read-string "Volume: " nil))))
-
-(defun my-pause-music-start-again (time)
-  (interactive '("2 min"))
-  (unless (featurep 'smudge)
-    (my-start-smudge))
-  (smudge-api-pause)
-  (run-at-time time nil #'smudge-api-play)
-  )
-
-(defun my-reload-spotifyd ()
-  (interactive)
-  (shell-command "systemctl reload-or-restart --user spotifyd"))
-
-(defun my-smudge-set-volume (volume)
-  (interactive `(,(read-string "Volume: " nil)))
-
-  (if (stringp volume)
-      (setq volume (string-to-number volume)))
-
-  (when (and  smudge-selected-device-id (<= volume 100) (>= volume 0) )
-    (smudge-api-set-volume smudge-selected-device-id volume))
-  )
-
-(defun my-is-service-active-p (service &optional root)
-  "Return t if SERVICE is active. use --user if ROOT is nil"
-  (let ((active (s-trim
-                 (shell-command-to-string
-                  (format "systemctl is-active %s %s" (if root "" "--user") service)))))
-    (string= active "active")))
 
 (defun my-open-man (page)
   (interactive `(,(read-string "Man: " nil)))
@@ -435,7 +384,8 @@ Shows terminal in seperate section. Also shows browsers."
   (interactive `(,(read-string "Man: " nil)))
   (man page))
 
-(after! web-mode
+(use-package! web-mode
+  :config
   (defun +web/indent-or-yas-or-emmet-expand ()
     "decide if copilot, yas or emmet should expand."
     (interactive)
@@ -447,56 +397,38 @@ Shows terminal in seperate section. Also shows browsers."
   (interactive `(,(read-string "File Mode: " nil)))
   (if (and (buffer-file-name) (file-exists-p (buffer-file-name)))
       (shell-command (format "chmod %s %s" mode (buffer-file-name)))
-    (message "Buffer has no file.")
-    )
-  )
+    (message "Buffer has no file.")))
 
-(add-hook! 'lsp-mode-hook '(lambda ()
-                             (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\tmp\\'")
-                             ))
-
-(add-hook! 'projectile-mode-hook '(lambda ()
-                                    (add-to-list 'projectile-globally-ignored-directories "tmp")
-                                    (add-to-list 'projectile-globally-ignored-directories "vendor")
-                                    (add-to-list 'projectile-globally-ignored-directories "CMakeFiles")
-                                    (add-to-list 'projectile-globally-ignored-directories "build")
-                                    (add-to-list 'projectile-globally-ignored-directories "^.*vendor.*$")
-                                    (add-to-list 'projectile-globally-ignored-directories "web-legacy")
-                                    ))
+(use-package! projectile
+  :config
+  (add-to-list 'projectile-globally-ignored-directories "tmp")
+  (add-to-list 'projectile-globally-ignored-directories "vendor")
+  (add-to-list 'projectile-globally-ignored-directories "CMakeFiles")
+  (add-to-list 'projectile-globally-ignored-directories "build")
+  (add-to-list 'projectile-globally-ignored-directories "^.*vendor.*$")
+  (add-to-list 'projectile-globally-ignored-directories "web-legacy"))
 
 (defun my-dap-debug-last()
   (interactive)
   (call-interactively '+make/run-last)
-  (call-interactively 'dap-debug-last)
-  ;; (call-interactively 'dap-hydra)
-  )
+  (call-interactively 'dap-debug-last))
 
 (defun my-dap-debug ()
   (interactive)
   (call-interactively '+make/run)
-  (call-interactively 'dap-debug)
-  ;; (call-interactively 'dap-hydra)
-  )
+  (call-interactively 'dap-debug))
 
 (use-package! dap-mode
   :custom
   ;; (sessions locals breakpoints expressions controls tooltip)
-  (dap-auto-configure-features '(locals controls tooltip))
-  )
+  (dap-auto-configure-features '(locals controls tooltip)))
 
-(with-eval-after-load 'lsp-mode
-  (add-to-list 'lsp-language-id-configuration
-               '(glsl-mode . "glsl"))
-  (lsp-register-client
-   (make-lsp-client :new-connection (lsp-stdio-connection '("glslls" "--stdin"))
-                    :activation-fn (lsp-activate-on "glsl")
-                    :server-id 'glslls)))
-
+;; Git Blame
 (use-package blamer
   :bind (("s-i" . blamer-show-commit-info))
   :defer 20
   :custom
-  (blamer-idle-time 1)
+  (blamer-idle-time 0.2)
   (blamer-min-offset 40)
   (blamer-author-formatter "  ✎ %s ")
   (blamer-datetime-formatter "[%s] ")
@@ -510,10 +442,10 @@ Shows terminal in seperate section. Also shows browsers."
 
 (defun my-poshandler (info)
   (cons
-   (/ (- (plist-get info :parent-frame-width) (plist-get info :posframe-width)) 2) ;x
-   (/ (plist-get info :parent-frame-height) 5) ;y
-   )
-  )
+   ;; X
+   (/ (- (plist-get info :parent-frame-width) (plist-get info :posframe-width)) 2)
+   ;; Y
+   (/ (plist-get info :parent-frame-height) 5)))
 
 (use-package! vertico-posframe
   :after vertico
@@ -526,103 +458,7 @@ Shows terminal in seperate section. Also shows browsers."
   (vertico-posframe-poshandler 'my-poshandler)
   (vertico-posframe-height nil)
   :hook
-  (my-new-gui-frame . vertico-posframe-mode)
-  )
-
-(use-package! which-key-posframe
-  :custom
-  (which-key-posframe-poshandler 'my-poshandler)
-  (which-key-posframe-parameters
-   '((left-fringe . 20)
-     (right-fringe . 20)))
-  :hook
-  (my-new-gui-frame . which-key-posframe-mode))
-
-(load! "my-packages/read-string-posframe.el" doom-user-dir)
-(use-package! read-string-posframe
-  :hook (my-new-gui-frame . read-string-posframe-mode))
-
-(defun my-find-major-mode-for-file (filename)
-  "Find the major mode associated with the given file name."
-  (let ((alist auto-mode-alist)
-        (mode nil))
-    (while (and alist (not mode))
-      (if (string-match (caar alist) filename)
-          (setq mode (cdar alist))
-        (setq alist (cdr alist))))
-    mode))
-
-(defun my-dired-posframe-highlight()
-  (let* ((file (dired-get-filename nil t))
-         (themode (my-find-major-mode-for-file (file-name-nondirectory file)))
-         )
-    (if (file-directory-p file)
-        (setq themode 'dired-mode))
-    (with-current-buffer (get-buffer  dired-posframe-buffer)
-      (if (not (eq themode nil))
-          (progn
-            (funcall themode)
-            ( goto-char (point-min))
-            (read-only-mode -1)
-            (insert (format "%s %s %s\n" comment-start (file-name-nondirectory file) comment-end)))))))
-
-(after! dired-posframe
-  :custom
-  (dired-posframe-width 65)
-  (dired-posframe-height 25)
-  (dired-posframe-min-height nil)
-  (dired-posframe-min-width nil)
-  (dired-posframe-parameters
-   '((left-fringe . 10)
-     (right-fringe . 10)))
-  :config
-  (advice-add 'dired-posframe--show :after 'my-dired-posframe-highlight)
-  (advice-add 'keyboard-quit :before 'posframe-delete-all)
-  (fset 'dired-posframe--hide 'ignore))
-
-(defun my-dired-posframe-scroll-down()
-  (interactive)
-  (with-current-buffer (get-buffer  dired-posframe-buffer)
-    (read-only-mode -1)
-    (goto-char (point-min))
-    ;; copy first line
-    (let ((line (buffer-substring-no-properties (point) (line-end-position))))
-      (delete-region (point) (line-end-position))
-      (delete-char 1)
-      (goto-char (point-max))
-      (insert (format "%s\n" line)))))
-
-(defun my-dired-posframe-scroll-up()
-  (interactive)
-  (with-current-buffer (get-buffer  dired-posframe-buffer)
-    (read-only-mode -1)
-    (goto-char (point-max))
-    ;; copy last line
-    (let ((line (buffer-substring-no-properties (line-beginning-position) (point))))
-      (delete-region (line-beginning-position) (point))
-      (delete-char -1)
-      (goto-char (point-min))
-      (insert (format "%s\n" line)))))
-
-(defun my-dired-navigate-into ()
-  "Open directory in same dired buffer. Open file in new buffer"
-  (interactive)
-  (let (
-        (file (dired-get-filename nil t)))
-    (if (file-directory-p file)
-        (dired-find-alternate-file)
-      (dired-find-file))))
-
-(evil-define-command my-evil-chmod (mode)
-  (interactive "<a>")
-  (my-chmod-this-file mode)
-  )
-
-(evil-define-command my-evil-man (arg)
-  (interactive "<a>")
-  (if arg
-      (my-open-man arg)
-    (call-interactively 'my-open-man)))
+  (my-new-gui-frame . vertico-posframe-mode))
 
 (defun my-create-directory (directory)
   "Create a directory recursively using mkdir -p."
@@ -633,38 +469,28 @@ Shows terminal in seperate section. Also shows browsers."
     (shell-command (concat "mkdir -p " full-directory))
     (message (concat "Created directory: " full-directory))))
 
-(evil-define-command my-evil-mkdir (arg)
-  (interactive "<a>")
-  (if arg
-      (my-create-directory arg)
-    (call-interactively 'my-create-directory)))
+(use-package! evil
+  :config
+  (evil-define-command my-evil-mkdir (arg)
+    (interactive "<a>")
+    (if arg
+        (my-create-directory arg)
+      (call-interactively 'my-create-directory)))
+  (evil-define-command my-evil-man (arg)
+    (interactive "<a>")
+    (if arg
+        (my-open-man arg)
+      (call-interactively 'my-open-man)))
+  (evil-define-command my-evil-chmod (mode)
+    (interactive "<a>")
+    (my-chmod-this-file mode))
+  (evil-ex-define-cmd "man" 'my-evil-man)
+  (evil-ex-define-cmd "chmod" 'my-evil-chmod)
+  (evil-ex-define-cmd "sr" 'projectile-replace-regexp)
+  (evil-ex-define-cmd "dired" 'dired-jump)
+  (evil-ex-define-cmd "systemd" 'daemons)
+  (evil-ex-define-cmd "mkdir" 'my-evil-mkdir))
 
-(evil-ex-define-cmd "man" 'my-evil-man)
-(evil-ex-define-cmd "chmod" 'my-evil-chmod)
-(evil-ex-define-cmd "sr" 'projectile-replace-regexp)
-(evil-ex-define-cmd "dired" 'dired-jump)
-(evil-ex-define-cmd "systemd" 'daemons)
-(evil-ex-define-cmd "mkdir" 'my-evil-mkdir)
-
-(use-package! man-posframe
-  :ensure t
-  :custom
-  (man-posframe-width  100)
-  (man-posframe-height  50)
-  (man-posframe-parameters
-   '((left-fringe . 10)
-     (right-fringe . 10)
-     ))
-  )
-;; FIX for C and C++ window navigation
-(defun ccls-navigate (DIRECTION)
-  (cond
-   ((string= DIRECTION "D")
-    (evil-window-right 1))
-   ((string= DIRECTION "L")
-    (evil-window-up 1))
-   ((string= DIRECTION "R")
-    (evil-window-down 1))
-   ((string= DIRECTION "U")
-    (evil-window-left 1))))
-
+(use-package! read-string-posframe
+  :config
+  (read-string-posframe-mode 1))

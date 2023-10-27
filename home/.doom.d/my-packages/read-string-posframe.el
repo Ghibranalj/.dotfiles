@@ -56,5 +56,5 @@
         (advice-remove 'magit-read-string #'read-string-posframe--replace-read-from-minibuffer)
         (advice-remove 'read-string #'read-string-posframe--read-string))))
 
-(provide 'read-string-posframe-mode)
+(provide 'read-string-posframe)
 ;;; read-string-posframe-mode.el ends here
