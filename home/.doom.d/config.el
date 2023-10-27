@@ -223,36 +223,10 @@ Shows terminal in seperate section. Also shows browsers."
    :history 'consult--buffer-history
    :sort nil))
 
-(require 'persist)
-(persist-defvar my-ssh-user-history nil
-                "History for ssh user.")
-
-(persist-defvar my-ssh-host-history nil
-                "History for ssh host.")
-
 (add-hook! 'my-new-frame-hook
            '(lambda ()
               (dolist (x persist--symbols)
                 (persist-load x))))
-
-(add-hook! 'after-delete-frame-functions '(lambda (frame) (persist--save-all)))
-
-(defun my-connect-remote-ssh()
-  "Connect to remote ssh in a new workspace."
-  (interactive)
-  (let (( conn-str (format "%s@%s"
-                           (my-read-string-hist "User (ssh): " 'my-ssh-user-history)
-                           (my-read-string-hist "Host (ssh): " 'my-ssh-host-history))))
-    (progn
-      (+workspace-switch conn-str t)
-      (dired (format "/scp:%s:" conn-str))
-      ;; save
-      (persist-save my-ssh-user-history)
-      (persist-save my-ssh-host-history)
-      )))
-
-(setq projectile-indexing-method 'hybrid)
-;; (setq projectile-enable-caching t)
 
 (defun my-save-current-workspace ()
   "Save current workspace."
@@ -303,17 +277,6 @@ Shows terminal in seperate section. Also shows browsers."
   (set-face-attribute 'ivy-posframe nil :background "#212121" :foreground "#EEFFFF")
   :hook
   (my-new-gui-frame . ivy-posframe-mode))
-
-(defun my-read-string-hist (prompt &optional hist)
-  "Read a string from the minibuffer with PROMPT. History is stored in HIST."
-  (let ((histlen (+ (length (symbol-value hist)) 1)))
-    (setq vertico-posframe-height histlen))
-  (setq vertico-count-format  (cons "%-0s" ""))
-  (let ((result
-         (completing-read prompt (symbol-value hist) nil nil nil hist)))
-    (if (string= result "")
-        nil
-      result)))
 
 (defun my-add-buffer-to-project ()
   "Add current buffer to current project."
@@ -455,8 +418,8 @@ Shows terminal in seperate section. Also shows browsers."
      (right-fringe . 20)
      ))
   (vertico-posframe-width 100)
-  (vertico-posframe-poshandler 'my-poshandler)
   (vertico-posframe-height nil)
+  (vertico-posframe-poshandler 'my-poshandler)
   :hook
   (my-new-gui-frame . vertico-posframe-mode))
 
@@ -492,5 +455,7 @@ Shows terminal in seperate section. Also shows browsers."
   (evil-ex-define-cmd "mkdir" 'my-evil-mkdir))
 
 (use-package! read-string-posframe
-  :config
-  (read-string-posframe-mode 1))
+  :hook
+  (my-new-gui-frame . read-string-posframe-mode))
+
+(evil-ex)

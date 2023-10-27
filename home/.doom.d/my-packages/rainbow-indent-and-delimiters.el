@@ -65,7 +65,8 @@ RESPONSIVE and DISPLAY are ignored."
         (setq highlight-indent-guides-highlighter-function 'rainbow-indent-and-delimiters--highlight-function)
         (setq rainbow-delimiters-max-face-count 6)
         (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-        (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
+        (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+        (add-hook 'lsp-mode-hook 'highlight-indent-guides-mode))
     (progn
       (custom-set-faces
        '(rainbow-delimiters-depth-1-face ((t :inherit rainbow-delimiters-depth-1-face)))
@@ -77,4 +78,5 @@ RESPONSIVE and DISPLAY are ignored."
       (setq highlight-indent-guides-highlighter-function 'highlight-indent-guides--highlighter-default)
       (setq rainbow-delimiters-max-face-count 9)
       (remove-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-      (remove-hook 'prog-mode-hook 'highlight-indent-guides-mode))))
+      (remove-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+      (remove-hook 'lsp-mode-hook 'highlight-indent-guides-mode))))

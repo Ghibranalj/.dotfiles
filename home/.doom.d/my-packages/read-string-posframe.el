@@ -42,6 +42,7 @@
       (apply orig-fn args)
     (advice-remove 'read-from-minibuffer #'read-string-posframe--read-from-minibuffer)))
 
+;;;###autoload
 (define-minor-mode read-string-posframe-mode
   "Readstirng from a popup"
   :lighter " ReadStringPosframe"

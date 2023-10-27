@@ -42,7 +42,7 @@
  (:prefix ("o" . "open")
   :desc "Open manpage" "M" #'my-open-man-here
   :desc "Open manpage" "m" #'my-open-man
-  :desc "Open ssh connection" "s" #'my-connect-remote-ssh
+  :desc "Open ssh connection" "s" #'ssh-remote-connect
   :desc "open dired" "/" #'dired-jump
   :desc "Open init daemon" "i" #'daemons
   )
