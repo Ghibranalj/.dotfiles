@@ -458,6 +458,10 @@ Shows terminal in seperate section. Also shows browsers."
 (use-package! which-key-posframe
   :custom
   (which-key-posframe-poshandler 'my-poshandler)
+  (which-key-posframe-parameters
+   '((left-fringe . 10)
+     (right-fringe . 20)
+     ))
   :hook
   (my-new-gui-frame . which-key-posframe-mode))
 
