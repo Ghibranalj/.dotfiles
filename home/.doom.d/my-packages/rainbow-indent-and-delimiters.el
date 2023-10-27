@@ -80,3 +80,5 @@ RESPONSIVE and DISPLAY are ignored."
       (remove-hook 'prog-mode-hook 'rainbow-delimiters-mode)
       (remove-hook 'prog-mode-hook 'highlight-indent-guides-mode)
       (remove-hook 'lsp-mode-hook 'highlight-indent-guides-mode))))
+
+(provide 'rainbow-indent-and-delimeters)
