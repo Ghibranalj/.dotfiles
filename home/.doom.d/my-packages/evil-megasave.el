@@ -58,5 +58,3 @@ Also saves when you exit evil-insert-state or evil-replace-state."
         (advice-remove func 'evil-megasave--save-unless-insert)))))
 
 (provide 'evil-megasave)
-;;; evil-megasave-mode.el ends here
-
