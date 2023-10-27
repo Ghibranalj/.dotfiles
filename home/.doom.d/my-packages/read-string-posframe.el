@@ -8,7 +8,7 @@
   "show readstring, evil ex and magit read string in posframe."
   :group 'convenience)
 
-(defcustom read-string-posframe-width 50
+(defcustom read-string-posframe-width 40
   "How wide read-string-posframe is"
   :group 'read-string-posframe
   :type 'integer)
@@ -42,6 +42,7 @@
       (apply orig-fn args)
     (advice-remove 'read-from-minibuffer #'read-string-posframe--read-from-minibuffer)))
 
+;;;###autoload
 (define-minor-mode read-string-posframe-mode
   "Readstirng from a popup"
   :lighter " ReadStringPosframe"
@@ -56,5 +57,5 @@
         (advice-remove 'magit-read-string #'read-string-posframe--replace-read-from-minibuffer)
         (advice-remove 'read-string #'read-string-posframe--read-string))))
 
-(provide 'read-string-posframe-mode)
+(provide 'read-string-posframe)
 ;;; read-string-posframe-mode.el ends here

@@ -23,6 +23,7 @@
  :leader
  :desc "Switch buffer in workspace" "," #'my-consult-workspace
  :desc "Yank from kill ring" "y" #'yank-from-kill-ring
+
  (:prefix ("b" . "buffer")
   :desc "Format buffer" "f" #'+format/buffer
   :desc "Switch to terminal in workspace" "t" #'my-consult-terminal
@@ -41,7 +42,7 @@
  (:prefix ("o" . "open")
   :desc "Open manpage" "M" #'my-open-man-here
   :desc "Open manpage" "m" #'my-open-man
-  :desc "Open ssh connection" "s" #'my-connect-remote-ssh
+  :desc "Open ssh connection" "s" #'ssh-remote-connect
   :desc "open dired" "/" #'dired-jump
   :desc "Open init daemon" "i" #'daemons
   )
