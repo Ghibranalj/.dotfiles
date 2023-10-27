@@ -318,7 +318,10 @@ Shows terminal in seperate section. Also shows browsers."
 (use-package! cc-mode
   :hook
   (c-mode . (lambda ()(c-toggle-comment-style -1))))
-(defun ccls-navigate (DIRECTION)
+
+(use-package! ccls
+  :config
+  (defun ccls-navigate (DIRECTION)
     (cond
      ((string= DIRECTION "D")
       (evil-window-right 1))
@@ -327,14 +330,7 @@ Shows terminal in seperate section. Also shows browsers."
      ((string= DIRECTION "R")
       (evil-window-down 1))
      ((string= DIRECTION "U")
-      (evil-window-left 1))))
-
-(defun my-lookup-password (&rest keys)
-  (auth-source-forget-all-cached)
-  (let ((result (apply #'auth-source-search keys)))
-    (if result
-        (funcall (plist-get (car result) :secret))
-      result)))
+      (evil-window-left 1)))))
 
 (defun my-open-man (page)
   (interactive `(,(read-string "Man: " nil)))
@@ -471,3 +467,35 @@ Shows terminal in seperate section. Also shows browsers."
   (man-posframe-height  30))
 
 (rainbow-indent-and-delimiters-mode 1)
+
+(use-package! smudge
+  :init
+  (if (file-exists-p "~/.spotify-secrets.el")
+      (load! "~/.spotify-secrets.el")
+    (progn
+      (message "No spotify secrets found.")
+      (setq spotify-client-id nil)
+      (setq spotify-client-secret nil)))
+  :custom
+  (smudge-oauth2-callback-port "3725")
+  (smudge-oauth2-client-id  spotify-client-id)
+  (smudge-oauth2-client-secret spotify-client-secret)
+  :config
+  (global-smudge-remote-mode 1)
+  ;;
+  (defun my-pause-music-start-again (time)
+    (interactive '("2 min"))
+    (unless (featurep 'smudge)
+      (my-start-smudge))
+    (smudge-api-pause)
+    (run-at-time time nil #'smudge-api-play))
+  ;;
+  (defun my-smudge-set-volume (volume)
+    (interactive `(,(read-string "Volume: " nil)))
+    (if (stringp volume)
+        (setq volume (string-to-number volume)))
+    (when (and  smudge-selected-device-id (<= volume 100) (>= volume 0) )
+      (smudge-api-set-volume smudge-selected-device-id volume)))
+  :bind
+  (:map smudge-track-search-mode-map
+        ("RET" . smudge-track-select)))

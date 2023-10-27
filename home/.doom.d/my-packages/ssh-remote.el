@@ -1,6 +1,7 @@
 ;;; ../.dotfiles/home/.doom.d/my-packages/ssh-remote.el -*- lexical-binding: t; -*-
 (require 'persist)
 
+;; TODO rewrite persisting history to use a custom history variable
 (persist-defvar ssh-remote--ssh-user-history nil
                 "History for ssh user."
                 (concat doom-cache-dir "/ssh-remote"))
