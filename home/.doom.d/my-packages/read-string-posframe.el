@@ -8,7 +8,7 @@
   "show readstring, evil ex and magit read string in posframe."
   :group 'convenience)
 
-(defcustom read-string-posframe-width 50
+(defcustom read-string-posframe-width 40
   "How wide read-string-posframe is"
   :group 'read-string-posframe
   :type 'integer)

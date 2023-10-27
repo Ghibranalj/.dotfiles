@@ -37,12 +37,7 @@
     evil-indent-restore)
   "Functions to hook when `evil-megasave-mode' is enabled."
   :type '(repeat function)
-  :group 'evil-megasave
-  :set (lambda (symbol value)
-         (set-default symbol value)
-         (dolist (func value)
-           (evil-megasave-add-function-to-hook func)))
-  )
+  :group 'evil-megasave)
 
 ;;;###autoload
 (define-minor-mode evil-megasave-mode
@@ -62,11 +57,6 @@ Also saves when you exit evil-insert-state or evil-replace-state."
       (dolist (func evil-megasave--functions-to-hook)
         (advice-remove func 'evil-megasave--save-unless-insert)))))
 
-(defun evil-megasave-add-function-to-hook (func)
-  "Add a FUNC to `evil-megasave--functions-to-hook'."
-  (add-to-list 'evil-megasave--functions-to-hook func)
-  (if evil-megasave-mode
-      (advice-add func :after 'evil-megasave--save-unless-insert)))
-
-(provide 'evil-megasave-mode)
+(provide 'evil-megasave)
 ;;; evil-megasave-mode.el ends here
+

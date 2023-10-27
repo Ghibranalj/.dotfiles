@@ -23,6 +23,7 @@
  :leader
  :desc "Switch buffer in workspace" "," #'my-consult-workspace
  :desc "Yank from kill ring" "y" #'yank-from-kill-ring
+
  (:prefix ("b" . "buffer")
   :desc "Format buffer" "f" #'+format/buffer
   :desc "Switch to terminal in workspace" "t" #'my-consult-terminal

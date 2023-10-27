@@ -1,33 +1,5 @@
 ;;; $DOOM_DIR/config.el -*- lexical-binding: t; -*-
-(load! "keymap.el")
-(setq display-line-numbers-type 'relative)
-(setq org-directory "~/org/")
-
-(setq doom-theme 'doom-material-dark)
-(setq doom-font (font-spec
-                 :family "Source Code Pro"
-                 :size 14))
-
-(setq doom-variable-pitch-font (font-spec
-                                :family "Source Code Pro"
-                                :size 14))
-
-(setq doom-big-font (font-spec
-                     :family "Source Code Pro"
-                     :size 20))
-
-(setq doom-bin "doom")
-
-;; Auto save
-(setq auto-save-default t
-      make-backup-files t)
-
-(load! "my-packages/evil-megasave-mode.el")
-(add-hook! 'prog-mode-hook 'evil-megasave-mode)
-(add-hook! 'git-commit-mode-hook 'evil-megasave-mode)
-(add-hook! 'conf-mode-hook 'evil-megasave-mode)
-(add-hook! 'yaml-mode-hook 'evil-megasave-mode)
-
+(load! "keymap.el" doom-user-dir)
 (defvar my-new-frame-hook nil
   "Hook run after a any new frame is created.")
 
@@ -38,7 +10,8 @@
   "This is executed when a new frame is created."
   (run-hooks 'my-new-frame-hook)
   (if window-system
-      (run-hooks 'my-new-gui-frame-hook)))
+      (run-hooks 'my-new-gui-frame-hook))
+  )
 
 ;; Running on daemon startup
 (if (daemonp)
@@ -46,6 +19,56 @@
                                             (with-selected-frame frame
                                               (on-new-frame))))
   (on-new-frame))
+
+;; General Variables
+(setq
+ display-line-numbers-type 'relative
+ org-directory "~/org/"
+ scroll-margin 16
+ scroll-conservatively 101
+ scroll-up-aggressively 0.01
+ scroll-down-aggressively 0.01
+ scroll-preserve-screen-position t
+ auto-window-vscroll t
+ enable-local-variables :safe
+
+ ;; Auto save
+ auto-save-default t
+ make-backup-files t
+ )
+
+;; Doom Variables
+(setq
+ doom-theme 'doom-material-dark
+ doom-font (font-spec
+            :family "Source Code Pro"
+            :size 14)
+ doom-variable-pitch-font (font-spec
+                           :family "Source Code Pro"
+                           :size 14)
+ doom-big-font (font-spec
+                :family "Source Code Pro"
+                :size 20)
+ doom-bin "doom"
+ )
+
+;; man pages
+(setq Man-notify-method 'pushy)
+(add-hook! 'Man-mode-hook 'my-add-buffer-to-project)
+
+(use-package! man
+  :custom
+  (Man-notify-method 'pushy)
+  :hook
+  (Man-mode 'my-add-buffer-to-project))
+
+(load! "my-packages/evil-megasave.el")
+(use-package! evil-megasave
+  :hook
+  (prog-mode . evil-megasave-mode)
+  (git-commit-mode . evil-megasave-mode)
+  (conf-mode . evil-megasave-mode)
+  (yaml-mode . evil-megasave-mode))
 
 ;; tremacs colors
 (custom-set-faces!
@@ -73,8 +96,6 @@
          ("<tab>" . '+copilot/tab)
          ("TAB" . '+copilot/tab)))
 
-;; man pages
-(setq Man-notify-method 'pushy)
 
 (defun my-comment-or-uncomment()
   "Comment or uncomment the current line or region."
@@ -83,95 +104,97 @@
       (comment-or-uncomment-region (region-beginning) (region-end))
     (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
 
-(setq scroll-margin 16
-      scroll-conservatively 101
-      scroll-up-aggressively 0.01
-      scroll-down-aggressively 0.01
-      scroll-preserve-screen-position t
-      auto-window-vscroll t)
-
-;; misc hook
 (use-package! company-box
   :hook (company-mode . company-box-mode))
 
-(setq lsp-ui-sideline-show-diagnostics t)
-(setq lsp-ui-sideline-show-hover t)
-(setq lsp-ui-sideline-show-code-actions t)
-(setq lsp-ui-sideline-update-mode 'line)
-(add-hook! 'prog-mode-hook #'lsp-ui-mode)
-(add-hook! 'lsp-mode-hook #'lsp-ui-sideline-mode)
-(add-hook! 'lsp-mode-hook #'lsp-headerline-breadcrumb-mode)
-(setq lsp-headerline-breadcrumb-enable t)
-(add-hook! 'prog-mode-hook #'lsp-headerline-breadcrumb-mode)
+(use-package! lsp-ui-sideline
+  :custom
+  (lsp-ui-sideline-show-hover t)
+  (lsp-ui-sideline-show-diagnostics t)
+  (lsp-ui-sideline-show-code-actions t)
+  (lsp-ui-sideline-show-symbol t)
+  :hook (lsp-mode . lsp-ui-sideline-mode))
 
-(setq magit-clone-default-directory "~/Workspace/")
+(use-package! lsp-ui
+  :hook (prog-mode . lsp-ui-mode))
+
+(use-package! lsp-mode
+  :custom
+  (lsp-headerline-breadcrumb-mode t)
+  :hook
+  (prog-mode . lsp-headerline-breadcrumb-mode))
+
+(use-package! magit
+  :custom
+  (magit-clone-default-directory "~/Workspace/")
+  :hook
+  ;; (magit-post-refresh . forge-pull)
+  )
 
 (defun my-eval-line ()
   "Evaluate the current line."
   (interactive)
   (eval-region (line-beginning-position) (line-end-position)))
 
-(defvar my-consult--terminal-source
-  (list :name     "Terminal"
-        :category 'buffer
-        :narrow   ?o
-        :face     'consult-buffer
-        :history  'buffer-name-history
-        :state    #'consult--buffer-state
-        :require-match t
-        :items
-        (lambda ()
-          (mapcar #'buffer-name
-                  (seq-filter
-                   (lambda (x)
-                     (or
-                      (eq (buffer-local-value 'major-mode x) 'vterm-mode)))
-                   (persp-buffer-list))))))
+(use-package! consult
+  :config
+  (defvar my-consult--terminal-source
+    (list :name     "Terminal"
+          :category 'buffer
+          :narrow   ?o
+          :face     'consult-buffer
+          :history  'buffer-name-history
+          :state    #'consult--buffer-state
+          :require-match t
+          :items
+          (lambda ()
+            (mapcar #'buffer-name
+                    (seq-filter
+                     (lambda (x)
+                       (or
+                        (eq (buffer-local-value 'major-mode x) 'vterm-mode)))
+                     (persp-buffer-list))))))
+  (defvar my-consult--dired-source
+    (list :name     "Dired"
+          :category 'buffer
+          :narrow   ?o
+          :face     'consult-buffer
+          :history  'buffer-name-history
+          :state    #'consult--buffer-state
+          :require-match t
+          :items
+          (lambda ()
+            (mapcar #'buffer-name
+                    (seq-filter
+                     (lambda (x)
+                       (or
+                        (eq (buffer-local-value 'major-mode x) 'dired-mode)))
+                     (persp-buffer-list))))))
+  (defvar my-consult--workspace-source
+    (list :name    "Workspace Buffers"
+          :category 'buffer
+          :narrow   ?o
+          :face     'consult-buffer
+          :history  'buffer-name-history
+          :state    #'consult--buffer-state
+          :require-match t
+          :items
+          (lambda ()
+            (mapcar #'buffer-name
+                    (seq-filter
+                     (lambda (x)
+                       (and
+                        (not (eq (buffer-local-value 'major-mode x) 'vterm-mode))
+                        (not (eq (buffer-local-value 'major-mode x) 'dired-mode))
+                        (or (not (boundp 'minimap-buffer-name))
+                            (not (string= (buffer-name x) minimap-buffer-name)))))
+                     (persp-buffer-list))))))
 
-(defvar my-consult--dired-source
-  (list :name     "Dired"
-        :category 'buffer
-        :narrow   ?o
-        :face     'consult-buffer
-        :history  'buffer-name-history
-        :state    #'consult--buffer-state
-        :require-match t
-        :items
-        (lambda ()
-          (mapcar #'buffer-name
-                  (seq-filter
-                   (lambda (x)
-                     (or
-                      (eq (buffer-local-value 'major-mode x) 'dired-mode)))
-                   (persp-buffer-list))))))
-
-(defvar my-consult--workspace-source
-  (list :name    "Workspace Buffers"
-        :category 'buffer
-        :narrow   ?o
-        :face     'consult-buffer
-        :history  'buffer-name-history
-        :state    #'consult--buffer-state
-        :require-match t
-        :items
-        (lambda ()
-          (mapcar #'buffer-name
-                  (seq-filter
-                   (lambda (x)
-                     (and
-                      (not (eq (buffer-local-value 'major-mode x) 'vterm-mode))
-                      (not (eq (buffer-local-value 'major-mode x) 'dired-mode))
-                      (or (not (boundp 'minimap-buffer-name))
-                          (not (string= (buffer-name x) minimap-buffer-name)))))
-                   (persp-buffer-list))))))
-
-(after! consult
   (add-to-list 'consult-buffer-sources 'my-consult--terminal-source 'append)
   (add-to-list 'consult-buffer-sources 'my-consult--workspace-source 'append)
   (add-to-list 'consult-buffer-sources 'my-consult--dired-source 'append)
   )
 
-(require 'consult)
 (defun my-consult-terminal ()
   "Open terminal."
   (interactive)
@@ -189,17 +212,6 @@ Shows terminal in seperate section. Also shows browsers."
                    (+workspace-current-name))
    :history 'consult--buffer-history
    :sort nil))
-
-(add-hook! 'Man-mode-hook 'my-add-buffer-to-project)
-
-(defun remove-scratch-buffer ()
-  (if (get-buffer "*scratch*")
-      (kill-buffer "*scratch*")))
-
-(if (and (daemonp) (string= (daemonp) "term"))
-    (progn
-      (add-hook 'after-change-major-mode-hook 'remove-scratch-buffer)
-      (add-hook 'server-after-make-frame-hook 'remove-scratch-buffer)))
 
 (require 'persist)
 (persist-defvar my-ssh-user-history nil
@@ -237,16 +249,16 @@ Shows terminal in seperate section. Also shows browsers."
   (interactive)
   (+workspace/save (+workspace-current-name)))
 
-(put 'dired-find-alternate-file 'disabled nil)
 (use-package! dired
   :hook
   (dired-mode . dired-hide-dotfiles-mode)
   ;; (dired-mode . lsp-dired-mode)
+  :custom
+  (dired-listing-switches "-agho --group-directories-first")
+  (dired-dwim-target t)
+  (delete-by-moving-to-trash t)
+  (dired-mouse-drag-files t)
   :config
-  (setq dired-listing-switches "-agho --group-directories-first"
-        dired-dwim-target t
-        delete-by-moving-to-trash t
-        dired-mouse-drag-files t)
   (evil-collection-define-key 'normal 'dired-mode-map
     "h" '(lambda () (interactive) (find-alternate-file ".."))
     ;; "l" 'dired-find-alternate-file
@@ -256,50 +268,29 @@ Shows terminal in seperate section. Also shows browsers."
     "s" 'my-dired-posframe-scroll-down
     "w" 'my-dired-posframe-scroll-up
     "e" 'lsp-dired-mode
-    ))
+    )
+  (put 'dired-find-alternate-file 'disabled nil))
 
-(defun dired-count-files-total ()
-  (goto-char (point-min))
-  (search-forward-regexp dired-move-to-filename-regexp nil t)
-  (- (count-lines (line-beginning-position) (point-max)) 2)
-  )
-
-(defun my-disable-dotfiles-hide-when-empty ()
-  (interactive)
-  (let ((dired-files (dired-count-files-total)))
-    (if (and (eq dired-files 0)  dired-hide-dotfiles-mode)
-        (progn
-          (dired-hide-dotfiles-mode -1)
-          (message "Showing all dotfiles.")
-          )))
-  )
-
-(add-hook 'dired-after-readin-hook 'my-disable-dotfiles-hide-when-empty)
-
-(defun my-setup-ivy ()
-  (require 'ivy)
-  (require 'ivy-posframe)
-  (setq ivy-posframe-border-width 2)
-  (setq ivy-posframe-width 10)
+(use-package! ivy-posframe
+  :custom
+  (ivy-posframe-border-width 2)
+  (ivy-posframe-width 10)
+  (ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center)))
+  (ivy-posframe-parameters
+   '((left-fringe . 8)
+     (right-fringe . 8)))
+  :config
+  (define-key ivy-minibuffer-map (kbd "<escape>") 'minibuffer-keyboard-quit)
   (set-face-attribute 'ivy-posframe-border nil :background "#585858")
   (set-face-attribute 'ivy-posframe nil :background "#212121" :foreground "#EEFFFF")
-  (define-key ivy-minibuffer-map (kbd "<escape>") 'minibuffer-keyboard-quit)
-  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center)))
-  (setq ivy-posframe-parameters
-        '((left-fringe . 8)
-          (right-fringe . 8)))
-  (ivy-posframe-mode 1))
-
-(add-hook! 'my-new-gui-frame-hook 'my-setup-ivy)
+  :hook
+  (my-new-gui-frame . ivy-posframe-mode))
 
 (defun my-read-string-hist (prompt &optional hist)
   "Read a string from the minibuffer with PROMPT. History is stored in HIST."
-
   (let ((histlen (+ (length (symbol-value hist)) 1)))
     (setq vertico-posframe-height histlen))
-
   (setq vertico-count-format  (cons "%-0s" ""))
-
   (let ((result
          (completing-read prompt (symbol-value hist) nil nil nil hist)))
     (if (string= result "")
@@ -311,9 +302,8 @@ Shows terminal in seperate section. Also shows browsers."
   (interactive)
   (persp-add-buffer (current-buffer)))
 
-(add-hook! 'daemons-mode-hook 'my-add-buffer-to-project)
-(add-hook! 'daemons-output-mode-hook 'my-add-buffer-to-project)
-(after! 'daemons
+(use-package! daemons
+  :config
   (evil-collection-define-key 'normal 'daemons-mode-map
     "<ret>" 'daemons-status-at-point
     "s" 'daemons-start-at-point
@@ -324,7 +314,9 @@ Shows terminal in seperate section. Also shows browsers."
     "d" 'daemons-disable-at-point
     "t" 'daemons-systemd-toggle-user))
 
-(setq vterm-always-compile-module t)
+(use-package! vterm
+  :custom
+  (vterm-always-compile-module t))
 
 (defun my-delete-other-workspace ()
   (interactive)
@@ -332,34 +324,10 @@ Shows terminal in seperate section. Also shows browsers."
     (unless (eq workspace (+workspace-current-name))
       (+workspace/delete workspace))))
 
-(setq rainbow-delimiters-max-face-count 6)
-(custom-set-faces!
-  '(rainbow-delimiters-depth-1-face :foreground "#B23F77")
-  '(rainbow-delimiters-depth-2-face :foreground "#B69457")
-  '(rainbow-delimiters-depth-3-face :foreground "#7BA55D")
-  '(rainbow-delimiters-depth-4-face :foreground "#4F86A0")
-  '(rainbow-delimiters-depth-5-face :foreground "#B55C2B")
-  '(rainbow-delimiters-depth-6-face :foreground "#144BC3"))
+(load! "my-packages/rainbow-indent-and-delimiters.el" doom-user-dir)
+(rainbow-indent-and-delimiters-mode 1)
 
-(add-hook! 'prog-mode-hook 'rainbow-delimiters-mode)
-
-(defun my-highlight-function (level responsive display)
-  "Highlight the current line with a face according to LEVEL.
-RESPONSIVE and DISPLAY are ignored."
-
-  (let* ((lvl (% level 6)))
-    (cond
-     ((eq lvl 0) 'rainbow-delimiters-depth-1-face)
-     ((eq lvl 1) 'rainbow-delimiters-depth-2-face)
-     ((eq lvl 2) 'rainbow-delimiters-depth-3-face)
-     ((eq lvl 3) 'rainbow-delimiters-depth-4-face)
-     ((eq lvl 4) 'rainbow-delimiters-depth-5-face)
-     ((eq lvl 5) 'rainbow-delimiters-depth-6-face)
-     )
-    ))
-
-(setq highlight-indent-guides-highlighter-function 'my-highlight-function)
-
+;; TODO Refactor after this
 (require 'async-completing-read)
 (setq acr-refresh-completion-ui 'consult-vertico--refresh)
 (defun my-find-file-in-directory (directory)
@@ -393,10 +361,9 @@ RESPONSIVE and DISPLAY are ignored."
   '("[xX]modmap\\(rc\\)?\\'")
   nil
   "Simple mode for xmodmap files.")
-
 (add-hook! 'xmodmap-mode-hook 'display-line-numbers-mode)
+
 (add-hook! 'c-mode-hook (lambda () (c-toggle-comment-style -1)))
-(add-hook! magit-post-refresh-hook 'forge-pull)
 
 (defun my-lookup-password (&rest keys)
   (auth-source-forget-all-cached)
@@ -415,6 +382,21 @@ RESPONSIVE and DISPLAY are ignored."
   (setq smudge-oauth2-client-id (my-lookup-password :host "id.spotify.com"))
   (global-smudge-remote-mode)
   )
+
+(defun my-pause-music-start-again (time)
+  (interactive '("2 min"))
+  (unless (featurep 'smudge)
+    (my-start-smudge))
+  (smudge-api-pause)
+  (run-at-time time nil #'smudge-api-play)
+  )
+
+(defun my-reload-spotifyd ()
+  (interactive)
+  (shell-command "systemctl reload-or-restart --user spotifyd"))
+
+(defun my-smudge-set-volume (volume)
+  (interactive `(,(read-string "Volume: " nil))))
 
 (defun my-pause-music-start-again (time)
   (interactive '("2 min"))
@@ -526,7 +508,6 @@ RESPONSIVE and DISPLAY are ignored."
   :config
   (global-blamer-mode 1))
 
-
 (defun my-poshandler (info)
   (cons
    (/ (- (plist-get info :parent-frame-width) (plist-get info :posframe-width)) 2) ;x
@@ -536,30 +517,30 @@ RESPONSIVE and DISPLAY are ignored."
 
 (use-package! vertico-posframe
   :after vertico
-  :config
-  (setq vertico-posframe-parameters
-        '((left-fringe . 20)
-          (right-fringe . 20)
-          ))
-  (setq vertico-posframe-width 100)
-  (setq vertico-posframe-poshandler 'my-poshandler)
+  :custom
+  (vertico-posframe-parameters
+   '((left-fringe . 20)
+     (right-fringe . 20)
+     ))
+  (vertico-posframe-width 100)
+  (vertico-posframe-poshandler 'my-poshandler)
+  (vertico-posframe-height nil)
+  :hook
+  (my-new-gui-frame . vertico-posframe-mode)
   )
-(add-hook! 'my-new-gui-frame-hook 'vertico-posframe-mode)
 
 (use-package! which-key-posframe
-  :config
-  (setq which-key-posframe-poshandler 'my-poshandler)
-  (setq which-key-posframe-parameters
-        '((left-fringe . 20)
-          (right-fringe . 20))))
-
-(add-hook! 'my-new-gui-frame-hook 'which-key-posframe-mode)
+  :custom
+  (which-key-posframe-poshandler 'my-poshandler)
+  (which-key-posframe-parameters
+   '((left-fringe . 20)
+     (right-fringe . 20)))
+  :hook
+  (my-new-gui-frame . which-key-posframe-mode))
 
 (load! "my-packages/read-string-posframe.el" doom-user-dir)
-(defun my-load-read-string()
-  (read-string-posframe-mode 1))
-
-(add-hook! 'my-new-gui-frame-hook 'my-load-read-string)
+(use-package! read-string-posframe
+  :hook (my-new-gui-frame . read-string-posframe-mode))
 
 (defun my-find-major-mode-for-file (filename)
   "Find the major mode associated with the given file name."
@@ -583,27 +564,21 @@ RESPONSIVE and DISPLAY are ignored."
             (funcall themode)
             ( goto-char (point-min))
             (read-only-mode -1)
-            (insert (format "%s %s %s\n" comment-start (file-name-nondirectory file) comment-end))
-            )
-        )
-      )
-    )
-  )
+            (insert (format "%s %s %s\n" comment-start (file-name-nondirectory file) comment-end)))))))
 
 (after! dired-posframe
+  :custom
+  (dired-posframe-width 65)
+  (dired-posframe-height 25)
+  (dired-posframe-min-height nil)
+  (dired-posframe-min-width nil)
+  (dired-posframe-parameters
+   '((left-fringe . 10)
+     (right-fringe . 10)))
   :config
-  (setq dired-posframe-width 65)
-  (setq dired-posframe-height 25)
-  (setq dired-posframe-min-height nil)
-  (setq dired-posframe-min-width nil)
-  (setq dired-posframe-parameters
-        '((left-fringe . 10)
-          (right-fringe . 10)
-          ))
   (advice-add 'dired-posframe--show :after 'my-dired-posframe-highlight)
   (advice-add 'keyboard-quit :before 'posframe-delete-all)
-  (fset 'dired-posframe--hide 'ignore)
-  )
+  (fset 'dired-posframe--hide 'ignore))
 
 (defun my-dired-posframe-scroll-down()
   (interactive)
@@ -615,10 +590,7 @@ RESPONSIVE and DISPLAY are ignored."
       (delete-region (point) (line-end-position))
       (delete-char 1)
       (goto-char (point-max))
-      (insert (format "%s\n" line))
-      )
-    )
-  )
+      (insert (format "%s\n" line)))))
 
 (defun my-dired-posframe-scroll-up()
   (interactive)
@@ -630,10 +602,7 @@ RESPONSIVE and DISPLAY are ignored."
       (delete-region (line-beginning-position) (point))
       (delete-char -1)
       (goto-char (point-min))
-      (insert (format "%s\n" line))
-      )
-    )
-  )
+      (insert (format "%s\n" line)))))
 
 (defun my-dired-navigate-into ()
   "Open directory in same dired buffer. Open file in new buffer"
@@ -642,10 +611,7 @@ RESPONSIVE and DISPLAY are ignored."
         (file (dired-get-filename nil t)))
     (if (file-directory-p file)
         (dired-find-alternate-file)
-      (dired-find-file)
-      )
-    )
-  )
+      (dired-find-file))))
 
 (evil-define-command my-evil-chmod (mode)
   (interactive "<a>")
@@ -656,9 +622,7 @@ RESPONSIVE and DISPLAY are ignored."
   (interactive "<a>")
   (if arg
       (my-open-man arg)
-    (call-interactively 'my-open-man)
-    )
-  )
+    (call-interactively 'my-open-man)))
 
 (defun my-create-directory (directory)
   "Create a directory recursively using mkdir -p."
@@ -666,14 +630,14 @@ RESPONSIVE and DISPLAY are ignored."
   (let ((full-directory (if (file-name-absolute-p directory)
                             directory
                           (expand-file-name directory default-directory))))
-    (shell-command (concat "mkdir -p " (shell-quote-argument full-directory)))
+    (shell-command (concat "mkdir -p " full-directory))
     (message (concat "Created directory: " full-directory))))
 
 (evil-define-command my-evil-mkdir (arg)
   (interactive "<a>")
-  ;; (mkdir arg default-directory)
-  (my-create-directory arg)
-  )
+  (if arg
+      (my-create-directory arg)
+    (call-interactively 'my-create-directory)))
 
 (evil-ex-define-cmd "man" 'my-evil-man)
 (evil-ex-define-cmd "chmod" 'my-evil-chmod)
@@ -692,7 +656,6 @@ RESPONSIVE and DISPLAY are ignored."
      (right-fringe . 10)
      ))
   )
-
 ;; FIX for C and C++ window navigation
 (defun ccls-navigate (DIRECTION)
   (cond
@@ -703,7 +666,5 @@ RESPONSIVE and DISPLAY are ignored."
    ((string= DIRECTION "R")
     (evil-window-down 1))
    ((string= DIRECTION "U")
-    (evil-window-left 1))
-   ))
+    (evil-window-left 1))))
 
-(setq enable-local-variables :safe)
