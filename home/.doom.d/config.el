@@ -469,20 +469,23 @@ Shows terminal in seperate section. Also shows browsers."
 (rainbow-indent-and-delimiters-mode 1)
 
 (use-package! smudge
+  :ensure t
   :init
   (if (file-exists-p "~/.spotify-secrets.el")
-      (load! "~/.spotify-secrets.el")
+      (load "~/.spotify-secrets.el")
     (progn
       (message "No spotify secrets found.")
       (setq spotify-client-id nil)
       (setq spotify-client-secret nil)))
+  (global-smudge-remote-mode 1)
   :custom
   (smudge-oauth2-callback-port "3725")
   (smudge-oauth2-client-id  spotify-client-id)
   (smudge-oauth2-client-secret spotify-client-secret)
+  :bind
+  (:map smudge-track-search-mode-map
+        ("RET" . smudge-track-select))
   :config
-  (global-smudge-remote-mode 1)
-  ;;
   (defun my-pause-music-start-again (time)
     (interactive '("2 min"))
     (unless (featurep 'smudge)
@@ -495,7 +498,4 @@ Shows terminal in seperate section. Also shows browsers."
     (if (stringp volume)
         (setq volume (string-to-number volume)))
     (when (and  smudge-selected-device-id (<= volume 100) (>= volume 0) )
-      (smudge-api-set-volume smudge-selected-device-id volume)))
-  :bind
-  (:map smudge-track-search-mode-map
-        ("RET" . smudge-track-select)))
+      (smudge-api-set-volume smudge-selected-device-id volume))))
