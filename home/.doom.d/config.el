@@ -477,7 +477,8 @@ Shows terminal in seperate section. Also shows browsers."
       (message "No spotify secrets found.")
       (setq spotify-client-id nil)
       (setq spotify-client-secret nil)))
-  (global-smudge-remote-mode 1)
+  (and spotify-client-id spotify-client-secret
+       (global-smudge-remote-mode 1))
   :custom
   (smudge-oauth2-callback-port "3725")
   (smudge-oauth2-client-id  spotify-client-id)
