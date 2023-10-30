@@ -1,10 +1,12 @@
 ;;; $DOOM_DIR/config.el -*- lexical-binding: t; -*-
-(load! "keymap.el" doom-user-dir)
+  (load! "keymap.el" doom-user-dir)
 ;; find file subdirectory my-packages
 ;; and eval every single one
-(let ((d (expand-file-name "my-packages" doom-user-dir)))
-  (dolist (file (directory-files d t "\\.el$"))
-    (load! file)))
+
+  (let ((d (expand-file-name "my-packages" doom-user-dir)))
+    (dolist (file (directory-files d t "\\.el$"))
+      (load file))
+    (message "==== Loaded my-packages ===="))
 
 (defvar my-new-frame-hook nil
   "Hook run after a any new frame is created.")
@@ -26,7 +28,10 @@
                                               (on-new-frame))))
   (on-new-frame))
 
-;; General Variables
+;;;
+;;; General Variables
+;;;
+
 (setq
  display-line-numbers-type 'relative
  org-directory "~/org/"
@@ -55,12 +60,73 @@
  doom-bin "doom"
  )
 
+;;;
+;;; Free floating functions
+;;;
+
+;; (defmacro time! (name &rest body)
+;;   "Measure and report the time it takes to evaluate BODY."
+;;   `(let ((time (current-time)))
+;;      ,@body
+;;      (message "==== %s took %.06f seconds ====" ,name (float-time (time-since time)))))
+
+(defun my-chmod-this-file ( mode )
+  (interactive `(,(read-string "File Mode: " nil)))
+  (if (and (buffer-file-name) (file-exists-p (buffer-file-name)))
+      (shell-command (format "chmod %s %s" mode (buffer-file-name)))
+    (message "Buffer has no file.")))
+
+(defun my-comment-or-uncomment()
+  "Comment or uncomment the current line or region."
+  (interactive)
+  (if mark-active
+      (comment-or-uncomment-region (region-beginning) (region-end))
+    (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
+
+(defun my-eval-line ()
+  "Evaluate the current line."
+  (interactive)
+  (eval-region (line-beginning-position) (line-end-position)))
+
+(defun my-poshandler (info)
+  (cons
+   ;; X
+   (/ (- (plist-get info :parent-frame-width) (plist-get info :posframe-width)) 2)
+   ;; Y
+   (/ (plist-get info :parent-frame-height) 5)))
+
+(defun my-create-directory (directory)
+  "Create a directory recursively using mkdir -p."
+  (interactive (list (read-string "Create directory: ")))
+  (let ((full-directory (if (file-name-absolute-p directory)
+                            directory
+                          (expand-file-name directory default-directory))))
+    (shell-command (concat "mkdir -p " full-directory))
+    (message (concat "Created directory: " full-directory))))
+
+;;;
+;;; use-package
+;;;
+
 ;; man pages
 (use-package! man
+  :init
+  (defun my-open-man-here (page)
+    (interactive `(,(read-string "Man: " nil)))
+    (man page))
   :custom
   (Man-notify-method 'pushy)
   :hook
   (Man-mode 'my-add-buffer-to-project))
+
+(use-package! man-posframe
+  :init
+  (defun my-open-man (page)
+    (interactive `(,(read-string "Man: " nil)))
+    (man-posframe-show page ))
+  :custom
+  (man-posframe-width  100)
+  (man-posframe-height  30))
 
 (use-package! evil-megasave
   :hook
@@ -96,13 +162,6 @@
          :map company-mode-map
          ("<tab>" . '+copilot/tab)
          ("TAB" . '+copilot/tab)))
-
-(defun my-comment-or-uncomment()
-  "Comment or uncomment the current line or region."
-  (interactive)
-  (if mark-active
-      (comment-or-uncomment-region (region-beginning) (region-end))
-    (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
 
 (use-package! company-box
   :hook (company-mode . company-box-mode))
@@ -141,11 +200,6 @@
   ;; :hook
   ;; (magit-post-refresh . forge-pull)
   )
-
-(defun my-eval-line ()
-  "Evaluate the current line."
-  (interactive)
-  (eval-region (line-beginning-position) (line-end-position)))
 
 (use-package! consult
   :config
@@ -203,35 +257,24 @@
 
   (add-to-list 'consult-buffer-sources 'my-consult--terminal-source 'append)
   (add-to-list 'consult-buffer-sources 'my-consult--workspace-source 'append)
-  (add-to-list 'consult-buffer-sources 'my-consult--dired-source 'append))
+  (add-to-list 'consult-buffer-sources 'my-consult--dired-source 'append)
+  (defun my-consult-terminal ()
+    "Open terminal."
+    (interactive)
+    (consult-buffer '(my-consult--terminal-source)))
 
-(defun my-consult-terminal ()
-  "Open terminal."
-  (interactive)
-  (consult-buffer '(my-consult--terminal-source)))
-
-(defun my-consult-workspace ()
-  "Switch to buffer in workspace.
-Shows terminal in seperate section. Also shows browsers."
-  (interactive)
-  (consult--multi
-   '(my-consult--dired-source my-consult--terminal-source my-consult--workspace-source)
-   :require-match
-   (confirm-nonexistent-file-or-buffer)
-   :prompt (format "Switch to buffer (%s): "
-                   (+workspace-current-name))
-   :history 'consult--buffer-history
-   :sort nil))
-
-(add-hook! 'my-new-frame-hook
-           '(lambda ()
-              (dolist (x persist--symbols)
-                (persist-load x))))
-
-(defun my-save-current-workspace ()
-  "Save current workspace."
-  (interactive)
-  (+workspace/save (+workspace-current-name)))
+  (defun my-consult-workspace ()
+    "Switch to buffer in workspace.
+Shows terminal and dired in seperate section."
+    (interactive)
+    (consult--multi
+     '( my-consult--terminal-source my-consult--dired-source my-consult--workspace-source)
+     :require-match
+     (confirm-nonexistent-file-or-buffer)
+     :prompt (format "Switch to buffer (%s): "
+                     (+workspace-current-name))
+     :history 'consult--buffer-history
+     :sort nil)))
 
 (use-package! dired
   :hook
@@ -278,10 +321,21 @@ Shows terminal in seperate section. Also shows browsers."
   :hook
   (my-new-gui-frame . ivy-posframe-mode))
 
-(defun my-add-buffer-to-project ()
-  "Add current buffer to current project."
-  (interactive)
-  (persp-add-buffer (current-buffer)))
+(use-package! persp-mode
+  :init
+  (defun my-add-buffer-to-project ()
+    "Add current buffer to current project."
+    (interactive)
+    (persp-add-buffer (current-buffer)))
+  (defun my-save-current-workspace ()
+    "Save current workspace."
+    (interactive)
+    (+workspace/save (+workspace-current-name)))
+  (defun my-delete-other-workspace ()
+    (interactive)
+    (dolist (workspace (+workspace-list-names))
+      (unless (eq workspace (+workspace-current-name))
+        (+workspace/delete workspace)))))
 
 (use-package! daemons
   :config
@@ -299,13 +353,6 @@ Shows terminal in seperate section. Also shows browsers."
   :custom
   (vterm-always-compile-module t))
 
-(defun my-delete-other-workspace ()
-  (interactive)
-  (dolist (workspace (+workspace-list-names))
-    (unless (eq workspace (+workspace-current-name))
-      (+workspace/delete workspace))))
-
-
 (define-generic-mode 'xmodmap-mode
   '(?!)
   '("add" "clear" "keycode" "keysym" "pointer" "remove")
@@ -321,7 +368,7 @@ Shows terminal in seperate section. Also shows browsers."
 
 (use-package! ccls
   :config
-  (defun ccls-navigate (DIRECTION)
+  (defun my-ccls-navigate (DIRECTION)
     (cond
      ((string= DIRECTION "D")
       (evil-window-right 1))
@@ -330,15 +377,8 @@ Shows terminal in seperate section. Also shows browsers."
      ((string= DIRECTION "R")
       (evil-window-down 1))
      ((string= DIRECTION "U")
-      (evil-window-left 1)))))
-
-(defun my-open-man (page)
-  (interactive `(,(read-string "Man: " nil)))
-  (man-posframe-show page ))
-
-(defun my-open-man-here (page)
-  (interactive `(,(read-string "Man: " nil)))
-  (man page))
+      (evil-window-left 1)))
+    (advice-add 'ccls-navigate :override #'my-ccls-navigate)))
 
 (use-package! web-mode
   :config
@@ -349,12 +389,6 @@ Shows terminal in seperate section. Also shows browsers."
         (copilot-accept-completion)
         (indent-relative))))
 
-(defun my-chmod-this-file ( mode )
-  (interactive `(,(read-string "File Mode: " nil)))
-  (if (and (buffer-file-name) (file-exists-p (buffer-file-name)))
-      (shell-command (format "chmod %s %s" mode (buffer-file-name)))
-    (message "Buffer has no file.")))
-
 (use-package! projectile
   :config
   (add-to-list 'projectile-globally-ignored-directories "tmp")
@@ -364,17 +398,17 @@ Shows terminal in seperate section. Also shows browsers."
   (add-to-list 'projectile-globally-ignored-directories "^.*vendor.*$")
   (add-to-list 'projectile-globally-ignored-directories "web-legacy"))
 
-(defun my-dap-debug-last()
-  (interactive)
-  (call-interactively '+make/run-last)
-  (call-interactively 'dap-debug-last))
-
-(defun my-dap-debug ()
-  (interactive)
-  (call-interactively '+make/run)
-  (call-interactively 'dap-debug))
-
 (use-package! dap-mode
+  :init
+  (defun my-dap-debug-last()
+    (interactive)
+    (call-interactively '+make/run-last)
+    (call-interactively 'dap-debug-last))
+
+  (defun my-dap-debug ()
+    (interactive)
+    (call-interactively '+make/run)
+    (call-interactively 'dap-debug))
   :custom
   ;; (sessions locals breakpoints expressions controls tooltip)
   (dap-auto-configure-features '(locals controls tooltip)))
@@ -396,13 +430,6 @@ Shows terminal in seperate section. Also shows browsers."
   :config
   (global-blamer-mode 1))
 
-(defun my-poshandler (info)
-  (cons
-   ;; X
-   (/ (- (plist-get info :parent-frame-width) (plist-get info :posframe-width)) 2)
-   ;; Y
-   (/ (plist-get info :parent-frame-height) 5)))
-
 (use-package! vertico-posframe
   :after vertico
   :custom
@@ -415,15 +442,6 @@ Shows terminal in seperate section. Also shows browsers."
   (vertico-posframe-poshandler 'my-poshandler)
   :hook
   (my-new-gui-frame . vertico-posframe-mode))
-
-(defun my-create-directory (directory)
-  "Create a directory recursively using mkdir -p."
-  (interactive (list (read-string "Create directory: ")))
-  (let ((full-directory (if (file-name-absolute-p directory)
-                            directory
-                          (expand-file-name directory default-directory))))
-    (shell-command (concat "mkdir -p " full-directory))
-    (message (concat "Created directory: " full-directory))))
 
 (use-package! evil
   :config
@@ -461,12 +479,9 @@ Shows terminal in seperate section. Also shows browsers."
   :hook
   (my-new-gui-frame . which-key-posframe-mode))
 
-(use-package! man-posframe
-  :custom
-  (man-posframe-width  100)
-  (man-posframe-height  30))
-
-(rainbow-indent-and-delimiters-mode 1)
+(use-package! rainbow-indent-and-delimeters
+  :init
+  (rainbow-indent-and-delimiters-mode 1))
 
 (use-package! smudge
   :ensure t
@@ -500,3 +515,5 @@ Shows terminal in seperate section. Also shows browsers."
         (setq volume (string-to-number volume)))
     (when (and  smudge-selected-device-id (<= volume 100) (>= volume 0) )
       (smudge-api-set-volume smudge-selected-device-id volume))))
+
+(message "=== Done Loading Config ===")

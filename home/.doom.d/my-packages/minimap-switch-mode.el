@@ -5,7 +5,7 @@
   "Switch minimap to selected buffer"
   :group 'convenience)
 
-(defcustom minimap-switch--functions-to-advise
+(defcustom minimap-switch--functions-to-advice
   '(evil-window-right
     evil-window-left
     evil-window-up
@@ -30,17 +30,14 @@
   :global t
   (if minimap-switch-mode
       (progn
-        (dolist (fun minimap-switch--functions-to-advise)
+        (dolist (fun minimap-switch--functions-to-advice)
           (advice-add fun :around #'minimap-switch--swap))
         (minimap-mode 1))
     (progn
-      (dolist (fun minimap-switch--functions-to-advise)
+      (dolist (fun minimap-switch--functions-to-advice)
         (advice-remove fun #'minimap-switch--swap))
       (minimap-mode -1)
       (delete-window (get-buffer-window (get-buffer minimap-buffer-name)))
       (kill-buffer (get-buffer minimap-buffer-name)))))
-
-
-
 
 (provide 'minimap-switch-mode)

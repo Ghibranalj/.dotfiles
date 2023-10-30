@@ -115,3 +115,5 @@
   :desc "Restart" "r" #'dap-hydra
   )
  )
+
+(message "==== Keymap loaded ====")
