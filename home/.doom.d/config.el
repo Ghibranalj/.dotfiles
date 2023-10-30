@@ -1,12 +1,12 @@
 ;;; $DOOM_DIR/config.el -*- lexical-binding: t; -*-
-  (load! "keymap.el" doom-user-dir)
+(load! "keymap.el" doom-user-dir)
 ;; find file subdirectory my-packages
 ;; and eval every single one
 
-  (let ((d (expand-file-name "my-packages" doom-user-dir)))
-    (dolist (file (directory-files d t "\\.el$"))
-      (load file))
-    (message "==== Loaded my-packages ===="))
+(let ((d (expand-file-name "my-packages" doom-user-dir)))
+  (dolist (file (directory-files d t "\\.el$"))
+    (load file))
+  (message "==== Loaded my-packages ===="))
 
 (defvar my-new-frame-hook nil
   "Hook run after a any new frame is created.")
@@ -33,7 +33,7 @@
 ;;;
 
 (setq
- display-line-numbers-type 'relative
+ display-line-numbers-type 'absolute
  org-directory "~/org/"
  scroll-margin 16
  scroll-conservatively 101
@@ -182,10 +182,8 @@
   (lsp-headerline-breadcrumb-mode t)
   :hook
   (prog-mode . lsp-headerline-breadcrumb-mode)
-  (lsp-mode . (lambda ()
-                (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\tmp\\'")))
-
   :config
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\tmp\\'")
   ;; GLSL language support
   (lsp-register-client
    (make-lsp-client :new-connection (lsp-stdio-connection '("glslls" "--stdin"))
@@ -352,15 +350,6 @@ Shows terminal and dired in seperate section."
 (use-package! vterm
   :custom
   (vterm-always-compile-module t))
-
-(define-generic-mode 'xmodmap-mode
-  '(?!)
-  '("add" "clear" "keycode" "keysym" "pointer" "remove")
-  nil
-  '("[xX]modmap\\(rc\\)?\\'")
-  nil
-  "Simple mode for xmodmap files.")
-(add-hook! 'xmodmap-mode-hook 'display-line-numbers-mode)
 
 (use-package! cc-mode
   :hook
