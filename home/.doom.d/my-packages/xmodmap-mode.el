@@ -37,7 +37,7 @@
     (list start end xmodmap-keywords . nil )))
 
 ;;;###autoload
-(define-derived-mode xmodmap-mode prog-mode "Xmodmap"
+(define-derived-mode xmodmap-mode conf-mode "Xmodmap"
   (setq font-lock-defaults '(xmodmap-font-lock-keywords))
   ;; completion
   (add-hook 'completion-at-point-functions 'xmodmap-completion-at-point nil t)
@@ -47,7 +47,7 @@
   (modify-syntax-entry ?\? "< b" xmodmap-mode-syntax-table)
   (modify-syntax-entry ?\n "> b" xmodmap-mode-syntax-table))
 
-;; automode alist
+;;;###autoload
 (add-to-list 'auto-mode-alist `(,xmodmap-filename-regex . xmodmap-mode))
 
 (provide 'xmodmap-mode)
