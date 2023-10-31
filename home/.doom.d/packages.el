@@ -101,7 +101,6 @@
 (package! blamer)
 (package! dired-posframe)
 (package! which-key-posframe)
-(package! mini-frame)
 ;; (package! evil-owl)
 (package! prisma-mode
   :recipe (:host github :repo "pimeys/emacs-prisma-mode" :branch "main"))
