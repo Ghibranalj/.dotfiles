@@ -109,3 +109,4 @@
 (package! man-posframe
   :recipe ( :type git :host github :repo "Ghibranalj/man-posframe.el"
                   :files ("*.el") :branch "master"))
+(package! evil-terminal-cursor-changer)

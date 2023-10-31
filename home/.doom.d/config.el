@@ -12,15 +12,22 @@
   "Hook run after a any new frame is created.")
 (defvar my-new-gui-frame-hook nil
   "Hook run after a any new gui frame is created.")
+(defvar my-new-tty-frame-hook nil
+  "Hook run after a any new tty frame is created.")
 (defvar my-gui-already-started nil
   "Flag to check if gui has already been started.")
+(defvar my-tty-already-started nil
+  "Flag to check if tty has already been started.")
 (defun on-new-frame ()
   "This is executed when a new frame is created."
-  (if window-system
+  (if (display-graphic-p)
       (progn
         (unless my-gui-already-started
           (setq my-gui-already-started t)
-          (run-hooks 'my-new-gui-frame-hook)))))
+          (run-hooks 'my-new-gui-frame-hook)))
+    (unless my-tty-already-started
+      (setq my-tty-already-started t)
+      (run-hooks 'my-new-tty-frame-hook))))
 ;; Running on daemon startup
 (if (daemonp)
     (add-hook 'after-make-frame-functions (lambda (frame)
@@ -181,7 +188,7 @@
   :custom
   (lsp-headerline-breadcrumb-mode t)
   :hook
-  (prog-mode . lsp-headerline-breadcrumb-mode)
+  (lsp-mode . lsp-headerline-breadcrumb-mode)
   :config
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\tmp\\'")
   ;; GLSL language support
@@ -504,5 +511,9 @@ Shows terminal and dired in seperate section."
         (setq volume (string-to-number volume)))
     (when (and  smudge-selected-device-id (<= volume 100) (>= volume 0) )
       (smudge-api-set-volume smudge-selected-device-id volume))))
+
+(use-package! evil-terminal-cursor-changer
+  :hook
+  (my-new-tty-frame . evil-terminal-cursor-changer-activate))
 
 (message "=== Done Loading Config ===")
