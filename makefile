@@ -22,7 +22,11 @@ optimus:
 	./exec/gpu-nightmare.sh
 
 udev :
+	sudo rm -f /etc/udev/rules.d/*
 	sudo cp udev/*	/etc/udev/rules.d/
+	sudo chown root:root /etc/udev/rules.d/*
+	sudo udevadm control --reload-rules
+	sudo udevadm trigger
 
 keybind:
 	./exec/keybind.sh

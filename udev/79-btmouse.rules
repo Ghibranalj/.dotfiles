@@ -1,2 +1,2 @@
-KERNEL=="event[0-99]|event[0-9][0-9]", SUBSYSTEM=="input", ATTRS{name}=="Basilisk X HyperSpeed Mouse", ACTION=="add", SYMLINK+="input/btmouse"
-KERNEL=="event[0-99]|event[0-9][0-9]", SUBSYSTEM=="input", ATTRS{name}=="Basilisk X HyperSpeed Mouse", ACTION=="remove", SYMLINK-="input/btmouse"
+KERNEL=="event[0-99]|event[0-9][0-9]", SUBSYSTEM=="input", ATTRS{name}=="Basilisk X HyperSpeed Mouse", ACTION=="add", SYMLINK+="input/by-id/btmouse"
+KERNEL=="event[0-99]|event[0-9][0-9]", SUBSYSTEM=="input", ATTRS{name}=="Basilisk X HyperSpeed Mouse", ACTION=="remove", SYMLINK-="input/by-id/btmouse"

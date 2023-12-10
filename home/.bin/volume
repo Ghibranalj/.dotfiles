@@ -22,6 +22,8 @@ elif [[ "$1" == "get" ]]; then
     [[ $(pamixer --get-mute) == "true" ]] && VOL="0"
     echo $VOL #to show volume status
 elif [[ "$1" == "set" ]]; then
+
+    echo $2
     pamixer --set-volume "$2"
 fi
 

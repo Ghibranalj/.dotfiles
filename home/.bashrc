@@ -329,7 +329,7 @@ function makeproject() {
     mkdir -p $PROJECT_DIR/$1
     cd $PROJECT_DIR/$1
     git init .
-    cd -
+    cd - &>/dev/null
     addprj "$PROJECT_DIR/$1"
 }
 
@@ -349,3 +349,5 @@ shell() {
 }
 
 alias serveweb='python3 -m http.server 8000'
+
+alias telnet='busybox telnet'

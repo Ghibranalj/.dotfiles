@@ -1,0 +1,7 @@
+{
+  "cache": "/opt/persistent-evdev/cache",
+  "devices": {
+    "persist-btmouse": "/dev/input/by-id/btmouse",
+    "persist-btkeyboard": "/dev/input/by-id/btkeyboard"
+  }
+}

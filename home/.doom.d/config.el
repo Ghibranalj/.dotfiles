@@ -124,7 +124,7 @@
   :custom
   (Man-notify-method 'pushy)
   :hook
-  (Man-mode 'my-add-buffer-to-project))
+  (Man-mode . 'my-add-buffer-to-project))
 
 (use-package! man-posframe
   :init
@@ -156,9 +156,10 @@
     "Copilot completion."
     (interactive)
     (or
+     (copilot-accept-completion)
+
      (if (bound-and-true-p emmet-mode)
          (emmet-expand-line nil))
-     (copilot-accept-completion)
      (indent-relative)))
   :hook (prog-mode . copilot-mode)
   :bind (("<backtab>" . 'copilot-accept-completion-by-word)
@@ -197,7 +198,18 @@
                     :activation-fn (lsp-activate-on "glsl")
                     :server-id 'glslls))
   (add-to-list 'lsp-language-id-configuration
-               '(glsl-mode . "glsl")))
+               '(glsl-mode . "glsl"))
+
+  (define-derived-mode astro-mode web-mode "astro")
+  (setq auto-mode-alist
+        (append '((".*\\.astro\\'" . astro-mode))
+                auto-mode-alist))
+  (add-to-list 'lsp-language-id-configuration
+               '(astro-mode . "astro"))
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection '("astro-ls" "--stdio"))
+                    :activation-fn (lsp-activate-on "astro")
+                    :server-id 'astro-ls)))
 
 (use-package! magit
   :custom
@@ -364,7 +376,7 @@ Shows terminal and dired in seperate section."
 
 (use-package! ccls
   :config
-  (defun my-ccls-navigate (DIRECTION)
+  (defun ccls-navigate (DIRECTION)
     (cond
      ((string= DIRECTION "D")
       (evil-window-right 1))
@@ -373,8 +385,7 @@ Shows terminal and dired in seperate section."
      ((string= DIRECTION "R")
       (evil-window-down 1))
      ((string= DIRECTION "U")
-      (evil-window-left 1)))
-    (advice-add 'ccls-navigate :override #'my-ccls-navigate)))
+      (evil-window-left 1)))))
 
 (use-package! web-mode
   :config
@@ -479,41 +490,55 @@ Shows terminal and dired in seperate section."
   :init
   (rainbow-indent-and-delimiters-mode 1))
 
-(use-package! smudge
-  :ensure t
-  :init
-  (if (file-exists-p "~/.spotify-secrets.el")
-      (load "~/.spotify-secrets.el")
-    (progn
-      (message "No spotify secrets found.")
-      (setq spotify-client-id nil)
-      (setq spotify-client-secret nil)))
-  (and spotify-client-id spotify-client-secret
-       (global-smudge-remote-mode 1))
-  :custom
-  (smudge-oauth2-callback-port "3725")
-  (smudge-oauth2-client-id  spotify-client-id)
-  (smudge-oauth2-client-secret spotify-client-secret)
-  :bind
-  (:map smudge-track-search-mode-map
-        ("RET" . smudge-track-select))
-  :config
-  (defun my-pause-music-start-again (time)
-    (interactive '("2 min"))
-    (unless (featurep 'smudge)
-      (my-start-smudge))
-    (smudge-api-pause)
-    (run-at-time time nil #'smudge-api-play))
-  ;;
-  (defun my-smudge-set-volume (volume)
-    (interactive `(,(read-string "Volume: " nil)))
-    (if (stringp volume)
-        (setq volume (string-to-number volume)))
-    (when (and  smudge-selected-device-id (<= volume 100) (>= volume 0) )
-      (smudge-api-set-volume smudge-selected-device-id volume))))
+;(use-package! smudge
+;  :ensure t
+;  :init
+;  (if (file-exists-p "~/.spotify-secrets.el")
+;      (load "~/.spotify-secrets.el")
+;    (progn
+;      (message "No spotify secrets found.")
+;      (setq spotify-client-id nil)
+;      (setq spotify-client-secret nil)))
+;  (and spotify-client-id spotify-client-secret
+;       (global-smudge-remote-mode 1))
+;  :custom
+;  (smudge-oauth2-callback-port "3725")
+;  (smudge-oauth2-client-id  spotify-client-id)
+;  (smudge-oauth2-client-secret spotify-client-secret)
+;  :bind
+;  (:map smudge-track-search-mode-map
+;        ("RET" . smudge-track-select))
+;  :config
+;  (defun my-pause-music-start-again (time)
+;    (interactive '("2 min"))
+;    (unless (featurep 'smudge)
+;      (my-start-smudge))
+;    (smudge-api-pause)
+;    (run-at-time time nil #'smudge-api-play))
+;  ;;
+;  (defun my-smudge-set-volume (volume)
+;    (interactive `(,(read-string "Volume: " nil)))
+;    (if (stringp volume)
+;        (setq volume (string-to-number volume)))
+;    (when (and  smudge-selected-device-id (<= volume 100) (>= volume 0) )
+;      (smudge-api-set-volume smudge-selected-device-id volume))))
 
 (use-package! evil-terminal-cursor-changer
   :hook
   (my-new-tty-frame . evil-terminal-cursor-changer-activate))
 
+;; (use-package! auto-save
+;;   :custom
+;;   (auto-save-idle 5)
+;;   (auto-save-silent t)
+;;   (auto-save-delete-trailing-whitespace nil)
+;;   :config
+;;   (auto-save-enable)
+;;   )
+
+(use-package prisma-mode
+  :mode "\\.prisma\\'"
+  :hook (prisma-mode . lsp-mode))
+
 (message "=== Done Loading Config ===")
+
