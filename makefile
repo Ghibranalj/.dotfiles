@@ -1,4 +1,5 @@
 .PHONY: all exec conf optimus udev keybind emacs stow vim dwm systemd systemdroot fonts
+.ONESHELL:
 
 all: stow rootstow exec conf emacs vim systemd
 
@@ -48,6 +49,15 @@ systemdroot:
 	sudo cp -f systemd-root/etc/systemd/system/* /etc/systemd/system/
 	sudo systemctl daemon-reload
 	sudo systemctl enable --now $(ROOT_SERVICES)
+
+WIN10_DESKTOP_PATH = "/usr/share/xsessions/win10.desktop"
+win10login:
+	echo [Desktop Entry] > "$(WIN10_DESKTOP_PATH)"
+	echo Name=Windows 10 >> "$(WIN10_DESKTOP_PATH)"
+	echo Comment=Start Windows 10 VM Passthrough >> "$(WIN10_DESKTOP_PATH)"
+	echo Exec=C:\path\to\start-win10.bat >> "$(WIN10_DESKTOP_PATH)"
+	echo Icon=windows >> "$(WIN10_DESKTOP_PATH)"
+	echo Type=XSession >> "$(WIN10_DESKTOP_PATH)"
 
 dwm:
 	./exec/dwm.sh
