@@ -50,7 +50,9 @@
 
  (:prefix ("t" . "toggle")
   :desc "Toggle minimap" "m" #'minimap-switch-mode
-  :desc "Toggle zen-mode" "z" #'+zen/toggle)
+  :desc "Toggle zen-mode" "z" #'+zen/toggle
+  :desc "Toggle popup terminal" "t" #'vterm-posframe-toggle
+  )
 
  (:prefix ("e" . "eval")
   :desc "Evaluate buffer" "b" #'eval-buffer

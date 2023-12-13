@@ -552,6 +552,9 @@ Shows terminal and dired in seperate section."
    '((left-fringe . 10)
      (right-fringe . 20)
      ))
+  (scratch-posframe-buffer-setup
+   #'(lambda ()
+       (setq cursor-type 'box)))
   :config
   (defun my-open-scratch ()
     (interactive)
@@ -562,7 +565,7 @@ Shows terminal and dired in seperate section."
 (use-package! persistent-scratch
   :config
   (persistent-scratch-setup-default)
-  (persistent-scratch-autosave-mode -1))
+  (persistent-scratch-autosave-mode 1))
 
 (use-package! vterm-posframe
   :custom
@@ -570,9 +573,7 @@ Shows terminal and dired in seperate section."
    '((left-fringe . 10)
      (right-fringe . 20)
      ))
-  (vterm-posframe-vterm-func '+vterm/here)
-  (vterm-posframe-vterm-func-interactive t)
-  :hook
-  (my-new-gui-frame . vterm-posframe-mode))
+  (vterm-posframe-vterm-func '+vterm/toggle)
+  (vterm-posframe-vterm-func-interactive t))
 
 (message "=== Done Loading Config ===")
