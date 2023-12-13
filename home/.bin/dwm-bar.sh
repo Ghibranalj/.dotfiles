@@ -98,7 +98,7 @@ function music() {
         # echo $MUSIC > $MUSIC_CACHE
     fi
 
-    printf '\x05%s' "$MUSIC"
+    # printf '\x05%s' "$MUSIC"
 }
 
 function caffeine() {
@@ -123,8 +123,18 @@ function bluetooth() {
     printf ' \x07%s' "<span color='#5255ba' font_size='115%' rise='-2pt' ></span> $NUM_DEVICES"
 }
 
+
+function VM() {
+    local VM=$(virsh list --all | grep running | wc -l)
+    if [[ "$VM" == "0" ]]; then
+        VM=""
+    fi
+    printf ' \x05%s' "<span font_size='115%' rise='-2pt' >🖥</span> $VM"
+}
+
 function power(){
-   printf ' \x09%s' " <span font_size='115%' rise='-1pt'></span>"
+
+   printf ' \x09%s' "<span font_size='115%' rise='-1pt'></span>"
 }
 
 VOL=$(vol)
@@ -135,7 +145,8 @@ MUSIC=$(music)
 CAFF=$(caffeine)
 BLU=$(bluetooth)
 POWER=$(power)
+VM=$(VM)
 # PULSE=$(puluseaudio)
 
-echo -e "$MUSIC$TIME$VOL$BAT$CAFF$BLUE$BLU$NOTIF$POWER"
-xsetroot -name "$MUSIC$TIME$VOL$PULSE$BAT$CAFF$BLUE$BLU$NOTIF$POWER"
+echo -e "$MUSIC$TIME$VOL$BAT$CAFF$BLUE$BLU$NOTIF$VM$POWER"
+xsetroot -name "$MUSIC$TIME$VOL$PULSE$BAT$CAFF$BLUE$BLU$NOTIF$VM$POWER"

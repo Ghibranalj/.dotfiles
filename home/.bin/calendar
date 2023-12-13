@@ -1,2 +1,9 @@
 #!/bin/env bash
-date | INPUT=false LINES=1 YOFF=27px rofi -location 3 -dmenu
+
+
+DAY_OF_MONTH=$(date +%d)
+cat <<EOF | INPUT=false LINES=9 YOFF=27px rofi -location 3 -dmenu
+$(date +"%A %H:%M:%S")
+$(date +"%d %B %Y")
+$(cal | awk 'NR>1' | sed "s/\s$DAY_OF_MONTH\s/|$DAY_OF_MONTH|/g")
+EOF

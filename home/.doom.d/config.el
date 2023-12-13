@@ -18,10 +18,13 @@
   "Flag to check if gui has already been started.")
 (defvar my-tty-already-started nil
   "Flag to check if tty has already been started.")
+(defvar my-is-gui-frame nil
+  "Flag to check if frame is gui frame.")
 (defun on-new-frame ()
   "This is executed when a new frame is created."
   (if (display-graphic-p)
       (progn
+        (setq my-is-gui-frame t)
         (unless my-gui-already-started
           (setq my-gui-already-started t)
           (run-hooks 'my-new-gui-frame-hook)))
@@ -490,38 +493,41 @@ Shows terminal and dired in seperate section."
   :init
   (rainbow-indent-and-delimiters-mode 1))
 
-;(use-package! smudge
-;  :ensure t
-;  :init
-;  (if (file-exists-p "~/.spotify-secrets.el")
-;      (load "~/.spotify-secrets.el")
-;    (progn
-;      (message "No spotify secrets found.")
-;      (setq spotify-client-id nil)
-;      (setq spotify-client-secret nil)))
-;  (and spotify-client-id spotify-client-secret
-;       (global-smudge-remote-mode 1))
-;  :custom
-;  (smudge-oauth2-callback-port "3725")
-;  (smudge-oauth2-client-id  spotify-client-id)
-;  (smudge-oauth2-client-secret spotify-client-secret)
-;  :bind
-;  (:map smudge-track-search-mode-map
-;        ("RET" . smudge-track-select))
-;  :config
-;  (defun my-pause-music-start-again (time)
-;    (interactive '("2 min"))
-;    (unless (featurep 'smudge)
-;      (my-start-smudge))
-;    (smudge-api-pause)
-;    (run-at-time time nil #'smudge-api-play))
-;  ;;
-;  (defun my-smudge-set-volume (volume)
-;    (interactive `(,(read-string "Volume: " nil)))
-;    (if (stringp volume)
-;        (setq volume (string-to-number volume)))
-;    (when (and  smudge-selected-device-id (<= volume 100) (>= volume 0) )
-;      (smudge-api-set-volume smudge-selected-device-id volume))))
+
+(use-package! smudge
+  :disabled
+  ;;  :ensure t
+  ;;  :init
+  ;;  (if (file-exists-p "~/.spotify-secrets.el")
+  ;;      (load "~/.spotify-secrets.el")
+  ;;    (progn
+  ;;      (message "No spotify secrets found.")
+  ;;      (setq spotify-client-id nil)
+  ;;      (setq spotify-client-secret nil)))
+  ;;  (and spotify-client-id spotify-client-secret
+  ;;       (global-smudge-remote-mode 1))
+  ;;  :custom
+  ;;  (smudge-oauth2-callback-port "3725")
+  ;;  (smudge-oauth2-client-id  spotify-client-id)
+  ;;  (smudge-oauth2-client-secret spotify-client-secret)
+  ;;  :bind
+  ;;  (:map smudge-track-search-mode-map
+  ;;        ("RET" . smudge-track-select))
+  ;;  :config
+  ;;  (defun my-pause-music-start-again (time)
+  ;;    (interactive '("2 min"))
+  ;;    (unless (featurep 'smudge)
+  ;;      (my-start-smudge))
+  ;;    (smudge-api-pause)
+  ;;    (run-at-time time nil #'smudge-api-play))
+  ;;  ;;;
+  ;;  (defun my-smudge-set-volume (volume)
+  ;;    (interactive `(,(read-string "Volume: " nil)))
+  ;;    (if (stringp volume)
+  ;;        (setq volume (string-to-number volume)))
+  ;;    (when (and  smudge-selected-device-id (<= volume 100) (>= volume 0) )
+  ;;      (smudge-api-set-volume smudge-selected-device-id volume))))
+  )
 
 (use-package! evil-terminal-cursor-changer
   :hook
@@ -536,9 +542,37 @@ Shows terminal and dired in seperate section."
 ;;   (auto-save-enable)
 ;;   )
 
-(use-package prisma-mode
+(use-package! prisma-mode
   :mode "\\.prisma\\'"
   :hook (prisma-mode . lsp-mode))
 
-(message "=== Done Loading Config ===")
+(use-package! scratch-posframe
+  :custom
+  (scratch-posframe-parameters
+   '((left-fringe . 10)
+     (right-fringe . 20)
+     ))
+  :config
+  (defun my-open-scratch ()
+    (interactive)
+    (if my-is-gui-frame
+        (call-interactively 'scratch-posframe-toggle)
+      (call-interactively 'doom/open-scratch-buffer))))
 
+(use-package! persistent-scratch
+  :config
+  (persistent-scratch-setup-default)
+  (persistent-scratch-autosave-mode -1))
+
+(use-package! vterm-posframe
+  :custom
+  (vterm-posframe-parameters
+   '((left-fringe . 10)
+     (right-fringe . 20)
+     ))
+  (vterm-posframe-vterm-func '+vterm/here)
+  (vterm-posframe-vterm-func-interactive t)
+  :hook
+  (my-new-gui-frame . vterm-posframe-mode))
+
+(message "=== Done Loading Config ===")

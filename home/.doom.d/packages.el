@@ -106,7 +106,18 @@
 (package! man-posframe
   :recipe ( :type git :host github :repo "Ghibranalj/man-posframe.el"
                   :files ("*.el") :branch "master"))
+
 (package! evil-terminal-cursor-changer)
 (package! auto-save
   :recipe (:host github :repo "manateelazycat/auto-save"))
 (package! udev-mode)
+
+(package! persistent-scratch)
+
+(package! scratch-posframe
+  :recipe ( :type git :host github :repo "Ghibranalj/scratch-posframe"
+                  :files ("*.el") :branch "master"))
+
+(package! vterm-posframe
+  :recipe ( :type git :host github :repo "Ghibranalj/vterm-posframe"
+                  :files ("*.el") :branch "master"))
