@@ -2,8 +2,8 @@
 
 
 DAY_OF_MONTH=$(date +%d)
-cat <<EOF | INPUT=false LINES=9 YOFF=27px rofi -location 3 -dmenu
+cat <<EOF | INPUT=false LINES=9 WIDTH=380px YOFF=27px rofi -location 3 -dmenu -select-row 2
 $(date +"%A %H:%M:%S")
 $(date +"%d %B %Y")
-$(cal | awk 'NR>1' | sed "s/\s$DAY_OF_MONTH\s/|$DAY_OF_MONTH|/g")
+$(cal | awk 'NR>1 {printf "%s\n", $0}'  | sed -e "s/ $DAY_OF_MONTH / $DAY_OF_MONTH^/g")
 EOF

@@ -8,6 +8,15 @@
 # 4. sox
 
 STEP=5
+
+VOL=$(pamixer --get-volume)
+[[ $(pamixer --get-mute) == "true" ]] && VOL="0"
+
+# if vol < 5% then step = 1
+if [[ $VOL -lt 15 ]]; then
+    STEP=1
+fi
+
 if [[ "$1" == "up" ]]; then
     pamixer -i $STEP #to increase 5%
 

@@ -52,14 +52,29 @@ export MANPAGER='nvim +Man!'
 # export MANPAGER='emacspipe'
 
 alias less=most
-export VISUAL="emacsclient -c -a 'nvim' -t"
-export EDITOR="emacsclient -c -a 'nvim' -t"
+
+VISUAL="vi"
+EDITOR="vi"
+if command -v lvim >/dev/null ; then
+    VISUAL="lvim"
+    EDITOR="lvim"
+elif command -v nvim >/dev/null ; then
+    VISUAL="nvim"
+    EDITOR="nvim"
+elif command -v vim >/dev/null ; then
+    VISUAL="vim"
+    EDITOR="vim"
+fi
 
 alias grep='grep --color=auto'
 
 alias c=clear
 
-alias windows10='vbox-ctl -S Windows10'
+# alias windows10='vbox-ctl -S Windows10'
+if command -v virsh &>/dev/null; then
+    alias virsh='virsh -c qemu:///system'
+    alias windows10='virsh start win10'
+fi
 
 alias pickcolor="colorpicker --short --one-shot 2> /dev/null | xclip -sel c "
 function nav() {
@@ -183,7 +198,14 @@ fi
 function calc() { python -c "print($@)"; }
 
 function mkcpair() {
-    touch $1.{c,h}
+    for i in $@; do
+        touch $i.c $i.h
+        # add include guard
+        echo "#ifndef ${i^^}_H" >$i.h
+        echo "#define ${i^^}_H" >>$i.h
+        echo "" >>$i.h
+        echo "#endif // ${i^^}_H" >>$i.h
+    done
 }
 
 function check-network() {
@@ -347,7 +369,14 @@ shell() {
         esac
     done
 }
+alias pip='pipx'
 
 alias serveweb='python3 -m http.server 8000'
 
 alias telnet='busybox telnet'
+alias volumecli='pulsemixer'
+
+function gitignore() {
+    local args=${@// /,}
+    curl -sL https://www.toptal.com/developers/gitignore/api/$args > .gitignore
+}

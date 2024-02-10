@@ -567,13 +567,13 @@ Shows terminal and dired in seperate section."
   (persistent-scratch-setup-default)
   (persistent-scratch-autosave-mode 1))
 
-(use-package! vterm-posframe
-  :custom
-  (vterm-posframe-parameters
-   '((left-fringe . 10)
-     (right-fringe . 20)
-     ))
-  (vterm-posframe-vterm-func '+vterm/toggle)
-  (vterm-posframe-vterm-func-interactive t))
+;(use-package! vterm-posframe
+;  :custom
+;  (vterm-posframe-parameters
+;   '((left-fringe . 10)
+;     (right-fringe . 20)
+;     ))
+;  (vterm-posframe-vterm-func '+vterm/toggle)
+;  (vterm-posframe-vterm-func-interactive t))
 
 (message "=== Done Loading Config ===")
