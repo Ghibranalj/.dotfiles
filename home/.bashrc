@@ -262,7 +262,7 @@ alias yayu="yay -Qu | fzf -m --preview 'yay -Si {1}' | cut -d' ' -f1 | xargs -ro
 alias sman="apropos . | fzf -m --preview 'man {1}{2}'  --bind ctrl-h:preview-up,ctrl-l:preview-down | awk '{printf(\"%s%s\",\$1,\$2)}' | xargs man"
 
 [ -d $HOME/.bin ] && export PATH=$PATH:$HOME/.bin
-[ -d $HOME/.emacs.d/bin ] && export PATH=$PATH:$HOME/.emacs.d/bin
+[ -d $HOME/.config/emacs/bin ] && export PATH=$PATH:$HOME/.config/emacs/bin
 [ -d $HOME/.local/bin ] && PATH=$PATH:$HOME/.local/bin
 [ -d /snap/bin ] && PATH=$PATH:/snap/bin
 
