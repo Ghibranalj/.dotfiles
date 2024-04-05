@@ -11,11 +11,11 @@ function killstart(){
 
 export DISPLAY=":0"
 
-[[ `cat /etc/hostname` == *"CreeprTUF"* ]] &&
-    $HOME/.bin/screen.sh &
+$HOME/.bin/screen.sh &
 
-[[ `cat /etc/hostname` == *"CreeprDell"* ]] &&
-    $HOME/.bin/1080p.sh &
+if [ -f $HOME/.screenlayout/main.sh ]; then
+    $HOME/.screenlayout/main.sh
+fi
 
 unclutter --timeout 60 --jitter 3 &
 killstart nm-applet &

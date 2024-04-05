@@ -147,6 +147,7 @@
 
 ;; tremacs colors
 (use-package treemacs
+  :disabled
   :config
   (custom-set-faces!
     '(treemacs-root-face :foreground "#F78C6C")
@@ -175,6 +176,7 @@
          ("TAB" . '+copilot/tab)))
 
 (use-package! company-box
+  :disabled
   :hook (company-mode . company-box-mode))
 
 (use-package! lsp-ui-sideline
@@ -358,17 +360,19 @@ Shows terminal and dired in seperate section."
         (+workspace/delete workspace)))))
 
 (use-package! daemons
-  :config
-  (evil-collection-define-key 'normal 'daemons-mode-map
-    "<ret>" 'daemons-status-at-point
-    "s" 'daemons-start-at-point
-    "S" 'daemons-stop-at-point
-    "r" 'daemons-reload-at-point
-    "R" 'daemons-restart-at-point
-    "e" 'daemons-enable-at-point
-    "d" 'daemons-disable-at-point
-    "t" 'daemons-systemd-toggle-user))
+  :disabled
+  ;;   :config
+  ;;   (evil-collection-define-key 'normal 'daemons-mode-map
+  ;;     "<ret>" 'daemons-status-at-point
+  ;;     "s" 'daemons-start-at-point
+  ;;     "S" 'daemons-stop-at-point
+  ;;     "r" 'daemons-reload-at-point
+  ;;     "R" 'daemons-restart-at-point
+  ;;     "e" 'daemons-enable-at-point
+  ;;     "d" 'daemons-disable-at-point
+  ;;     "t" 'daemons-systemd-toggle-user))
 
+  )
 (use-package! vterm
   :custom
   (vterm-always-compile-module t))
@@ -543,6 +547,7 @@ Shows terminal and dired in seperate section."
 ;;   )
 
 (use-package! prisma-mode
+  :disabled
   :mode "\\.prisma\\'"
   :hook (prisma-mode . lsp-mode))
 
@@ -567,13 +572,16 @@ Shows terminal and dired in seperate section."
   (persistent-scratch-setup-default)
   (persistent-scratch-autosave-mode 1))
 
-;(use-package! vterm-posframe
-;  :custom
-;  (vterm-posframe-parameters
-;   '((left-fringe . 10)
-;     (right-fringe . 20)
-;     ))
-;  (vterm-posframe-vterm-func '+vterm/toggle)
-;  (vterm-posframe-vterm-func-interactive t))
+(use-package! vterm-posframe
+  :custom
+  (vterm-posframe-parameters
+   '((left-fringe . 10)
+     (right-fringe . 20)
+     ))
+  (vterm-posframe-vterm-func '+vterm/toggle)
+  (vterm-posframe-vterm-func-interactive t))
 
 (message "=== Done Loading Config ===")
+
+
+()

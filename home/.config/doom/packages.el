@@ -118,6 +118,6 @@
   :recipe ( :type git :host github :repo "Ghibranalj/scratch-posframe"
                   :files ("*.el") :branch "master"))
 
-;(package! vterm-posframe
-;  :recipe ( :type git :host github :repo "Ghibranalj/vterm-posframe"
-;                  :files ("*.el") :branch "master"))
+(package! vterm-posframe
+:recipe ( :type git :host github :repo "Ghibranalj/vterm-posframe"
+                :files ("*.el") :branch "master"))
