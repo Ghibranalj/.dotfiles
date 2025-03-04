@@ -42,8 +42,9 @@
 ;;; General Variables
 ;;;
 
+
 (setq
- display-line-numbers-type 'absolute
+ display-line-numbers-type 'relative
  org-directory "~/org/"
  scroll-margin 16
  scroll-conservatively 101
@@ -113,6 +114,11 @@
                           (expand-file-name directory default-directory))))
     (shell-command (concat "mkdir -p " full-directory))
     (message (concat "Created directory: " full-directory))))
+;;;
+;;; random shit
+;;;
+
+(add-hook! prog-mode '(lambda () (display-line-numbers-mode)))
 
 ;;;
 ;;; use-package
@@ -153,8 +159,14 @@
     '(treemacs-root-face :foreground "#F78C6C")
     '(doom-themes-treemacs-root-face :foreground "#F78C6C")))
 
+;; company; make it load before copilot
+(use-package! company
+  :defer t)
+
 ;; Coplilot
 (use-package! copilot
+  :disabled
+  :after company
   :config
   (defun +copilot/tab ()
     "Copilot completion."
@@ -317,6 +329,7 @@ Shows terminal and dired in seperate section."
           (dired-find-alternate-file)
         (dired-find-file))))
 
+  (evil-collection-init)
   (evil-collection-define-key 'normal 'dired-mode-map
     "h" '(lambda () (interactive) (find-alternate-file ".."))
     ;; "l" 'dired-find-alternate-file

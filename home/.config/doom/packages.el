@@ -121,3 +121,7 @@
 (package! vterm-posframe
 :recipe ( :type git :host github :repo "Ghibranalj/vterm-posframe"
                 :files ("*.el") :branch "master"))
+
+(package! highlight-indent-guides)
+(package! evil-collection)
+(package! nix-mode)
